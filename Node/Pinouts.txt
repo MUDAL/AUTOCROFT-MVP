@@ -1,0 +1,9 @@
+1.) HC12 (USART1: PA9, PA10)
+2.) EEPROM module (I2C1: PB6, PB7)
+3.) Moisture sensor (ADC1: PA5)
+4.) Battery voltage measurement (ADC2: PA6)
+5.) Solenoid valve control (GPIO output: PA7)
+6.) RTC module (I2C1: PB6, PB7)
+
+Pins to reserve:
+PA13,PA14,PA15,PB2,PB3,PB4
