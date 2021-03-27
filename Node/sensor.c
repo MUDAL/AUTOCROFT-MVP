@@ -5,24 +5,29 @@ sensorLevel_t Sensor_Get_Level(sensor_t* pSensor)
 {
 	sensorLevel_t lev;
 	
-	if (pSensor->value <= pSensor->minValue)
+	if (pSensor->value < pSensor->maxValue)
 	{
-		lev = LOW;
-	}
-	
-	else if ( (pSensor->value > pSensor->minValue) && (pSensor->value < pSensor->maxValue) )
-	{
-		lev = AVERAGE;
-	}
-	
-	else if (pSensor->value >= pSensor->maxValue)
-	{
-		lev = HIGH;
+		if (pSensor->value <= pSensor->minValue)
+		{
+			lev = LOW;
+		}
+		
+		else
+		{
+			lev = AVERAGE;
+		}
 	}
 	
 	else
 	{
-		lev = UNDEFINED;
+		if (pSensor->value > pSensor->minValue)
+		{
+			lev = HIGH;
+		}
+		else
+		{
+			lev = LEV_UNDEFINED;
+		}
 	}
 	
 	return lev;

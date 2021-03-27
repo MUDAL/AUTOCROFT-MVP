@@ -22,6 +22,10 @@ void Solenoid_Init(void)
 									 GPIO_PORT_REG_LOW,
 									 GPIO_PIN7_OUTPUT_MODE_2MHZ,
 									 GPIO_GEN_PUR_OUTPUT_PUSH_PULL);
+	
+	//Ensure solenoid valve pin is 'low' before any...
+	//application uses other Solenoid APIs.
+	GPIO_Output_Write(GPIOA, GPIO_PIN7, false);
 }
 
 void Solenoid_Switch(bool state)
@@ -41,4 +45,14 @@ void Solenoid_Switch(bool state)
 	*/
 	
 	GPIO_Output_Write(GPIOA, GPIO_PIN7, state);
+}
+
+bool Solenoid_IsRunning(void)
+{
+	/*
+	Description:
+	Parameters:
+	Return:
+	*/
+	return GPIO_Output_Read(GPIOA, GPIO_PIN7);
 }

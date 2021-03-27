@@ -8,7 +8,7 @@
 
 //const char MsgTemplate[NODE_TO_MASTER_MSG_SIZE];
 
-//void Message_Init(char* msgArray)
+//void Message_Msg_To_Send_Init(char* msgArray)
 //{
 //	strcpy(msgArray, MsgTemplate);
 //}
@@ -21,8 +21,8 @@ void Message_Struct_Init(message_t* pMsgStruct, uint8_t colonIndx, uint8_t comma
 
 //void Message_Encode(message_t* pMsgStruct,uint16_t intData,char* msgArray)
 //{
-//	
-//	char strData[5] = {'\0','\0','\0','\0','\0'}; //string version of integer data
+//  char strData[5] = {'\0','\0','\0','\0','\0'}; //string version of integer data
+
 //	Conv_Integer_To_String(intData, strData);
 //	uint8_t dataLength = strlen(strData);
 //	
@@ -60,11 +60,11 @@ void Message_Struct_Init(message_t* pMsgStruct, uint8_t colonIndx, uint8_t comma
 
 uint16_t Message_Decode(message_t* pMsgStruct, char* msgArray)
 {
-	char strData[5] = {'\0','\0','\0','\0','\0'};
+	char strData[5] = "0000";
 	
-	for (uint8_t i = pMsgStruct->colonIndex; i < pMsgStruct->commaIndex; i++)
+	for (uint8_t i = pMsgStruct->colonIndex + 1; i < pMsgStruct->commaIndex; i++)
 	{
-		strData[i - pMsgStruct->colonIndex] = msgArray[i];
+		strData[i - (pMsgStruct->colonIndex + 1)] = msgArray[i];
 	}
 	
 	uint16_t intData = Conv_String_To_Integer(strData);

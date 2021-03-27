@@ -225,4 +225,14 @@ bool GPIO_Input_Read(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
 	
 	return false;
 }
+
+bool GPIO_Output_Read(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
+{
+	if ( (gpioPort->ODR & (1<<gpioPin)) == (1<<gpioPin) )
+	{
+		return true;
+	}
+	
+	return false;	
+}
 	

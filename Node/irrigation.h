@@ -6,23 +6,22 @@ typedef enum
 	
 	NO_WATERING = 0,
 	LIGHT_WATERING,
-	HEAVY_WATERING
+	HEAVY_WATERING,
+	IRRIG_METHOD_UNDEFINED
 	
 }irrigMethod_t;
 
 typedef struct
 {
-	
-	uint32_t minValue;
-	uint32_t maxValue;
+	irrigMethod_t wateringMethod;
+	uint16_t minTime;
+	uint16_t maxTime;
 	
 }irrig_t;
 
-extern irrigMethod_t Irrigation_Get_Method(sensorLevel_t moisture,
-																		       sensorLevel_t humidity,
-																		       sensorLevel_t temperature);
-
-extern void Irrigation_Set_Time(uint32_t irrigTime);
+extern irrigMethod_t Irrigation_Get_Method(sensorLevel_t moistureLev,
+																		       sensorLevel_t humidityLev,
+																		       sensorLevel_t temperatureLev);
 
 #endif //_IRRIGATION_H
 

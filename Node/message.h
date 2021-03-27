@@ -42,7 +42,7 @@ typedef struct
 	uint8_t commaIndex;
 }message_t;
 
-//extern void Message_Init(char* msgArray);
+//extern void Message_Msg_To_Send_Init(char* msgArray);
 extern void Message_Struct_Init(message_t* pMsgStruct, uint8_t colonIndx, uint8_t commaIndx);
 //extern void Message_Encode(message_t* pMsgStruct,uint16_t data,char* msgArray);
 extern uint16_t Message_Decode(message_t* pMsgStruct, char* msgArray);

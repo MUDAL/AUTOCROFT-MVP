@@ -7,7 +7,7 @@ typedef enum
 	LOW = 0,
 	AVERAGE,
 	HIGH,
-	UNDEFINED
+	LEV_UNDEFINED
 	
 }sensorLevel_t;
 
@@ -16,6 +16,7 @@ typedef struct
 	uint8_t value;
 	uint8_t minValue;
 	uint8_t maxValue;
+	sensorLevel_t level;
 	
 }sensor_t;
 

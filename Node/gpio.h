@@ -92,7 +92,9 @@ extern void GPIO_Output_Clear_Reg(GPIO_TypeDef* gpioPort,
 extern void GPIO_Output_Reg_Write(GPIO_TypeDef* gpioPort,
 																	uint32_t gpioPins);
 
-//Returns the logic level ( high(true) or low(false) ) of a GPIO pin
+//Returns the logic level ( high(true) or low(false) ) of a GPIO input pin
 extern bool GPIO_Input_Read(GPIO_TypeDef* gpioPort, uint8_t gpioPin);
+
+extern bool GPIO_Output_Read(GPIO_TypeDef* gpioPort, uint8_t gpioPin);
 
 #endif //_GPIO_H
