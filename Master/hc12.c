@@ -59,7 +59,7 @@ void HC12_Rx_Init(char* hc12RxBuffer)
 	DMA_USART_Rx_Init(DMA1_Channel5,
 									  USART1,
 									  hc12RxBuffer,
-									  MASTER_TO_NODE_MSG_SIZE, 
+									  NODE_TO_MASTER_MSG_SIZE, 
 									  DMA_CHANNEL5_MEMORY_INC_MODE |
 										DMA_CHANNEL5_CIRCULAR_BUFFER |
 										DMA_CHANNEL5_TC_INT_ENABLE |
@@ -71,7 +71,7 @@ void HC12_Rx_Init(char* hc12RxBuffer)
 	DMA_USART_Rx_Init(DMA1_Channel5,
 									  USART1,
 									  hc12RxBuffer,
-									  MASTER_TO_NODE_MSG_SIZE, 
+									  NODE_TO_MASTER_MSG_SIZE, 
 									  DMA_CHANNEL5_MEMORY_INC_MODE);
 	//Initialize alarm for HC12 module
 	privHc12RxTimer.start = 0;
@@ -108,7 +108,7 @@ bool HC12_Rx_Done_Receiving(void)
 		if (DMA_Rx_Is_Receiving(DMA1,
 														DMA1_Channel5,
 														DMA_CHANNEL5_CLEAR_TC_INT_FLAG,
-														MASTER_TO_NODE_MSG_SIZE))
+														NODE_TO_MASTER_MSG_SIZE))
 		{
 			privHc12RxTimer.start = SysTick_GetTick();
 			privHc12RxTimer.isCounting = true;

@@ -60,8 +60,8 @@ static void FSM_StateTransition(button_t* pButton, uint8_t state, uint8_t substa
 
 int main(void)
 {
-	//local variables
-	static button_t sendButton;
+	//Local variables
+	button_t sendButton;
 	static char nodeToMasterMessage[NODE_TO_MASTER_MSG_SIZE];
 	static bme280_t bme280Data;
 	
@@ -83,7 +83,7 @@ int main(void)
 	
 	//Initialize message array. The message array is the data
 	//to be sent from master to node.
-	Message_Init(masterToNodeMessage);
+	Message_Msg_To_Send_Init(masterToNodeMessage);
 	
 	message_t* pMsgStructArr[10] = 
 	{
@@ -138,7 +138,7 @@ int main(void)
 	
 	//System_Alarm_Init(&watchdogAlarm,100);
 	//System_Watchdog_Start();
-	//BME280_Init();
+	BME280_Init();
 	
 	while(1)
 	{
@@ -147,7 +147,9 @@ int main(void)
 		
 		if (Button_Read(&sendButton))
 		{
-			//BME280_Get_Data(&bme280Data);
+			BME280_Get_Data(&bme280Data);
+			Message_Encode(&humidityMsg, bme280Data.humidity, masterToNodeMessage);
+			Message_Encode(&temperatureMsg, bme280Data.temperature, masterToNodeMessage);
 			HC12_Transmit(masterToNodeMessage);
 		}
 		

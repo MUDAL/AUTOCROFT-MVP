@@ -4,8 +4,8 @@
 typedef struct
 {
 	
-	uint32_t minValue;
-	uint32_t maxValue;
+	uint16_t minValue;
+	uint16_t maxValue;
 	
 }irrigTime_t;
 
