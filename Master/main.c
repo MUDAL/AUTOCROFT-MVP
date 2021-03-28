@@ -139,6 +139,8 @@ int main(void)
 	//System_Alarm_Init(&watchdogAlarm,100);
 	//System_Watchdog_Start();
 	BME280_Init();
+	//Run BME280 sensor once to get rough readings
+	BME280_Get_Data(&bme280Data);
 	
 	while(1)
 	{
