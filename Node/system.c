@@ -38,11 +38,11 @@ void System_Timer_DelayMs(uint32_t delayTime)
 	SysTick_DelayMs(delayTime);
 }
 
-void System_Alarm_Init(sysTimer_t* pSysTimer, uint32_t taskRepTime)
+void System_Alarm_Init(sysTimer_t* pSysTimer, uint32_t timerRepTime)
 {
 	pSysTimer->start = 0;
 	pSysTimer->isCounting = false;
-	pSysTimer->ticksToWait = taskRepTime;
+	pSysTimer->ticksToWait = timerRepTime;
 }
 
 bool System_Alarm_Ready(sysTimer_t* pSysTimer)
