@@ -1,0 +1,14 @@
+1.) HC12 (USART1: PA9, PA10)
+2.) BME280 (I2C1: PB6, PB7)
+3.) EEPROM module (I2C1: PB6, PB7)
+4.) Battery voltage measurement (ADC2: PB1)
+5.) RTC module (I2C1: PB6, PB7)
+6.) SD card module (SPI1: PA4, PA5, PA6 and PA7)
+7.) LCD (PA11 and PA12 for RS and Enable) (PB12, PB13, PB14 and PB15 for data lines)
+8.) State machine Buttons (PB5, PB8, PB9, PB10, PB11)
+9.) Button to send master data to node (PA0)
+10.) Potentiometer (ADC1: PB0)
+11.) RTC module (I2C1: PB6, PB7)
+
+Pins to reserve:
+PA13,PA14,PA15,PB2,PB3,PB4
