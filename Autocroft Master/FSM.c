@@ -50,12 +50,10 @@ static void Display_Data(char* firstRowHeading,
 												 char measurementUnit2);
 									
 static void Display_Node(char* firstRowHeading,
-											   char* secondRowHeading,
-											   uint8_t displayMode,
-											   uint8_t row1Data,
-											   uint8_t row2Data,
-											   char measurementUnit1,
-											   char measurementUnit2);
+												 char* secondRowHeading,
+												 uint8_t displayMode,
+												 uint8_t row1Data,
+												 uint8_t row2Data);
 
 static void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 																		uint8_t displayMode,
@@ -64,10 +62,10 @@ static void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 																		char measurementUnit);
 
 static void Display_IrrigationTime(irrigTime_t* pIrrigTime, 
-														uint8_t displayMode,
-														char* firstRowHeading,
-														char* secondRowHeading,
-														char measurementUnit);																		
+																	 uint8_t displayMode,
+														       char* firstRowHeading,
+														       char* secondRowHeading,
+														       char measurementUnit);																		
 	
 static void FSM_StateTransition(button_t* pButton,
 																uint8_t state,
@@ -141,9 +139,7 @@ void Display_Node(char* firstRowHeading,
 								  char* secondRowHeading,
 									uint8_t displayMode,
 								  uint8_t row1Data,
-								  uint8_t row2Data,
-								  char measurementUnit1,
-								  char measurementUnit2)
+								  uint8_t row2Data)
 										
 {
 	char strData1[4] = "0";
@@ -167,15 +163,13 @@ void Display_Node(char* firstRowHeading,
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(row1Data,strData1);
 			LCD_Write_String(strData1);
-			LCD_Set_Cursor(0,15);
-			LCD_Write_Data(measurementUnit1);
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(row2Data,strData2);
 			LCD_Write_String(strData2);
 			LCD_Set_Cursor(1,15);
-			LCD_Write_Data(measurementUnit2);
+			LCD_Write_Data('%');
 			break;
 		
 		case SUBSTATE_SET_NODE_ID:
@@ -186,21 +180,17 @@ void Display_Node(char* firstRowHeading,
 			}
 			//top
 			LCD_Set_Cursor(0,0);
-			LCD_Write_Data('>');
-			LCD_Set_Cursor(0,1);
-			LCD_Write_Data('>');
+			LCD_Write_String(">>");
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(row1Data,strData1);
 			LCD_Write_String(strData1);
-			LCD_Set_Cursor(0,15);
-			LCD_Write_Data(measurementUnit1);
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(row2Data,strData2);
 			LCD_Write_String(strData2);
 			LCD_Set_Cursor(1,15);
-			LCD_Write_Data(measurementUnit2);
+			LCD_Write_Data('%');
 			break;
 	}
 }
@@ -271,9 +261,7 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 				prevMinValue = pSensorThres->minValue;
 			}
 			LCD_Set_Cursor(0,0);
-			LCD_Write_Data('>');
-			LCD_Set_Cursor(0,1);
-			LCD_Write_Data('>');
+			LCD_Write_String(">>");
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(pSensorThres->minValue,strMin);
@@ -305,9 +293,7 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 				prevMaxValue = pSensorThres->maxValue;
 			}
 			LCD_Set_Cursor(1,0);
-			LCD_Write_Data('>');
-			LCD_Set_Cursor(1,1);
-			LCD_Write_Data('>');
+			LCD_Write_String(">>");
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pSensorThres->maxValue,strMax);
@@ -385,9 +371,7 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 				prevMinValue = pIrrigTime->minValue;
 			}
 			LCD_Set_Cursor(0,0);
-			LCD_Write_Data('>');
-			LCD_Set_Cursor(0,1);
-			LCD_Write_Data('>');
+			LCD_Write_String(">>");
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(pIrrigTime->minValue,strMin);
@@ -420,9 +404,7 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 				prevMaxValue = pIrrigTime->maxValue;
 			}
 			LCD_Set_Cursor(1,0);
-			LCD_Write_Data('>');
-			LCD_Set_Cursor(1,1);
-			LCD_Write_Data('>');
+			LCD_Write_String(">>");
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pIrrigTime->maxValue,strMax);
@@ -465,9 +447,7 @@ void FSM_Node(uint8_t substate)
 							 "Moisture: ",
 								substate,
 								ptrMasterToNode->nodeIDvalue,
-								ptrNodeToMaster->moistureArr[ptrMasterToNode->nodeIDvalue],
-								' ',
-								'%');
+								ptrNodeToMaster->moistureArr[ptrMasterToNode->nodeIDvalue]);
 
 	switch (substate)
 	{
