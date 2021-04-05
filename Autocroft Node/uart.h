@@ -3,6 +3,7 @@
 
 enum Baud
 {
+	BAUD_2400 = 0xD05,
 	BAUD_9600 = 0x341,
 	BAUD_115200 = 0x45
 };
