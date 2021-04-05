@@ -115,7 +115,6 @@ void Display_Data(char* firstRowHeading,
 	LCD_Write_String(firstRowHeading);
 	Conv_Integer_To_String(row1Data,strData1);
 	LCD_Write_String(strData1);
-	LCD_Set_Cursor(0,15);
 	LCD_Write_Data(measurementUnit1);
 	
 	//bottom
@@ -129,7 +128,6 @@ void Display_Data(char* firstRowHeading,
 	LCD_Write_String(secondRowHeading);
 	Conv_Integer_To_String(row2Data,strData2);
 	LCD_Write_String(strData2);
-	LCD_Set_Cursor(1,15);
 	LCD_Write_Data(measurementUnit2);
 	
 }
@@ -168,7 +166,6 @@ void Display_Node(char* firstRowHeading,
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(row2Data,strData2);
 			LCD_Write_String(strData2);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data('%');
 			break;
 		
@@ -185,11 +182,11 @@ void Display_Node(char* firstRowHeading,
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(row1Data,strData1);
 			LCD_Write_String(strData1);
+			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(row2Data,strData2);
 			LCD_Write_String(strData2);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data('%');
 			break;
 	}
@@ -223,14 +220,12 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(pSensorThres->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Set_Cursor(0,15);
 			LCD_Write_Data(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pSensorThres->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data(measurementUnit);
 			break;
 		
@@ -240,7 +235,6 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(pSensorThres->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Set_Cursor(0,15);
 			LCD_Write_Data(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,0);
@@ -249,7 +243,6 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pSensorThres->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data(measurementUnit);
 			break;
 		
@@ -266,15 +259,12 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(pSensorThres->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Set_Cursor(0,15);
 			LCD_Write_Data(measurementUnit);
-			
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pSensorThres->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data(measurementUnit);
 			break;
 		
@@ -284,7 +274,6 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 			LCD_Write_String(firstRowHeading);
 		  Conv_Integer_To_String(pSensorThres->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Set_Cursor(0,15);
 			LCD_Write_Data(measurementUnit);
 			//bottom
 			if (prevMaxValue != pSensorThres->maxValue)
@@ -298,7 +287,6 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pSensorThres->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data(measurementUnit);
 			break;
 	}
@@ -333,14 +321,12 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(pIrrigTime->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Set_Cursor(0,15);
 			LCD_Write_Data(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pIrrigTime->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data(measurementUnit);
 			break;
 		
@@ -350,7 +336,6 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(pIrrigTime->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Set_Cursor(0,15);
 			LCD_Write_Data(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,0);
@@ -359,7 +344,6 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pIrrigTime->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data(measurementUnit);
 			break;
 		
@@ -376,15 +360,12 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 			LCD_Write_String(firstRowHeading);
 			Conv_Integer_To_String(pIrrigTime->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Set_Cursor(0,15);
 			LCD_Write_Data(measurementUnit);
-			
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pIrrigTime->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data(measurementUnit);
 			break;
 		
@@ -394,9 +375,7 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 			LCD_Write_String(firstRowHeading);
 		  Conv_Integer_To_String(pIrrigTime->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Set_Cursor(0,15);
 			LCD_Write_Data(measurementUnit);
-		
 			//bottom
 			if (prevMaxValue != pIrrigTime->maxValue)
 			{
@@ -409,7 +388,6 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 			LCD_Write_String(secondRowHeading);
 			Conv_Integer_To_String(pIrrigTime->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Set_Cursor(1,15);
 			LCD_Write_Data(measurementUnit);
 			break;
 	}
