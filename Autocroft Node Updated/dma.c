@@ -70,7 +70,7 @@ bool DMA_Rx_BufferFull(DMA_TypeDef* dmaPort, uint8_t dmaChannel)
 	bool bufferIsFull = false;
 	uint8_t bitLocation = (dmaChannel * 4) - 3;
 	
-	if ( (dmaPort->ISR & 1<<bitLocation) == (1<<bitLocation) )
+	if ( (dmaPort->ISR & (1<<bitLocation)) == (1<<bitLocation) )
 	{
 		bufferIsFull = true;
 		dmaPort->IFCR |= (1<<bitLocation);
