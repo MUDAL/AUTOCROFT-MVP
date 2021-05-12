@@ -46,14 +46,22 @@ int main(void)
 		if (Button_Read(&button.send))
 		{
 			BME280_Get_Data(&bme280Data);
-			Master_Message_Encode(masterToNode.dataToSend, &masterToNode.humidity , bme280Data.humidity);
-			Master_Message_Encode(masterToNode.dataToSend, &masterToNode.temperature, bme280Data.temperature);
+			Master_Message_Encode(masterToNode.dataToSend, 
+													  &masterToNode.humidity,
+														bme280Data.humidity);
+			
+			Master_Message_Encode(masterToNode.dataToSend,
+														&masterToNode.temperature,
+														bme280Data.temperature);
+			
 			HC12_Transmit(masterToNode.dataToSend);
 		}
 		
 		if (HC12_Rx_Buffer_Full())
 		{
-			nodeToMaster.moistureArr[masterToNode.nodeIDvalue] = Node_Message_Decode(&nodeToMaster.moisture,nodeToMaster.data);
+			nodeToMaster.moistureArr[masterToNode.nodeIDvalue] = 
+				Node_Message_Decode(&nodeToMaster.moisture,
+														nodeToMaster.data);
 		}			
 		
 	}

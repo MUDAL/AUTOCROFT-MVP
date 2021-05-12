@@ -58,7 +58,7 @@ void HC12_Transmit(char* pData)
 	
 	*/
 	
-	USART_Transmit_String(USART1,pData);
+	USART_Transmit_String_With_Null(USART1,pData);
 }
 
 bool HC12_Rx_Buffer_Full(void)

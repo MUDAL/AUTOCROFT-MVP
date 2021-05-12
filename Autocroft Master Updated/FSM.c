@@ -462,6 +462,7 @@ void FSM_Moisture(uint8_t substate)
 			break;
 		
 		case SUBSTATE_HIGHLIGHT_MAX:
+			FSM_StateTransition(&ptrButton->back, STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);
 			FSM_StateTransition(&ptrButton->up, STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition(&ptrButton->forward, STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition(&ptrButton->enter, STATE_MOISTURE, SUBSTATE_SET_MAX);

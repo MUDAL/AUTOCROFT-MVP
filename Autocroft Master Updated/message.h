@@ -6,6 +6,7 @@ transfer between master and node.
 */
 
 #define MASTER_TO_NODE_MSG_SIZE						104
+#define NO_OF_NODES												100
 
 typedef struct
 {
@@ -32,7 +33,7 @@ typedef struct
 
 typedef struct
 {
-	uint8_t moistureArr[100];
+	uint8_t moistureArr[NO_OF_NODES + 1];
 	char data[HC12_RX_BUFFER_SIZE];
 	message_t moisture;
 }NodeMessageDataStructure;
