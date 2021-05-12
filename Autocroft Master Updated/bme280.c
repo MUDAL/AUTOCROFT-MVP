@@ -4,6 +4,7 @@
 #include "gpio.h"
 #include "bme280.h"
 
+//Private enums
 enum Register_address
 {
 	BME280_ADDR = 0x76,
@@ -34,6 +35,7 @@ enum Bit_field
 	CTRL_MEAS_OSRS_T_OVR16 = 5<<5
 };
 
+//Private typedefs
 typedef struct Compensation_parameter
 {
 	uint16_t dig_T1;
@@ -48,10 +50,12 @@ typedef struct Compensation_parameter
 	
 }bme280_comp_param_t;
 
+//Private defines
 #define ADC_REGISTER_SIZE		8
 #define CALIB_00_25_SIZE		26
 #define CALIB_26_41_SIZE		16
 
+//Private globals
 static bme280_comp_param_t bme280;
 static uint8_t rawAdcValue[ADC_REGISTER_SIZE];
 static uint8_t bme280Calib00_25[CALIB_00_25_SIZE];

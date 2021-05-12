@@ -11,8 +11,10 @@
 #include "message.h"
 #include "FSM.h"
 
+//Private defines
 #define NUMBER_OF_STATES 					6
 
+//Private enums
 enum States
 {
 	STATE_DISPLAY_READINGS = 0,
@@ -34,6 +36,7 @@ enum Substates
 	SUBSTATE_SET_MAX
 };
 
+//Private globals
 static ButtonDataStructure* ptrButton;
 static MasterMessageDataStructure* ptrMasterToNode;
 static NodeMessageDataStructure* ptrNodeToMaster;
@@ -79,7 +82,6 @@ static void FSM_Temperature(uint8_t substate);
 static void FSM_IrrigTime(uint8_t substate);
 
 //Function definitions
-
 void Display_Refresh(uint8_t row, uint8_t column)
 {
 	LCD_Set_Cursor(row,column);
@@ -90,7 +92,6 @@ void Display_Refresh(uint8_t row, uint8_t column)
 	}
 }
 
-//High level functions for displaying things on the LCD screen
 void Display_Data(char* firstRowHeading,
 								  char* secondRowHeading,
 								  uint8_t row1Data,
@@ -99,6 +100,13 @@ void Display_Data(char* firstRowHeading,
 								  char measurementUnit2)
 										
 {
+	/*
+	strData1 and strData2 character arrays
+	are the string equivalents of 'row1Data'
+	and 'row2Data'. Both arrays have their 
+	first element initialized to '0' so that
+	their integer equivalent is 0.
+	*/
 	char strData1[4] = "0";
 	char strData2[4] = "0";
 	static uint8_t prevRow1Data;
@@ -199,11 +207,11 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 														 char measurementUnit)
 {
 	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
+	strMin and strMax character arrays
+	are the string equivalents of 'firstRowHeading'
+	and 'secondRowHeading'. Both arrays have their 
+	first element initialized to '0' so that
+	their integer equivalent is 0.
 	*/
 	char strMin[4] = "0";
 	char strMax[4] = "0";
@@ -299,13 +307,6 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 														char* secondRowHeading,
 														char measurementUnit)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	*/
 	char strMin[5] = "0";
 	char strMax[5] = "0";
 	static uint16_t prevMinValue;
@@ -612,7 +613,6 @@ void FSM_Execute(ButtonDataStructure* pButton,
 								 MasterMessageDataStructure* pMasterToNode,
 							   NodeMessageDataStructure* pNodeToMaster)
 {
-	
 	static void (*pStateFunction[NUMBER_OF_STATES])(uint8_t substate) = 
 	{
 		FSM_Display_BME280_Data,
@@ -624,6 +624,5 @@ void FSM_Execute(ButtonDataStructure* pButton,
 	};
 
 	pStateFunction[currentState](currentSubstate);
-
 }
 
