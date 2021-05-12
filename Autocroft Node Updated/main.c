@@ -18,12 +18,10 @@ static MasterMessageDataStructure masterToNode;
 //Private typedef
 typedef struct
 {
-	
 	sensor_t moisture;
 	sensor_t humidity;
 	sensor_t temperature;
 	irrig_t irrigation;
-	
 }autocroft_t;
 
 //Functions

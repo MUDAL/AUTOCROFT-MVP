@@ -6,8 +6,8 @@
 
 #define MIN_PERCENT_MOISTURE				0
 #define MAX_PERCENT_MOISTURE				100
-#define ADC_VALUE_AIR_3V3						2650
-#define ADC_VALUE_WATER_3V3					720
+#define ADC_VALUE_AIR_3V3						2780
+#define ADC_VALUE_WATER_3V3					1000
 
 void CMS_Init(void)
 {
