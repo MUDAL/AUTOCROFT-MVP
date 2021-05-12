@@ -16,12 +16,11 @@
 
 int main(void)
 {
-	 //Local variables
+	//Local variables
 	static ButtonDataStructure button;
 	static MasterMessageDataStructure masterToNode;
 	static NodeMessageDataStructure nodeToMaster;
 	static bme280_t bme280Data;
-	//sysTimer_t watchdogAlarm;
 	
 	//Initializations
 	System_Init();
@@ -29,9 +28,6 @@ int main(void)
 	LCD_Init();
 	HC12_Tx_Init();
 	HC12_Rx_Buffer_Init(nodeToMaster.data, HC12_RX_BUFFER_SIZE);
-	
-	//System_Alarm_Init(&watchdogAlarm,100);
-	//System_Watchdog_Start();
 	BME280_Init();
 	
 	Button_Init(&button);

@@ -5,6 +5,8 @@
 #include "hc12.h"
 #include "message.h"
 
+#define NO_OF_MSG_STRUCT				11
+
 enum MasterColonIndex
 {
 	MIN_MOISTURE_COLON_INDEX = 4,
@@ -20,6 +22,21 @@ enum MasterColonIndex
 	MST_TO_NODE_ID_COLON_INDEX = 97
 };
 
+const uint8_t colonIndexArr[NO_OF_MSG_STRUCT] = 
+{
+	MIN_MOISTURE_COLON_INDEX,
+	MAX_MOISTURE_COLON_INDEX,
+	MIN_HUMIDITY_COLON_INDEX,
+	MAX_HUMIDITY_COLON_INDEX,
+	MIN_TEMPERATURE_COLON_INDEX,
+	MAX_TEMPERATURE_COLON_INDEX,
+	MIN_IRRIG_TIME_COLON_INDEX,
+	MAX_IRRIG_TIME_COLON_INDEX,
+	HUMIDITY_COLON_INDEX,
+	TEMPERATURE_COLON_INDEX,
+	MST_TO_NODE_ID_COLON_INDEX
+};
+
 enum MasterCommaIndex
 {
 	MIN_MOISTURE_COMMA_INDEX = 9,
@@ -33,6 +50,21 @@ enum MasterCommaIndex
 	HUMIDITY_COMMA_INDEX = 86,
 	TEMPERATURE_COMMA_INDEX = 93,
 	MST_TO_NODE_ID_COMMA_INDEX = 102
+};
+
+const uint8_t commaIndexArr[NO_OF_MSG_STRUCT] = 
+{
+	MIN_MOISTURE_COMMA_INDEX,
+	MAX_MOISTURE_COMMA_INDEX,
+	MIN_HUMIDITY_COMMA_INDEX,
+	MAX_HUMIDITY_COMMA_INDEX,
+	MIN_TEMPERATURE_COMMA_INDEX,
+	MAX_TEMPERATURE_COMMA_INDEX,
+	MIN_IRRIG_TIME_COMMA_INDEX,
+	MAX_IRRIG_TIME_COMMA_INDEX,
+	HUMIDITY_COMMA_INDEX,
+	TEMPERATURE_COMMA_INDEX,
+	MST_TO_NODE_ID_COMMA_INDEX
 };
 
 enum NodeIndex
@@ -54,17 +86,26 @@ void Master_Message_Init(MasterMessageDataStructure* pMessage)
 {
 	strcpy(pMessage->dataToSend,masterMsgTemplate);
 	pMessage->nodeIDvalue = 0;
-	Message_Struct_Init(&pMessage->minMoisture, MIN_MOISTURE_COLON_INDEX, MIN_MOISTURE_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->maxMoisture, MAX_MOISTURE_COLON_INDEX, MAX_MOISTURE_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->minHumidity, MIN_HUMIDITY_COLON_INDEX, MIN_HUMIDITY_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->maxHumidity, MAX_HUMIDITY_COLON_INDEX, MAX_HUMIDITY_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->minTemperature, MIN_TEMPERATURE_COLON_INDEX, MIN_TEMPERATURE_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->maxTemperature, MAX_TEMPERATURE_COLON_INDEX, MAX_TEMPERATURE_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->minIrrigTime, MIN_IRRIG_TIME_COLON_INDEX, MIN_IRRIG_TIME_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->maxIrrigTime, MAX_IRRIG_TIME_COLON_INDEX, MAX_IRRIG_TIME_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->humidity, HUMIDITY_COLON_INDEX, HUMIDITY_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->temperature, TEMPERATURE_COLON_INDEX, TEMPERATURE_COMMA_INDEX);
-	Message_Struct_Init(&pMessage->nodeID, MST_TO_NODE_ID_COLON_INDEX, MST_TO_NODE_ID_COMMA_INDEX);
+	
+	message_t* pMsgStruct[NO_OF_MSG_STRUCT] = 
+	{
+		&pMessage->minMoisture,
+		&pMessage->maxMoisture,
+		&pMessage->minHumidity,
+		&pMessage->maxHumidity,
+		&pMessage->minTemperature,
+		&pMessage->maxTemperature,
+		&pMessage->minIrrigTime,
+		&pMessage->maxIrrigTime,
+		&pMessage->humidity,
+		&pMessage->temperature,
+		&pMessage->nodeID
+	};
+	
+	for (uint8_t i = 0; i < NO_OF_MSG_STRUCT; i++)
+	{
+		Message_Struct_Init(pMsgStruct[i], colonIndexArr[i], commaIndexArr[i]);
+	}
 }
 
 void Node_Message_Init(NodeMessageDataStructure* pMessage)
