@@ -10,12 +10,13 @@
 #include "hc12.h"
 #include "message.h"
 
+//Private defines
 #define NODE_ID				0
 
-//Globals
+//Private globals
 static MasterMessageDataStructure masterToNode;
 
-//Private typedef
+//Private typedefs
 typedef struct
 {
 	sensor_t moisture;
