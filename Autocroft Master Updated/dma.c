@@ -43,13 +43,7 @@ void DMA_USART_Rx_Init(DMA_Channel_TypeDef* dmaChannel,
 	- DMA_CHANNELX_MEMORY_INC_MODE: Enables memory increment mode for channel 'x' of
 	a DMA peripheral
 	
-	- DMA_CHANNELX_CLEAR_TC_INT_FLAG: Clears transfer conplete interrupt flag for channel 'x' of
-	a DMA peripheral
-	
 	- DMA_CHANNELX_CIRCULAR_BUFFER: Enables circular buffer mode for channel 'x' of a DMA peripheral
-	
-	- DMA_CHANNELX_TC_INT_ENABLE: Enables transfer complete interrupt for channel 'x' of a DMA
-	peripheral
 	
 	- DMA_CHANNELX_ENABLE	: Enables channel 'x' of a DMA peripheral
 	
