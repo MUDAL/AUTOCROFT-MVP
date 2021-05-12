@@ -29,8 +29,8 @@ int main(void)
 	HC12_Tx_Init();
 	HC12_Rx_Buffer_Init(nodeToMaster.data, HC12_RX_BUFFER_SIZE);
 	BME280_Init();
-	
 	Button_Init(&button);
+	
 	Master_Message_Init(&masterToNode);
 	Node_Message_Init(&nodeToMaster);
 	FSM_Init(&button,&masterToNode,&nodeToMaster);
