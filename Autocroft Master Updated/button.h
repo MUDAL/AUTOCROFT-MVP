@@ -1,9 +1,6 @@
 #ifndef _BUTTON_H
 #define _BUTTON_H
 
-#define BUTTON_DEFAULT_PULL_UP_STATE			true
-#define BUTTON_DEFAULT_PULL_DOWN_STATE		false
-
 #define BUTTON_SEND_PIN										0
 #define BUTTON_BACK_PIN										5
 #define BUTTON_UP_PIN											8
@@ -13,10 +10,10 @@
 
 typedef struct
 {
-	
+	uint8_t gpioPortIndex;
+	uint8_t portLevel;
 	uint8_t pin;
 	bool prevPressed;
-	
 }button_t;
 
 typedef struct
