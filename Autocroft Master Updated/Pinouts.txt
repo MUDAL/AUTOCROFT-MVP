@@ -8,7 +8,6 @@
 8.) State machine Buttons (PB5, PB8, PB9, PB10, PB11)
 9.) Button to send master data to node (PA0)
 10.) Potentiometer (ADC1: PB0)
-11.) RTC module (I2C1: PB6, PB7)
 
 Pins to reserve:
 PA13,PA14,PA15,PB2,PB3,PB4

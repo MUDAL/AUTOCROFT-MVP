@@ -5,13 +5,6 @@
 #include "systick.h"
 #include "button.h"
 
-//Private enums
-enum ButtonPress
-{
-	BUTTON_NOT_PRESSED = false,
-	BUTTON_PRESSED
-};
-
 //Private defines
 #define PORTA							0
 #define PORTB							1
@@ -20,30 +13,30 @@ enum ButtonPress
 static GPIO_TypeDef* gpioPorts[3] = {GPIOA,GPIOB,GPIOC};
 
 static void Button_Struct_Init(button_t* pButton,
-															 uint8_t gpioPortIndex, 
+															 uint8_t portIndex, 
 															 uint8_t portLevel,  
 														   uint8_t pinNumber,
 														   uint32_t pullupConfig)
 {
-	GPIO_Input_Init(gpioPorts[gpioPortIndex],
+	GPIO_Input_Init(gpioPorts[portIndex],
 									portLevel,
 									pinNumber,
 									pullupConfig,
 									true);
 	
-	pButton->gpioPortIndex = gpioPortIndex;
+	pButton->portIndex = portIndex;
 	pButton->portLevel = portLevel;
 	pButton->pin = pinNumber;
 	pButton->prevPressed = false;
 }
 
-static bool Button_Is_Debounced(button_t* pButton)
+static bool IsPressed(button_t* pButton)
 {
 	//Since pullups are used, logic 0 means button is pressed.
-	if (!GPIO_Input_Read(gpioPorts[pButton->gpioPortIndex], pButton->pin))
+	if (!GPIO_Input_Read(gpioPorts[pButton->portIndex], pButton->pin))
 	{
 		SysTick_DelayMs(10);
-		if (!GPIO_Input_Read(gpioPorts[pButton->gpioPortIndex], pButton->pin))
+		if (!GPIO_Input_Read(gpioPorts[pButton->portIndex], pButton->pin))
 		{
 			return true;
 		}
@@ -90,19 +83,24 @@ void Button_Init(ButtonDataStructure* pButtonDataStructure)
 											GPIO_PIN11_INPUT_PULLUP_OR_PULLDOWN);
 }
 
+/**
+@brief scans button for it's current logic level
+@param pButton: pointer to object of type button_t
+@return  
+1.) true: if button is pressed and not previously pressed
+2.) false: if the condition above isn't the case
+*/
 bool Button_Read(button_t* pButton)
 {
-	if (Button_Is_Debounced(pButton) && !pButton->prevPressed)
+	if (IsPressed(pButton) && !pButton->prevPressed)
 	{
 		pButton->prevPressed = true;
-		return BUTTON_PRESSED;
+		return true;
 	}
 	
-	else if (!Button_Is_Debounced(pButton) && pButton->prevPressed)
+	else if (!IsPressed(pButton) && pButton->prevPressed)
 	{
 		pButton->prevPressed = false;
-		return BUTTON_NOT_PRESSED;
 	}
-	
-	return BUTTON_NOT_PRESSED;
+	return false;
 }

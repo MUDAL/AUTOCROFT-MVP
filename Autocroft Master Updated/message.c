@@ -19,28 +19,28 @@ static void Message_Struct_Init(message_t* pMsgStruct, uint8_t colonIndx, uint8_
 	pMsgStruct->commaIndex = commaIndx;
 }
 
-void Master_Message_Init(MasterMessageDataStructure* pMessage)
+void Master_MessageInit(MasterMessageDataStructure* pMessage)
 {
 	uint8_t i = 0;
 	uint8_t j = 0;
 	uint8_t k = 0;
 	
-	pMessage->nodeIDvalue = 0;
-	strcpy(pMessage->dataToSend,masterMsgTemplate);
+	pMessage->nodeID = 0;
+	strcpy(pMessage->data,masterMsgTemplate);
 	
 	message_t* pMsgStruct[NO_OF_MSG_STRUCT] = 
 	{
-		&pMessage->minMoisture,
-		&pMessage->maxMoisture,
-		&pMessage->minHumidity,
-		&pMessage->maxHumidity,
-		&pMessage->minTemperature,
-		&pMessage->maxTemperature,
-		&pMessage->minIrrigTime,
-		&pMessage->maxIrrigTime,
-		&pMessage->humidity,
-		&pMessage->temperature,
-		&pMessage->nodeID
+		&pMessage->minMoistStruct,
+		&pMessage->maxMoistStruct,
+		&pMessage->minHumStruct,
+		&pMessage->maxHumStruct,
+		&pMessage->minTempStruct,
+		&pMessage->maxTempStruct,
+		&pMessage->minTimeStruct,
+		&pMessage->maxTimeStruct,
+		&pMessage->humStruct,
+		&pMessage->tempStruct,
+		&pMessage->nodeID_Struct
 	};
 	
 	uint8_t colonIndexArr[NO_OF_MSG_STRUCT];
@@ -67,7 +67,7 @@ void Master_Message_Init(MasterMessageDataStructure* pMessage)
 	}
 }
 
-void Node_Message_Init(NodeMessageDataStructure* pMessage)
+void Node_MessageInit(NodeMessageDataStructure* pMessage)
 {
 	uint8_t i = 0;
 	uint8_t nodeColonIndex;
@@ -86,10 +86,10 @@ void Node_Message_Init(NodeMessageDataStructure* pMessage)
 		i++;
 	}
 		
-	Message_Struct_Init(&pMessage->moisture, nodeColonIndex , nodeCommaIndex);
+	Message_Struct_Init(&pMessage->moistStruct, nodeColonIndex , nodeCommaIndex);
 }
 
-void Master_Message_Encode(char* masterToNodeData, message_t* pMsgStruct, uint16_t intData)
+void Master_MessageEncode(char* masterToNodeData, message_t* pMsgStruct, uint16_t intData)
 {
 	/*strData is the string equivalent of 'intData'. The strData
 	array must be cleared on entry into this function to ensure
@@ -98,7 +98,7 @@ void Master_Message_Encode(char* masterToNodeData, message_t* pMsgStruct, uint16
 	of 'intData' fails to clear previous data.*/
 	char strData[5] = {'\0','\0','\0','\0','\0'}; 
 	
-	Conv_Integer_To_String(intData, strData);
+	Conv_IntegerToString(intData, strData);
 	uint8_t dataLength = strlen(strData);
 	
 	switch (dataLength)
@@ -133,7 +133,7 @@ void Master_Message_Encode(char* masterToNodeData, message_t* pMsgStruct, uint16
 	}
 }
 
-uint16_t Node_Message_Decode(message_t* pMsgStruct, char* nodeToMasterData)
+uint16_t Node_MessageDecode(message_t* pMsgStruct, char* nodeToMasterData)
 {
 	char strData[5] = "0000";
 	
@@ -142,7 +142,7 @@ uint16_t Node_Message_Decode(message_t* pMsgStruct, char* nodeToMasterData)
 		strData[i - (pMsgStruct->colonIndex + 1)] = nodeToMasterData[i];
 	}
 	
-	uint16_t intData = Conv_String_To_Integer(strData);
+	uint16_t intData = Conv_StringToInteger(strData);
 	return intData;
 }
 

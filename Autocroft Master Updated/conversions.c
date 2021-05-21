@@ -8,7 +8,7 @@ conversion.
 */
 const uint32_t powerOfTen[5] = {1, 10, 100, 1000, 10000};
 
-void Conv_Integer_To_String(uint32_t integer, char* pBuffer)
+void Conv_IntegerToString(uint32_t integer, char* pBuffer)
 {
 	if (integer == 0)
 	{  
@@ -33,7 +33,7 @@ void Conv_Integer_To_String(uint32_t integer, char* pBuffer)
 	}
 }
 
-uint32_t Conv_String_To_Integer(char* pBuffer)
+uint32_t Conv_StringToInteger(char* pBuffer)
 {
 	/*
   each character of the string is converted to

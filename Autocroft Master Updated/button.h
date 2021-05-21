@@ -10,7 +10,7 @@
 
 typedef struct
 {
-	uint8_t gpioPortIndex;
+	uint8_t portIndex;
 	uint8_t portLevel;
 	uint8_t pin;
 	bool prevPressed;

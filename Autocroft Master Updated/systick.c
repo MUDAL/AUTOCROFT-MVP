@@ -63,7 +63,7 @@ void SysTick_DelayMs(uint32_t delayTime)
 	while((numberOfTicks - startTick) < delayTime){}
 }
 
-bool SysTick_Timer_Done_Counting(sysTimer_t* pTimer)
+bool SysTick_DoneCounting(sysTimer_t* pTimer)
 {
 	/*
 	Description:

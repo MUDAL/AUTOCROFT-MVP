@@ -26,13 +26,13 @@ int main(void)
 	System_Init();
 	Potentiometer_Init();
 	LCD_Init();
-	HC12_Tx_Init();
-	HC12_Rx_Buffer_Init(nodeToMaster.data, HC12_RX_BUFFER_SIZE);
+	HC12_TxInit();
+	HC12_Rx_BufferInit(nodeToMaster.data, HC12_RX_BUFFER_SIZE);
 	BME280_Init();
 	Button_Init(&button);
 	
-	Master_Message_Init(&masterToNode);
-	Node_Message_Init(&nodeToMaster);
+	Master_MessageInit(&masterToNode);
+	Node_MessageInit(&nodeToMaster);
 	FSM_Init(&button,&masterToNode,&nodeToMaster);
 	
 	while(1)
@@ -42,21 +42,21 @@ int main(void)
 		if (Button_Read(&button.send))
 		{
 			BME280_Get_Data(&bme280Data);
-			Master_Message_Encode(masterToNode.dataToSend, 
-													  &masterToNode.humidity,
-														bme280Data.humidity);
+			Master_MessageEncode(masterToNode.data, 
+													 &masterToNode.humStruct,
+													 bme280Data.humidity);
 			
-			Master_Message_Encode(masterToNode.dataToSend,
-														&masterToNode.temperature,
-														bme280Data.temperature);
+			Master_MessageEncode(masterToNode.data,
+													 &masterToNode.tempStruct,
+													 bme280Data.temperature);
 			
-			HC12_Transmit(masterToNode.dataToSend);
+			HC12_Transmit(masterToNode.data);
 		}
 		
-		if (HC12_Rx_Buffer_Full())
+		if (HC12_Rx_BufferFull())
 		{
-			nodeToMaster.moistureArr[masterToNode.nodeIDvalue] = 
-				Node_Message_Decode(&nodeToMaster.moisture,
+			nodeToMaster.moistureArr[masterToNode.nodeID] = 
+				Node_MessageDecode(&nodeToMaster.moistStruct,
 														nodeToMaster.data);
 		}			
 		

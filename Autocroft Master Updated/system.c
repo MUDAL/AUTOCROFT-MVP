@@ -20,12 +20,10 @@ void System_Init(void)
 	
 	Clocks_Init();
 	SysTick_Init();
-	GPIO_Reset(GPIOA);
-	GPIO_Reset(GPIOB);
-	GPIO_Reset(GPIOC);
+	GPIO_Reset();
 }
 
-void System_Timer_DelayMs(uint32_t delayTime)
+void System_TimerDelayMs(uint32_t delayTime)
 {
 	/*
 	Description:
@@ -39,14 +37,14 @@ void System_Timer_DelayMs(uint32_t delayTime)
 	SysTick_DelayMs(delayTime);
 }
 
-void System_Alarm_Init(sysTimer_t* pSysTimer, uint32_t timerRepTime)
+void System_TimerInit(sysTimer_t* pSysTimer, uint32_t timerRepTime)
 {
 	pSysTimer->start = 0;
 	pSysTimer->isCounting = false;
 	pSysTimer->ticksToWait = timerRepTime;
 }
 
-bool System_Alarm_Ready(sysTimer_t* pSysTimer)
+bool System_TimerDoneCounting(sysTimer_t* pSysTimer)
 {
 	bool countingComplete = false;
 	
@@ -58,7 +56,7 @@ bool System_Alarm_Ready(sysTimer_t* pSysTimer)
 	
 	else
 	{
-		if ( SysTick_Timer_Done_Counting(pSysTimer) )
+		if ( SysTick_DoneCounting(pSysTimer) )
 		{
 			countingComplete = true;
 			pSysTimer->start = 0;
@@ -69,7 +67,7 @@ bool System_Alarm_Ready(sysTimer_t* pSysTimer)
 	return countingComplete;
 }
 
-void System_Watchdog_Start(void)
+void System_StartWatchdog(void)
 {
 	/*
 	Description:
@@ -83,7 +81,7 @@ void System_Watchdog_Start(void)
 	IWDG_Start();
 }
 
-void System_Watchdog_Refresh(void)
+void System_RefreshWatchdog(void)
 {
 	/*
 	Description:

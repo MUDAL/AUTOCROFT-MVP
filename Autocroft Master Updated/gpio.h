@@ -72,7 +72,7 @@ enum PortRegLevel
 #define GPIO_PIN15_OUTPUT_MODE_2MHZ						GPIO_CRH_MODE15_1
 
 //Resets GPIO registers
-extern void GPIO_Reset(GPIO_TypeDef* gpioPort);
+extern void GPIO_Reset(void);
 
 //Initializes the GPIO to the input mode of choice 
 extern void GPIO_Input_Init(GPIO_TypeDef* gpioPort, 

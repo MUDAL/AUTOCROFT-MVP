@@ -519,16 +519,6 @@
               <FilePath>.\adc.h</FilePath>
             </File>
             <File>
-              <FileName>afio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\afio.c</FilePath>
-            </File>
-            <File>
-              <FileName>afio.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\afio.h</FilePath>
-            </File>
-            <File>
               <FileName>clocks.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\clocks.c</FilePath>
@@ -607,6 +597,16 @@
               <FileName>uart.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\uart.h</FilePath>
+            </File>
+            <File>
+              <FileName>afio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\afio.c</FilePath>
+            </File>
+            <File>
+              <FileName>afio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\afio.h</FilePath>
             </File>
           </Files>
         </Group>

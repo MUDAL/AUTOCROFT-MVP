@@ -44,37 +44,37 @@ static uint8_t currentState = STATE_DISPLAY_READINGS;
 static uint8_t currentSubstate = SUBSTATE_NIL;
 
 //Function prototypes
-static void Display_Refresh(uint8_t row, uint8_t column);
-static void Display_Data(char* firstRowHeading,
-												 char* secondRowHeading,
-												 uint8_t row1Data,
-												 uint8_t row2Data,
-												 char measurementUnit1,
-												 char measurementUnit2);
+static void refreshDisplay(uint8_t row, uint8_t column);
+static void displayBme280Data(char* firstRowHeading,
+														  char* secondRowHeading,
+														  uint8_t row1Data,
+														  uint8_t row2Data,
+														  char measurementUnit1,
+														  char measurementUnit2);
 									
-static void Display_Node(char* firstRowHeading,
-												 char* secondRowHeading,
-												 uint8_t displayMode,
-												 uint8_t row1Data,
-												 uint8_t row2Data);
+static void displayNodeData(char* firstRowHeading,
+													  char* secondRowHeading,
+													  uint8_t displayMode,
+													  uint8_t row1Data,
+													  uint8_t row2Data);
 
-static void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
-																		uint8_t displayMode,
-																		char* firstRowHeading,
-																		char* secondRowHeading,
-																		char measurementUnit);
-
-static void Display_IrrigationTime(irrigTime_t* pIrrigTime, 
+static void displaySensorThreshold(sensorThreshold_t* pSensorThres,
 																	 uint8_t displayMode,
-														       char* firstRowHeading,
-														       char* secondRowHeading,
-														       char measurementUnit);																		
+																	 char* firstRowHeading,
+																	 char* secondRowHeading,
+																	 char measurementUnit);
+
+static void displayIrrigTime(irrigTime_t* pIrrigTime, 
+														 uint8_t displayMode,
+														 char* firstRowHeading,
+														 char* secondRowHeading,
+														 char measurementUnit);																		
 	
 static void FSM_StateTransition(button_t* pButton,
 																uint8_t state,
 																uint8_t substate);
 
-static void FSM_Display_BME280_Data(uint8_t substate);
+static void FSM_DisplayBme280Data(uint8_t substate);
 static void FSM_Node(uint8_t substate);
 static void FSM_Moisture(uint8_t substate);
 static void FSM_Humidity(uint8_t substate);
@@ -82,22 +82,22 @@ static void FSM_Temperature(uint8_t substate);
 static void FSM_IrrigTime(uint8_t substate);
 
 //Function definitions
-void Display_Refresh(uint8_t row, uint8_t column)
+void refreshDisplay(uint8_t row, uint8_t column)
 {
 	LCD_Set_Cursor(row,column);
 	//Delete line
 	for (uint8_t i = 0; i < 16; i++)
 	{
-		LCD_Write_Data(' ');
+		LCD_Write_Byte(' ');
 	}
 }
 
-void Display_Data(char* firstRowHeading,
-								  char* secondRowHeading,
-								  uint8_t row1Data,
-								  uint8_t row2Data,
-								  char measurementUnit1,
-								  char measurementUnit2)
+void displayBme280Data(char* firstRowHeading,
+											 char* secondRowHeading,
+											 uint8_t row1Data,
+											 uint8_t row2Data,
+											 char measurementUnit1,
+											 char measurementUnit2)
 										
 {
 	/*
@@ -115,37 +115,37 @@ void Display_Data(char* firstRowHeading,
 	//top
 	if (prevRow1Data != row1Data)
 	{
-		Display_Refresh(0,0);
+		refreshDisplay(0,0);
 		prevRow1Data = row1Data;
 	}
 	
 	LCD_Set_Cursor(0,0);
 	LCD_Write_String(firstRowHeading);
-	Conv_Integer_To_String(row1Data,strData1);
+	Conv_IntegerToString(row1Data,strData1);
 	LCD_Write_String(strData1);
-	LCD_Write_Data(measurementUnit1);
+	LCD_Write_Byte(measurementUnit1);
 	
 	//bottom
 	if (prevRow2Data != row2Data)
 	{
-		Display_Refresh(1,0);
+		refreshDisplay(1,0);
 		prevRow2Data = row2Data;
 	}
 	
 	LCD_Set_Cursor(1,0);
 	LCD_Write_String(secondRowHeading);
-	Conv_Integer_To_String(row2Data,strData2);
+	Conv_IntegerToString(row2Data,strData2);
 	LCD_Write_String(strData2);
-	LCD_Write_Data(measurementUnit2);
+	LCD_Write_Byte(measurementUnit2);
 	
 }
 
 
-void Display_Node(char* firstRowHeading,
-								  char* secondRowHeading,
-									uint8_t displayMode,
-								  uint8_t row1Data,
-								  uint8_t row2Data)
+void displayNodeData(char* firstRowHeading,
+										 char* secondRowHeading,
+									   uint8_t displayMode,
+								     uint8_t row1Data,
+								     uint8_t row2Data)
 										
 {
 	char strData1[4] = "0";
@@ -155,7 +155,7 @@ void Display_Node(char* firstRowHeading,
 	
 	if (prevRow2Data != row2Data)
 	{
-		Display_Refresh(1,0);
+		refreshDisplay(1,0);
 		prevRow2Data = row2Data;
 	}
 	
@@ -164,23 +164,23 @@ void Display_Node(char* firstRowHeading,
 		case SUBSTATE_HIGHLIGHT_NODE_ID:
 			//top
 			LCD_Set_Cursor(0,0);
-			LCD_Write_Data('>');
+			LCD_Write_Byte('>');
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-			Conv_Integer_To_String(row1Data,strData1);
+			Conv_IntegerToString(row1Data,strData1);
 			LCD_Write_String(strData1);
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(row2Data,strData2);
+			Conv_IntegerToString(row2Data,strData2);
 			LCD_Write_String(strData2);
-			LCD_Write_Data('%');
+			LCD_Write_Byte('%');
 			break;
 		
 		case SUBSTATE_SET_NODE_ID:
 			if (prevRow1Data != row1Data)
 			{
-				Display_Refresh(0,0);
+				refreshDisplay(0,0);
 				prevRow1Data = row1Data;
 			}
 			//top
@@ -188,23 +188,23 @@ void Display_Node(char* firstRowHeading,
 			LCD_Write_String(">>");
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-			Conv_Integer_To_String(row1Data,strData1);
+			Conv_IntegerToString(row1Data,strData1);
 			LCD_Write_String(strData1);
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(row2Data,strData2);
+			Conv_IntegerToString(row2Data,strData2);
 			LCD_Write_String(strData2);
-			LCD_Write_Data('%');
+			LCD_Write_Byte('%');
 			break;
 	}
 }
 
-void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
-														 uint8_t displayMode,
-														 char* firstRowHeading,
-														 char* secondRowHeading,
-														 char measurementUnit)
+void displaySensorThreshold(sensorThreshold_t* pSensorThres,
+														uint8_t displayMode,
+														char* firstRowHeading,
+														char* secondRowHeading,
+														char measurementUnit)
 {
 	/*
 	strMin and strMax character arrays
@@ -223,89 +223,89 @@ void Display_SensorThreshold(sensorThreshold_t* pSensorThres,
 		case SUBSTATE_HIGHLIGHT_MIN:
 			//top
 			LCD_Set_Cursor(0,0);
-			LCD_Write_Data('>');
+			LCD_Write_Byte('>');
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-			Conv_Integer_To_String(pSensorThres->minValue,strMin);
+			Conv_IntegerToString(pSensorThres->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(pSensorThres->maxValue,strMax);
+			Conv_IntegerToString(pSensorThres->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			break;
 		
 		case SUBSTATE_HIGHLIGHT_MAX:
 			//top
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-			Conv_Integer_To_String(pSensorThres->minValue,strMin);
+			Conv_IntegerToString(pSensorThres->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,0);
-			LCD_Write_Data('>');
+			LCD_Write_Byte('>');
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(pSensorThres->maxValue,strMax);
+			Conv_IntegerToString(pSensorThres->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			break;
 		
 		case SUBSTATE_SET_MIN:
 			//top
 			if (prevMinValue != pSensorThres->minValue)
 			{
-				Display_Refresh(0,0);
+				refreshDisplay(0,0);
 				prevMinValue = pSensorThres->minValue;
 			}
 			LCD_Set_Cursor(0,0);
 			LCD_Write_String(">>");
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-			Conv_Integer_To_String(pSensorThres->minValue,strMin);
+			Conv_IntegerToString(pSensorThres->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(pSensorThres->maxValue,strMax);
+			Conv_IntegerToString(pSensorThres->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			break;
 		
 		case SUBSTATE_SET_MAX:
 			//top
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-		  Conv_Integer_To_String(pSensorThres->minValue,strMin);
+		  Conv_IntegerToString(pSensorThres->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			//bottom
 			if (prevMaxValue != pSensorThres->maxValue)
 			{
-				Display_Refresh(1,0);
+				refreshDisplay(1,0);
 				prevMaxValue = pSensorThres->maxValue;
 			}
 			LCD_Set_Cursor(1,0);
 			LCD_Write_String(">>");
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(pSensorThres->maxValue,strMax);
+			Conv_IntegerToString(pSensorThres->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			break;
 	}
 	
 }
 
-void Display_IrrigationTime(irrigTime_t* pIrrigTime, 
-														uint8_t displayMode,
-														char* firstRowHeading,
-														char* secondRowHeading,
-														char measurementUnit)
+void displayIrrigTime(irrigTime_t* pIrrigTime, 
+											uint8_t displayMode,
+											char* firstRowHeading,
+											char* secondRowHeading,
+											char measurementUnit)
 {
 	char strMin[5] = "0";
 	char strMax[5] = "0";
@@ -317,79 +317,79 @@ void Display_IrrigationTime(irrigTime_t* pIrrigTime,
 		case SUBSTATE_HIGHLIGHT_MIN:
 			//top
 			LCD_Set_Cursor(0,0);
-			LCD_Write_Data('>');
+			LCD_Write_Byte('>');
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-			Conv_Integer_To_String(pIrrigTime->minValue,strMin);
+			Conv_IntegerToString(pIrrigTime->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(pIrrigTime->maxValue,strMax);
+			Conv_IntegerToString(pIrrigTime->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			break;
 		
 		case SUBSTATE_HIGHLIGHT_MAX:
 			//top
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-			Conv_Integer_To_String(pIrrigTime->minValue,strMin);
+			Conv_IntegerToString(pIrrigTime->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,0);
-			LCD_Write_Data('>');
+			LCD_Write_Byte('>');
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(pIrrigTime->maxValue,strMax);
+			Conv_IntegerToString(pIrrigTime->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			break;
 		
 		case SUBSTATE_SET_MIN:
 			//top
 			if (prevMinValue != pIrrigTime->minValue)
 			{
-				Display_Refresh(0,0);
+				refreshDisplay(0,0);
 				prevMinValue = pIrrigTime->minValue;
 			}
 			LCD_Set_Cursor(0,0);
 			LCD_Write_String(">>");
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-			Conv_Integer_To_String(pIrrigTime->minValue,strMin);
+			Conv_IntegerToString(pIrrigTime->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			//bottom
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(pIrrigTime->maxValue,strMax);
+			Conv_IntegerToString(pIrrigTime->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			break;
 		
 		case SUBSTATE_SET_MAX:
 			//top
 			LCD_Set_Cursor(0,3);
 			LCD_Write_String(firstRowHeading);
-		  Conv_Integer_To_String(pIrrigTime->minValue,strMin);
+		  Conv_IntegerToString(pIrrigTime->minValue,strMin);
 			LCD_Write_String(strMin);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			//bottom
 			if (prevMaxValue != pIrrigTime->maxValue)
 			{
-				Display_Refresh(1,0);
+				refreshDisplay(1,0);
 				prevMaxValue = pIrrigTime->maxValue;
 			}
 			LCD_Set_Cursor(1,0);
 			LCD_Write_String(">>");
 			LCD_Set_Cursor(1,3);
 			LCD_Write_String(secondRowHeading);
-			Conv_Integer_To_String(pIrrigTime->maxValue,strMax);
+			Conv_IntegerToString(pIrrigTime->maxValue,strMax);
 			LCD_Write_String(strMax);
-			LCD_Write_Data(measurementUnit);
+			LCD_Write_Byte(measurementUnit);
 			break;
 	}
 	
@@ -406,27 +406,29 @@ void FSM_StateTransition(button_t* pButton, uint8_t state, uint8_t substate)
 	}
 }
 
-void FSM_Display_BME280_Data(uint8_t substate)
+void FSM_DisplayBme280Data(uint8_t substate)
 {
 	bme280_t bme280Data;
 	BME280_Get_Data(&bme280Data);
 	
-	Display_Data("Hum: ",
-							 "Temp: ",
-							 bme280Data.humidity,
-							 bme280Data.temperature,
-							 '%',
-							 'C');
-	FSM_StateTransition(&ptrButton->forward, STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);	
+	displayBme280Data("Hum: ",
+										"Temp: ",
+										bme280Data.humidity,
+										bme280Data.temperature,
+										'%',
+										'C');
+	FSM_StateTransition(&ptrButton->forward,
+									    STATE_NODE,
+										  SUBSTATE_HIGHLIGHT_NODE_ID);	
 }
 
 void FSM_Node(uint8_t substate)
 {
-	Display_Node("Node ID: ",
-							 "Moisture: ",
-								substate,
-								ptrMasterToNode->nodeIDvalue,
-								ptrNodeToMaster->moistureArr[ptrMasterToNode->nodeIDvalue]);
+	displayNodeData("Node ID: ",
+									"Moisture: ",
+									substate,
+									ptrMasterToNode->nodeID,
+									ptrNodeToMaster->moistureArr[ptrMasterToNode->nodeID]);
 
 	switch (substate)
 	{
@@ -437,9 +439,15 @@ void FSM_Node(uint8_t substate)
 			break;
 			
 		case SUBSTATE_SET_NODE_ID:
-			ptrMasterToNode->nodeIDvalue = Potentiometer_Get_PercentPosition();
-			FSM_StateTransition(&ptrButton->enter, STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);
-			Master_Message_Encode(ptrMasterToNode->dataToSend, &ptrMasterToNode->nodeID, ptrMasterToNode->nodeIDvalue);
+			ptrMasterToNode->nodeID = Potentiometer_GetPercentPosition();
+		
+			FSM_StateTransition(&ptrButton->enter, 
+													STATE_NODE,
+													SUBSTATE_HIGHLIGHT_NODE_ID);
+		
+			Master_MessageEncode(ptrMasterToNode->data,
+													 &ptrMasterToNode->nodeID_Struct,
+													 ptrMasterToNode->nodeID);
 			break;
 	}	
 }
@@ -448,11 +456,11 @@ void FSM_Moisture(uint8_t substate)
 {
 	static sensorThreshold_t moistureThres; 
 
-	Display_SensorThreshold(&moistureThres,
-													substate,
-													"MoistMin:",
-													"MoistMax:",
-													'%');
+	displaySensorThreshold(&moistureThres,
+												 substate,
+												 "MoistMin:",
+												 "MoistMax:",
+												 '%');
 	switch (substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
@@ -470,15 +478,19 @@ void FSM_Moisture(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			moistureThres.minValue = Potentiometer_Get_PercentPosition();
+			moistureThres.minValue = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
-			Master_Message_Encode(ptrMasterToNode->dataToSend,&ptrMasterToNode->minMoisture,moistureThres.minValue);
+			Master_MessageEncode(ptrMasterToNode->data,
+													 &ptrMasterToNode->minMoistStruct,
+													 moistureThres.minValue);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			moistureThres.maxValue = Potentiometer_Get_PercentPosition();
+			moistureThres.maxValue = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MAX);
-			Master_Message_Encode(ptrMasterToNode->dataToSend,&ptrMasterToNode->maxMoisture,moistureThres.maxValue);
+			Master_MessageEncode(ptrMasterToNode->data,
+													 &ptrMasterToNode->maxMoistStruct,
+													 moistureThres.maxValue);
 			break;
 	}
 	
@@ -488,11 +500,11 @@ void FSM_Humidity(uint8_t substate)
 {
 	static sensorThreshold_t humidityThres;
 
-	Display_SensorThreshold(&humidityThres,
-													substate,
-													"HumMin:",
-													"HumMax:",
-													'%');
+	displaySensorThreshold(&humidityThres,
+												 substate,
+												 "HumMin:",
+												 "HumMax:",
+												 '%');
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
@@ -510,15 +522,19 @@ void FSM_Humidity(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			humidityThres.minValue = Potentiometer_Get_PercentPosition();
+			humidityThres.minValue = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
-			Master_Message_Encode(ptrMasterToNode->dataToSend,&ptrMasterToNode->minHumidity,humidityThres.minValue);
+			Master_MessageEncode(ptrMasterToNode->data,
+													 &ptrMasterToNode->minHumStruct,
+													 humidityThres.minValue);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			humidityThres.maxValue = Potentiometer_Get_PercentPosition();
+			humidityThres.maxValue = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MAX);
-			Master_Message_Encode(ptrMasterToNode->dataToSend,&ptrMasterToNode->maxHumidity,humidityThres.maxValue);
+			Master_MessageEncode(ptrMasterToNode->data,
+													 &ptrMasterToNode->maxHumStruct,
+													 humidityThres.maxValue);
 			break;
 	}
 }
@@ -528,11 +544,11 @@ void FSM_Temperature(uint8_t substate)
 {
 	static sensorThreshold_t temperatureThres;
 	
-	Display_SensorThreshold(&temperatureThres,
-													substate,
-												  "TempMin:",
-												  "TempMax:",
-												  'C');
+	displaySensorThreshold(&temperatureThres,
+												 substate,
+												 "TempMin:",
+												 "TempMax:",
+												 'C');
 	switch (substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
@@ -550,15 +566,19 @@ void FSM_Temperature(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			temperatureThres.minValue = Potentiometer_Get_PercentPosition();
+			temperatureThres.minValue = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
-			Master_Message_Encode(ptrMasterToNode->dataToSend,&ptrMasterToNode->minTemperature,temperatureThres.minValue);
+			Master_MessageEncode(ptrMasterToNode->data,
+													 &ptrMasterToNode->minTempStruct,
+													 temperatureThres.minValue);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			temperatureThres.maxValue = Potentiometer_Get_PercentPosition();
+			temperatureThres.maxValue = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MAX);	
-			Master_Message_Encode(ptrMasterToNode->dataToSend,&ptrMasterToNode->maxTemperature,temperatureThres.maxValue);
+			Master_MessageEncode(ptrMasterToNode->data,
+													 &ptrMasterToNode->maxTempStruct,
+													 temperatureThres.maxValue);
 			break;
 	}
 }
@@ -567,11 +587,11 @@ void FSM_IrrigTime(uint8_t substate)
 {
 	static irrigTime_t irrigTime;
 	
-	Display_IrrigationTime(&irrigTime,
-												 substate,
-												 "TimeMin:",
-												 "TimeMax:",
-												 's');	
+	displayIrrigTime(&irrigTime,
+									 substate,
+									 "TimeMin:",
+									 "TimeMax:",
+									 's');	
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
@@ -587,15 +607,19 @@ void FSM_IrrigTime(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			irrigTime.minValue = Potentiometer_Get_RawPosition();
+			irrigTime.minValue = Potentiometer_GetRawPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MIN);	
-			Master_Message_Encode(ptrMasterToNode->dataToSend,&ptrMasterToNode->minIrrigTime,irrigTime.minValue);
+			Master_MessageEncode(ptrMasterToNode->data,
+													 &ptrMasterToNode->minTimeStruct,
+													 irrigTime.minValue);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			irrigTime.maxValue = Potentiometer_Get_RawPosition();
+			irrigTime.maxValue = Potentiometer_GetRawPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MAX);	
-			Master_Message_Encode(ptrMasterToNode->dataToSend,&ptrMasterToNode->maxIrrigTime,irrigTime.maxValue);
+			Master_MessageEncode(ptrMasterToNode->data,
+													 &ptrMasterToNode->maxTimeStruct,
+													 irrigTime.maxValue);
 			break;
 	}
 }
@@ -615,7 +639,7 @@ void FSM_Execute(ButtonDataStructure* pButton,
 {
 	static void (*pStateFunction[NUMBER_OF_STATES])(uint8_t substate) = 
 	{
-		FSM_Display_BME280_Data,
+		FSM_DisplayBme280Data,
 		FSM_Node,
 		FSM_Moisture,
 		FSM_Humidity,

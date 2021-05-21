@@ -130,7 +130,7 @@ void LCD_Init(void)
 	LCD_Write(false,CMD_ENTRY_MODE_INCREMENT_CURSOR); 
 }
 
-void LCD_Write_Data(char data)
+void LCD_Write_Byte(char data)
 {
 	/*
 	Description:
@@ -158,7 +158,7 @@ void LCD_Write_String(char* pData)
 
 	while(*pData != '\0')
 	{
-		LCD_Write_Data(*pData);
+		LCD_Write_Byte(*pData);
 		pData++;
 	}
 	

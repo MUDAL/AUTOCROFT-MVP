@@ -5,7 +5,7 @@
 #include "dma.h"
 #include "hc12.h"
 
-void HC12_Tx_Init(void)
+void HC12_TxInit(void)
 {
 	
 	//GPIO configuration for USART1 Tx
@@ -22,7 +22,7 @@ void HC12_Tx_Init(void)
 	
 }
 
-void HC12_Rx_Buffer_Init(char* pBuffer, uint32_t bufferSize)
+void HC12_Rx_BufferInit(char* pBuffer, uint32_t bufferSize)
 {
 	//GPIO configuration for USART1 Rx
 	GPIO_Input_Init(GPIOA,
@@ -41,7 +41,7 @@ void HC12_Rx_Buffer_Init(char* pBuffer, uint32_t bufferSize)
 	DMA_USART_Rx_Init(DMA1_Channel5,
 										USART1,
 										pBuffer,
-										bufferSize, 
+										bufferSize - 1, 
 										DMA_CHANNEL5_MEMORY_INC_MODE |
 										DMA_CHANNEL5_CIRCULAR_BUFFER |
 										DMA_CHANNEL5_ENABLE);
@@ -58,10 +58,10 @@ void HC12_Transmit(char* pData)
 	
 	*/
 	
-	USART_Transmit_String_With_Null(USART1,pData);
+	USART_Transmit_String(USART1,pData);
 }
 
-bool HC12_Rx_Buffer_Full(void)
+bool HC12_Rx_BufferFull(void)
 {
 	return DMA_Rx_BufferFull(DMA1, DMA_CHANNEL5);
 }

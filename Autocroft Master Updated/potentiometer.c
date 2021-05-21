@@ -36,7 +36,7 @@ void Potentiometer_Init(void)
 											 
 }
 
-uint16_t Potentiometer_Get_RawPosition(void)
+uint16_t Potentiometer_GetRawPosition(void)
 {
 	/*
 	Description:
@@ -52,7 +52,7 @@ uint16_t Potentiometer_Get_RawPosition(void)
 	return ADC_Read(ADC1);
 }
 
-uint8_t Potentiometer_Get_PercentPosition(void)
+uint8_t Potentiometer_GetPercentPosition(void)
 {
 	/*
 	Description:
