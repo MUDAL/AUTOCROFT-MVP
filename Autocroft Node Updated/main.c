@@ -9,6 +9,8 @@
 #include "solenoid.h"
 #include "hc12.h"
 #include "message.h"
+#include "ds3231.h"
+#include "eeprom24c16.h"
 
 //Private defines
 #define NODE_ID				0
@@ -33,24 +35,29 @@ int main(void)
 	
 	//Local variables
 	static NodeMessageDataStructure nodeToMaster;
-	static sysTimer_t irrigAlarm;
+	static sysTimer_t irrigTimer;
+	//static ds3231_t rtc;
 	static autocroft_t autocroftData;
-	static uint8_t nodeIDFromMaster;
+	uint8_t nodeIDFromMaster = 0;
 	
 	//Initializations
 	System_Init();
 	CMS_Init();
 	Solenoid_Init();
-	HC12_Tx_Init();
-	HC12_Rx_Buffer_Init(masterToNode.data, HC12_RX_BUFFER_SIZE);
-	
-	Master_Message_Init(&masterToNode);
-	Node_Message_Init(&nodeToMaster);
+	HC12_TxInit();
+	HC12_Rx_BufferInit(masterToNode.data, HC12_RX_BUFFER_SIZE);
+	//DS3231_Init();
+	//EEPROM_Init();
+	Master_MessageInit(&masterToNode);
+	Node_MessageInit(&nodeToMaster);
+
+	//System_ClearStandbyFlag();
 	
 	while(1)
 	{
-		
-		if (HC12_Rx_Buffer_Full())
+		//DS3231_GetTime(&rtc);
+			
+		if (HC12_Rx_BufferFull())
 		{
 			autocroftData = Node_Get_All_Data();
 
@@ -63,29 +70,29 @@ int main(void)
 				
 				case LIGHT_WATERING:
 					//convert minimum irrigation time to milliseconds
-					System_Alarm_Init(&irrigAlarm, (autocroftData.irrigation.minTime * 1000));
+					System_TimerInit(&irrigTimer, (autocroftData.irrigation.minTime * 1000));
 					Solenoid_Switch(SOLENOID_ON);
 					break;
 				
 				case HEAVY_WATERING:
 					//convert maximum irrigation time to milliseconds
-					System_Alarm_Init(&irrigAlarm, (autocroftData.irrigation.maxTime * 1000));
+					System_TimerInit(&irrigTimer, (autocroftData.irrigation.maxTime * 1000));
 					Solenoid_Switch(SOLENOID_ON);
 					break;
 			}
 			
-			nodeIDFromMaster = Master_Message_Decode(&masterToNode.nodeID,masterToNode.data);
+			nodeIDFromMaster = Master_MessageDecode(&masterToNode.nodeID_Struct,masterToNode.data);
 			if (nodeIDFromMaster == NODE_ID)
 			{
-				Node_Message_Encode(nodeToMaster.dataToSend, &nodeToMaster.moisture, autocroftData.moisture.value);
-				HC12_Transmit(nodeToMaster.dataToSend);
+				Node_MessageEncode(nodeToMaster.data, &nodeToMaster.moistStruct, autocroftData.moisture.value);
+				HC12_Transmit(nodeToMaster.data);
 			}
 			
 		}
 		
 		if (Solenoid_IsRunning())
 		{
-			if (System_Alarm_Ready(&irrigAlarm))
+			if (System_TimerDoneCounting(&irrigTimer))
 			{
 				Solenoid_Switch(SOLENOID_OFF);
 			}
@@ -100,26 +107,26 @@ autocroft_t Node_Get_All_Data(void)
 	static autocroft_t autocroftData;
 	
 	autocroftData.moisture.value = CMS_Get_Moisture();
-	autocroftData.moisture.minValue = Master_Message_Decode(&masterToNode.minMoisture, masterToNode.data);
-	autocroftData.moisture.maxValue = Master_Message_Decode(&masterToNode.maxMoisture, masterToNode.data);
+	autocroftData.moisture.minValue = Master_MessageDecode(&masterToNode.minMoistStruct, masterToNode.data);
+	autocroftData.moisture.maxValue = Master_MessageDecode(&masterToNode.maxMoistStruct, masterToNode.data);
 	autocroftData.moisture.level = Sensor_Get_Level(&autocroftData.moisture);
 	
-	autocroftData.humidity.value = Master_Message_Decode(&masterToNode.humidity, masterToNode.data);
-	autocroftData.humidity.minValue = Master_Message_Decode(&masterToNode.minHumidity, masterToNode.data);
-	autocroftData.humidity.maxValue = Master_Message_Decode(&masterToNode.maxHumidity, masterToNode.data);
+	autocroftData.humidity.value = Master_MessageDecode(&masterToNode.humStruct, masterToNode.data);
+	autocroftData.humidity.minValue = Master_MessageDecode(&masterToNode.minHumStruct, masterToNode.data);
+	autocroftData.humidity.maxValue = Master_MessageDecode(&masterToNode.maxHumStruct, masterToNode.data);
 	autocroftData.humidity.level = Sensor_Get_Level(&autocroftData.humidity);
 	
-	autocroftData.temperature.value = Master_Message_Decode(&masterToNode.temperature, masterToNode.data);
-	autocroftData.temperature.minValue = Master_Message_Decode(&masterToNode.minTemperature, masterToNode.data);
-	autocroftData.temperature.maxValue = Master_Message_Decode(&masterToNode.maxTemperature, masterToNode.data);
+	autocroftData.temperature.value = Master_MessageDecode(&masterToNode.tempStruct, masterToNode.data);
+	autocroftData.temperature.minValue = Master_MessageDecode(&masterToNode.minTempStruct, masterToNode.data);
+	autocroftData.temperature.maxValue = Master_MessageDecode(&masterToNode.maxTempStruct, masterToNode.data);
 	autocroftData.temperature.level = Sensor_Get_Level(&autocroftData.temperature);
 	
 	autocroftData.irrigation.wateringMethod = Irrigation_Get_Method(autocroftData.moisture.level,
 																																	autocroftData.humidity.level,
 																																	autocroftData.temperature.level);
 			
-	autocroftData.irrigation.minTime = Master_Message_Decode(&masterToNode.minIrrigTime, masterToNode.data);
-	autocroftData.irrigation.maxTime = Master_Message_Decode(&masterToNode.maxIrrigTime, masterToNode.data);
+	autocroftData.irrigation.minTime = Master_MessageDecode(&masterToNode.minTimeStruct, masterToNode.data);
+	autocroftData.irrigation.maxTime = Master_MessageDecode(&masterToNode.maxTimeStruct, masterToNode.data);
 	
 	return autocroftData;
 }

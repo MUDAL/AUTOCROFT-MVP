@@ -109,45 +109,4 @@ void USART_Transmit_String(USART_TypeDef* uartPort, char* pString)
 		uartPort->DR = pString[i];
 		i++;
 	}
-	
 }
-
-void USART_Transmit_String_With_Null(USART_TypeDef* uartPort, char* pString)
-{
-	/*
-	Description:
-	Transmits multiple bytes of data through the Tx pin of
-	the configured USART peripheral
-	
-	Parameters:
-	1.) uartPort:  pointer to USART_TypeDef struct which contains
-	all registers for the desired USART peripheral
-	e.g. if uartPort is passed an argument of USART1, the USART1 peripheral
-	is configured and if passed an argument of USART2, the USART2 peripheral
-	is configured etc.
-	
-	2.) pString: pointer to data to be transmitted. The data to be transmitted
-	is an array of characters including the 'NULL' character.
-	
-	Return:
-	None
-	
-	*/
-	
-	uint32_t i = 0;
-	
-	while (pString[i] != '\0')
-	{
-		while ( (uartPort->SR & USART_SR_TXE) != USART_SR_TXE);
-		uartPort->DR = pString[i];
-		i++;
-	}
-	
-	if (pString[i] == '\0')
-	{
-		while ( (uartPort->SR & USART_SR_TXE) != USART_SR_TXE);
-		uartPort->DR = pString[i];
-	}
-	
-}
-

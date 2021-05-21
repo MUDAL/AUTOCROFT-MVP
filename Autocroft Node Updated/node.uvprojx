@@ -409,16 +409,6 @@
           <GroupName>High Layer API</GroupName>
           <Files>
             <File>
-              <FileName>bms.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\bms.c</FilePath>
-            </File>
-            <File>
-              <FileName>bms.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\bms.h</FilePath>
-            </File>
-            <File>
               <FileName>cms.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\cms.c</FilePath>
@@ -467,6 +457,26 @@
               <FileName>system.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\system.h</FilePath>
+            </File>
+            <File>
+              <FileName>bms.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\bms.c</FilePath>
+            </File>
+            <File>
+              <FileName>bms.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\bms.h</FilePath>
+            </File>
+            <File>
+              <FileName>ds3231.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ds3231.c</FilePath>
+            </File>
+            <File>
+              <FileName>ds3231.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ds3231.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -552,6 +562,16 @@
               <FileName>uart.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\uart.h</FilePath>
+            </File>
+            <File>
+              <FileName>pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\pwr.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -16,28 +16,28 @@ typedef struct
 typedef struct
 {
 	char data[HC12_RX_BUFFER_SIZE];
-	message_t minMoisture;
-	message_t maxMoisture;
-	message_t minHumidity;
-	message_t maxHumidity;
-	message_t minTemperature;
-	message_t maxTemperature;
-	message_t minIrrigTime;
-	message_t maxIrrigTime;
-	message_t humidity;
-	message_t temperature;
-	message_t nodeID;
+	message_t minMoistStruct;
+	message_t maxMoistStruct;
+	message_t minHumStruct;
+	message_t maxHumStruct;
+	message_t minTempStruct;
+	message_t maxTempStruct;
+	message_t minTimeStruct;
+	message_t maxTimeStruct;
+	message_t humStruct;
+	message_t tempStruct;
+	message_t nodeID_Struct;
 }MasterMessageDataStructure;
 
 typedef struct
 {
-	char dataToSend[NODE_TO_MASTER_MSG_SIZE];
-	message_t moisture;
+	char data[NODE_TO_MASTER_MSG_SIZE];
+	message_t moistStruct;
 }NodeMessageDataStructure;
 
-extern void Master_Message_Init(MasterMessageDataStructure* pMessage);
-extern void Node_Message_Init(NodeMessageDataStructure* pMessage);
-extern void Node_Message_Encode(char* nodeToMasterData, message_t* pMsgStruct, uint16_t intData);
-extern uint16_t Master_Message_Decode(message_t* pMsgStruct, char* masterToNodeData);
+extern void Master_MessageInit(MasterMessageDataStructure* pMessage);
+extern void Node_MessageInit(NodeMessageDataStructure* pMessage);
+extern void Node_MessageEncode(char* nodeToMasterData, message_t* pMsgStruct, uint16_t intData);
+extern uint16_t Master_MessageDecode(message_t* pMsgStruct, char* masterToNodeData);
 
 #endif //_MESSAGE_H

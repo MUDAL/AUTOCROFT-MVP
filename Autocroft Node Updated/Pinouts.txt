@@ -4,6 +4,7 @@
 4.) Battery voltage measurement (ADC2: PA6)
 5.) Solenoid valve control (GPIO output: PA7)
 6.) RTC module (I2C1: PB6, PB7)
+7.) RTC INT pin (WKUP: PA0)
 
 Pins to reserve:
 PA13,PA14,PA15,PB2,PB3,PB4

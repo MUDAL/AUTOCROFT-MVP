@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include "gpio.h"
 
-void GPIO_Reset(GPIO_TypeDef* gpioPort)
+void GPIO_Reset(void)
 {
 	/*
 	Description:
@@ -10,35 +10,18 @@ void GPIO_Reset(GPIO_TypeDef* gpioPort)
 	configuration. PA13,PA14,PA15,PB2,PB3 and PB4 are left in their reset states.
 	
 	Parameters:
-	1.) gpioPort: pointer to GPIO_TypeDef struct which contains
-	all registers for the desired GPIO peripheral
-	e.g. if gpioPort is passed an argument of GPIOA, the GPIOA peripheral
-	is configured and if passed an argument of GPIOB, the GPIOB peripheral
-	is configured etc.
+	None
 	
 	Return:
 	None
 	
 	*/
-	
-	if (gpioPort == GPIOA)
-	{
-		gpioPort->CRL &= ~0xCCCCCCCC;
-		gpioPort->CRH &= ~0x000CCCCC;
-	}
-	
-	else if (gpioPort == GPIOB)
-	{
-		gpioPort->CRL &= ~0xCCC000CC;
-		gpioPort->CRH &= ~0xCCCCCCCC;
-	}
-	
-	else
-	{
-		gpioPort->CRL &= ~0xCCCCCCCC;
-		gpioPort->CRH &= ~0xCCCCCCCC;
-	}
-	
+	GPIOA->CRL &= ~0xCCCCCCCC;
+	GPIOA->CRH &= ~0x000CCCCC;
+	GPIOB->CRL &= ~0xCCC000CC;
+	GPIOB->CRH &= ~0xCCCCCCCC;
+	GPIOC->CRL &= ~0xCCCCCCCC;
+	GPIOC->CRH &= ~0xCCCCCCCC;
 }
 
 void GPIO_Input_Init(GPIO_TypeDef* gpioPort, 

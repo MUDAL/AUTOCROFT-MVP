@@ -22,7 +22,5 @@ extern void USART_Init(USART_TypeDef* uartPort, uint16_t baud, uint8_t dmaMode, 
 extern void USART_Transmit_Byte(USART_TypeDef* uartPort, char byte);
 //Transmits multibyte serial data (excluding NULL) through a configured USART peripheral 
 extern void USART_Transmit_String(USART_TypeDef* uartPort, char* pString);
-//Transmits multibyte serial data (including NULL) through a configured USART peripheral
-extern void USART_Transmit_String_With_Null(USART_TypeDef* uartPort, char* pString);
 
 #endif //_UART_H
