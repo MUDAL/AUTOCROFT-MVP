@@ -19,9 +19,9 @@ typedef struct
 	
 }irrig_t;
 
-extern irrigMethod_t Irrigation_Get_Method(sensorLevel_t moistureLev,
-																		       sensorLevel_t humidityLev,
-																		       sensorLevel_t temperatureLev);
+extern irrigMethod_t Irrigation_GetMethod(sensorLevel_t moistureLev,
+																		      sensorLevel_t humidityLev,
+																		      sensorLevel_t temperatureLev);
 
 #endif //_IRRIGATION_H
 

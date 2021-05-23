@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "sensor.h"
 
-sensorLevel_t Sensor_Get_Level(sensor_t* pSensor)
+sensorLevel_t Sensor_GetLevel(sensor_t* pSensor)
 {
 	sensorLevel_t lev;
 	

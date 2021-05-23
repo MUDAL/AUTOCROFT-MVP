@@ -20,6 +20,6 @@ typedef struct
 	
 }sensor_t;
 
-extern sensorLevel_t Sensor_Get_Level(sensor_t* pSensor);
+extern sensorLevel_t Sensor_GetLevel(sensor_t* pSensor);
 
 #endif //_SENSOR_H

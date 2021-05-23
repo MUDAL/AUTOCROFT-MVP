@@ -7,10 +7,11 @@
 #include "irrigation.h"
 #include "cms.h"
 #include "solenoid.h"
-#include "hc12.h"
-#include "message.h"
 #include "ds3231.h"
 #include "eeprom24c16.h"
+#include "hc12.h"
+#include "message.h"
+#include "error_correction.h"
 
 //Private defines
 #define NODE_ID				0
@@ -28,7 +29,7 @@ typedef struct
 }autocroft_t;
 
 //Functions
-static autocroft_t Node_Get_All_Data(void);
+static autocroft_t Node_GetAllData(void);
 
 int main(void)
 {
@@ -59,7 +60,7 @@ int main(void)
 			
 		if (HC12_Rx_BufferFull())
 		{
-			autocroftData = Node_Get_All_Data();
+			autocroftData = Node_GetAllData();
 
 			switch (autocroftData.irrigation.wateringMethod)
 			{
@@ -81,10 +82,13 @@ int main(void)
 					break;
 			}
 			
-			nodeIDFromMaster = Master_MessageDecode(&masterToNode.nodeID_Struct,masterToNode.data);
+			nodeIDFromMaster = Master_MessageDecode(&masterToNode.nodeID_Struct,
+																							masterToNode.data);
 			if (nodeIDFromMaster == NODE_ID)
 			{
-				Node_MessageEncode(nodeToMaster.data, &nodeToMaster.moistStruct, autocroftData.moisture.value);
+				Node_MessageEncode(nodeToMaster.data,
+													 &nodeToMaster.moistStruct,
+													 autocroftData.moisture.value);
 				HC12_Transmit(nodeToMaster.data);
 			}
 			
@@ -102,31 +106,41 @@ int main(void)
 	
 }
 
-autocroft_t Node_Get_All_Data(void)
+autocroft_t Node_GetAllData(void)
 {
 	static autocroft_t autocroftData;
 	
-	autocroftData.moisture.value = CMS_Get_Moisture();
-	autocroftData.moisture.minValue = Master_MessageDecode(&masterToNode.minMoistStruct, masterToNode.data);
-	autocroftData.moisture.maxValue = Master_MessageDecode(&masterToNode.maxMoistStruct, masterToNode.data);
-	autocroftData.moisture.level = Sensor_Get_Level(&autocroftData.moisture);
+	autocroftData.moisture.value = CMS_GetMoisture();
+	autocroftData.moisture.minValue = Master_MessageDecode(&masterToNode.minMoistStruct,
+																													masterToNode.data);
+	autocroftData.moisture.maxValue = Master_MessageDecode(&masterToNode.maxMoistStruct,
+																													masterToNode.data);
+	autocroftData.moisture.level = Sensor_GetLevel(&autocroftData.moisture);
 	
-	autocroftData.humidity.value = Master_MessageDecode(&masterToNode.humStruct, masterToNode.data);
-	autocroftData.humidity.minValue = Master_MessageDecode(&masterToNode.minHumStruct, masterToNode.data);
-	autocroftData.humidity.maxValue = Master_MessageDecode(&masterToNode.maxHumStruct, masterToNode.data);
-	autocroftData.humidity.level = Sensor_Get_Level(&autocroftData.humidity);
+	autocroftData.humidity.value = Master_MessageDecode(&masterToNode.humStruct,
+																											 masterToNode.data);
+	autocroftData.humidity.minValue = Master_MessageDecode(&masterToNode.minHumStruct,
+																													masterToNode.data);
+	autocroftData.humidity.maxValue = Master_MessageDecode(&masterToNode.maxHumStruct,
+																													masterToNode.data);
+	autocroftData.humidity.level = Sensor_GetLevel(&autocroftData.humidity);
 	
-	autocroftData.temperature.value = Master_MessageDecode(&masterToNode.tempStruct, masterToNode.data);
-	autocroftData.temperature.minValue = Master_MessageDecode(&masterToNode.minTempStruct, masterToNode.data);
-	autocroftData.temperature.maxValue = Master_MessageDecode(&masterToNode.maxTempStruct, masterToNode.data);
-	autocroftData.temperature.level = Sensor_Get_Level(&autocroftData.temperature);
+	autocroftData.temperature.value = Master_MessageDecode(&masterToNode.tempStruct,
+																													masterToNode.data);
+	autocroftData.temperature.minValue = Master_MessageDecode(&masterToNode.minTempStruct,
+																														 masterToNode.data);
+	autocroftData.temperature.maxValue = Master_MessageDecode(&masterToNode.maxTempStruct,
+																														 masterToNode.data);
+	autocroftData.temperature.level = Sensor_GetLevel(&autocroftData.temperature);
 	
-	autocroftData.irrigation.wateringMethod = Irrigation_Get_Method(autocroftData.moisture.level,
-																																	autocroftData.humidity.level,
-																																	autocroftData.temperature.level);
+	autocroftData.irrigation.wateringMethod = Irrigation_GetMethod(autocroftData.moisture.level,
+																																 autocroftData.humidity.level,
+																																 autocroftData.temperature.level);
 			
-	autocroftData.irrigation.minTime = Master_MessageDecode(&masterToNode.minTimeStruct, masterToNode.data);
-	autocroftData.irrigation.maxTime = Master_MessageDecode(&masterToNode.maxTimeStruct, masterToNode.data);
+	autocroftData.irrigation.minTime = Master_MessageDecode(&masterToNode.minTimeStruct,
+																													 masterToNode.data);
+	autocroftData.irrigation.maxTime = Master_MessageDecode(&masterToNode.maxTimeStruct,
+																													 masterToNode.data);
 	
 	return autocroftData;
 }

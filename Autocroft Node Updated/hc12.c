@@ -9,15 +9,15 @@ void HC12_TxInit(void)
 {
 	
 	//GPIO configuration for USART1 Tx
-	GPIO_Output_Init(GPIOA,
-									 GPIO_PORT_REG_HIGH,
-									 GPIO_PIN9_OUTPUT_MODE_2MHZ,
-									 GPIO_PIN9_ALT_FUNC_PUSH_PULL);
+	GPIO_OutputInit(GPIOA,
+									GPIO_PORT_REG_HIGH,
+									GPIO_PIN9_OUTPUT_MODE_2MHZ,
+									GPIO_PIN9_ALT_FUNC_PUSH_PULL);
 	
 	//USART1 configuration
 	USART_Init(USART1,
 						 BAUD_9600,
-						 USART_TX_DMA_DISABLE,
+						 TX_DMA_DISABLE,
 						 USART_TX_ENABLE);
 	
 }
@@ -25,16 +25,16 @@ void HC12_TxInit(void)
 void HC12_Rx_BufferInit(char* pBuffer, uint32_t bufferSize)
 {
 	//GPIO configuration for USART1 Rx
-	GPIO_Input_Init(GPIOA,
-									GPIO_PORT_REG_HIGH,
-									GPIO_PIN10,
-									GPIO_PIN10_INPUT_PULLUP_OR_PULLDOWN,
-									GPIO_PULLUP_ENABLE);
+	GPIO_InputInit(GPIOA,
+								 GPIO_PORT_REG_HIGH,
+								 GPIO_PIN10,
+								 GPIO_PIN10_INPUT_PULLUP_OR_PULLDOWN,
+								 GPIO_PULLUP_ENABLE);
 	
 	//USART1 configuration
 	USART_Init(USART1,
 						 BAUD_9600,
-						 USART_DMA_RX_ENABLE,
+						 RX_DMA_ENABLE,
 						 USART_RX_ENABLE);
 	
 	//DMA1 channel 5 configuration for USART1 Rx
@@ -58,7 +58,7 @@ void HC12_Transmit(char* pData)
 	
 	*/
 	
-	USART_Transmit_String(USART1,pData);
+	USART_TransmitString(USART1,pData);
 }
 
 bool HC12_Rx_BufferFull(void)

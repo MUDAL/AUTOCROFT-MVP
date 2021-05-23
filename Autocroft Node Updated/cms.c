@@ -25,18 +25,18 @@ void CMS_Init(void)
 	*/
 	
 	//Analog mode configuration for PA5
-	GPIO_Input_Init(GPIOA,
-								  GPIO_PORT_REG_LOW,
-									GPIO_PIN5,
-									GPIO_ANALOG_MODE,
-									false);
+	GPIO_InputInit(GPIOA,
+								 GPIO_PORT_REG_LOW,
+								 GPIO_PIN5,
+								 GPIO_ANALOG_MODE,
+								 false);
 	
-	ADC_Single_Conv_Init(ADC1,
-											 ADC_CHANNEL5,
-											 ADC_CHANNEL5_MAX_SAMPLE_TIME); 
+	ADC_SingleConv_Init(ADC1,
+											ADC_CHANNEL5,
+											ADC_CH5_MAX_SAMPLE_TIME); 
 }
 
-uint8_t CMS_Get_Moisture(void)
+uint8_t CMS_GetMoisture(void)
 {
 	/*
 	Description:

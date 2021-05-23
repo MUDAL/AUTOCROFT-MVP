@@ -88,10 +88,10 @@ void DS3231_Init(void)
 	Return:
 	None
 	*/
-	GPIO_Output_Init(GPIOB,
-									 GPIO_PORT_REG_LOW,
-									(GPIO_PIN6_OUTPUT_MODE_2MHZ | GPIO_PIN7_OUTPUT_MODE_2MHZ),
-									(GPIO_PIN6_ALT_FUNC_OPEN_DRAIN | GPIO_PIN7_ALT_FUNC_OPEN_DRAIN));
+	GPIO_OutputInit(GPIOB,
+									GPIO_PORT_REG_LOW,
+								 (GPIO_PIN6_OUTPUT_MODE_2MHZ | GPIO_PIN7_OUTPUT_MODE_2MHZ),
+								 (GPIO_PIN6_ALT_FUNC_OPEN_DRAIN | GPIO_PIN7_ALT_FUNC_OPEN_DRAIN));
 	
 	I2C_Init(I2C1,
 					 I2C_PERIPH_FREQ_8MHZ,
@@ -105,7 +105,7 @@ void DS3231_GetTime(ds3231_t* pTime)
 	uint8_t timeBCD[3]; //sec,min,hour
 	uint8_t periodOfDay;
 	
-	I2C_Read_Multiple(I2C1,DS3231_ADDR,SEC_REG_ADDR,timeBCD,3);
+	I2C_ReadMultiByte(I2C1,DS3231_ADDR,SEC_REG_ADDR,timeBCD,3);
 	
 	if ( (timeBCD[2] & (1<<6)) == (1<<6) )
 	{
@@ -140,20 +140,20 @@ void DS3231_SetTime(uint8_t hour, uint8_t min)
 	timeBCD[1] = HexToBCD(min);
 	timeBCD[2] = HexToBCD(hour);
 	
-	I2C_Read_1Byte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, &prevHoursBCD);
+	I2C_ReadByte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, &prevHoursBCD);
 	/* 0xE0 preserves settings of the ds3231 hour register
 	so that a write to the register doesn't clear the hour configurations.
 	*/
 	timeBCD[2] = ( timeBCD[2] | (prevHoursBCD & 0xE0) );
 	
-	I2C_Write_Multiple(I2C1,DS3231_ADDR,SEC_REG_ADDR,timeBCD,3);
+	I2C_WriteMultiByte(I2C1,DS3231_ADDR,SEC_REG_ADDR,timeBCD,3);
 }
 
 void DS3231_12HourFormat(uint8_t periodOfDay)
 {
 	uint8_t hoursBCD;
 	
-	I2C_Read_1Byte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, &hoursBCD);
+	I2C_ReadByte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, &hoursBCD);
 	if (periodOfDay == DS3231_PERIOD_PM)
 	{
 		hoursBCD |= ( (1<<6) | (1<<5) );
@@ -163,16 +163,16 @@ void DS3231_12HourFormat(uint8_t periodOfDay)
 		hoursBCD &= ~(1<<5);
 		hoursBCD |= (1<<6);
 	}
-	I2C_Write(I2C1, DS3231_ADDR, HOUR_REG_ADDR, hoursBCD);
+	I2C_WriteByte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, hoursBCD);
 }
 
 void DS3231_24HourFormat(void)
 {
 	uint8_t hoursBCD;
 	
-	I2C_Read_1Byte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, &hoursBCD);
+	I2C_ReadByte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, &hoursBCD);
 	hoursBCD &= ~( (1<<6) | (1<<5) );
-	I2C_Write(I2C1, DS3231_ADDR, HOUR_REG_ADDR, hoursBCD);
+	I2C_WriteByte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, hoursBCD);
 }
 
 void DS3231_SetAlarm2(uint8_t min)
@@ -198,8 +198,8 @@ void DS3231_SetAlarm2(uint8_t min)
 	alarm2RegArrBCD[1] = (1<<7); //set A2M3
 	alarm2RegArrBCD[2] = (1<<7); //set A2M4
 	
-	I2C_Write_Multiple(I2C1, DS3231_ADDR, ALARM2_MIN_REG_ADDR, alarm2RegArrBCD, 3);
-	I2C_Write(I2C1, DS3231_ADDR, CONTROL_REG_ADDR, ctrlRegBCD);
+	I2C_WriteMultiByte(I2C1, DS3231_ADDR, ALARM2_MIN_REG_ADDR, alarm2RegArrBCD, 3);
+	I2C_WriteByte(I2C1, DS3231_ADDR, CONTROL_REG_ADDR, ctrlRegBCD);
 	
 }
 
@@ -222,7 +222,7 @@ bool DS3231_GetAlarm2_Status(void)
 	bool alarm2Flag = false;
 	uint8_t statusRegBCD;
 	
-	I2C_Read_1Byte(I2C1,DS3231_ADDR,STATUS_REG_ADDR,&statusRegBCD);
+	I2C_ReadByte(I2C1,DS3231_ADDR,STATUS_REG_ADDR,&statusRegBCD);
 	alarm2Flag = (statusRegBCD & (1<<1)) >> 1; //get logic state of A2F bit
 	
 	return alarm2Flag;
@@ -244,7 +244,7 @@ void DS3231_ResetAlarm2(void)
 	*/
 	uint8_t statusRegBCD;
 	
-	I2C_Read_1Byte(I2C1,DS3231_ADDR,STATUS_REG_ADDR,&statusRegBCD);
+	I2C_ReadByte(I2C1,DS3231_ADDR,STATUS_REG_ADDR,&statusRegBCD);
 	statusRegBCD &= ~(1<<1); //clear A2F bit
-	I2C_Write(I2C1,DS3231_ADDR,STATUS_REG_ADDR,statusRegBCD);
+	I2C_WriteByte(I2C1,DS3231_ADDR,STATUS_REG_ADDR,statusRegBCD);
 }

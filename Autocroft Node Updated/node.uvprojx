@@ -391,7 +391,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Messaging Application</GroupName>
+          <GroupName>Communication App</GroupName>
           <Files>
             <File>
               <FileName>message.c</FileName>
@@ -402,6 +402,16 @@
               <FileName>message.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\message.h</FilePath>
+            </File>
+            <File>
+              <FileName>error_correction.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\error_correction.c</FilePath>
+            </File>
+            <File>
+              <FileName>error_correction.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\error_correction.h</FilePath>
             </File>
           </Files>
         </Group>

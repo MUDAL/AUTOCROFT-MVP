@@ -57,9 +57,9 @@ const irrigMethod_t irrigCase[3][3][3] = {
 	
 }; 
 
-irrigMethod_t Irrigation_Get_Method(sensorLevel_t moistureLev,
-																	  sensorLevel_t humidityLev,
-																	  sensorLevel_t temperatureLev)
+irrigMethod_t Irrigation_GetMethod(sensorLevel_t moistureLev,
+																	 sensorLevel_t humidityLev,
+																	 sensorLevel_t temperatureLev)
 {
 	if ( (moistureLev == LEV_UNDEFINED) ||
 		   (humidityLev == LEV_UNDEFINED) ||
