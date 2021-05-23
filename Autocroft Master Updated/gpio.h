@@ -75,32 +75,32 @@ enum PortRegLevel
 extern void GPIO_Reset(void);
 
 //Initializes the GPIO to the input mode of choice 
-extern void GPIO_Input_Init(GPIO_TypeDef* gpioPort, 
-														uint8_t portLevel,  
-														uint8_t gpioPin,
-														uint32_t config,  
-														bool pullupEn);
+extern void GPIO_InputInit(GPIO_TypeDef* gpioPort, 
+													 uint8_t portLevel,  
+													 uint8_t gpioPin,
+													 uint32_t config,  
+													 bool pullupEn);
 
 //Initializes the GPIO to the output mode of choice
-extern void GPIO_Output_Init(GPIO_TypeDef* gpioPort,
-														 uint8_t portLevel,
-														 uint32_t mode,
-														 uint32_t config);
+extern void GPIO_OutputInit(GPIO_TypeDef* gpioPort,
+														uint8_t portLevel,
+														uint32_t mode,
+														uint32_t config);
 
 //Writes a logic 'high' or 'low' to a GPIO pin
-extern void GPIO_Output_Write(GPIO_TypeDef* gpioPort,
-															uint8_t gpioPin,
-															bool gpioPinLogic);
+extern void GPIO_OutputWrite(GPIO_TypeDef* gpioPort,
+														 uint8_t gpioPin,
+														 bool gpioPinLogic);
 
-extern void GPIO_Output_Clear_Reg(GPIO_TypeDef* gpioPort,
-																	uint32_t gpioPins);
+extern void GPIO_OutputClearReg(GPIO_TypeDef* gpioPort,
+																uint32_t gpioPins);
 
-extern void GPIO_Output_Reg_Write(GPIO_TypeDef* gpioPort,
-																	uint32_t gpioPins);
+extern void GPIO_OutputRegWrite(GPIO_TypeDef* gpioPort,
+																uint32_t gpioPins);
 
 //Returns the logic level ( high(true) or low(false) ) of a GPIO input pin
-extern bool GPIO_Input_Read(GPIO_TypeDef* gpioPort, uint8_t gpioPin);
+extern bool GPIO_InputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin);
 
-extern bool GPIO_Output_Read(GPIO_TypeDef* gpioPort, uint8_t gpioPin);
+extern bool GPIO_OutputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin);
 
 #endif //_GPIO_H

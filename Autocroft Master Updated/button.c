@@ -18,11 +18,11 @@ static void Button_Struct_Init(button_t* pButton,
 														   uint8_t pinNumber,
 														   uint32_t pullupConfig)
 {
-	GPIO_Input_Init(gpioPorts[portIndex],
-									portLevel,
-									pinNumber,
-									pullupConfig,
-									true);
+	GPIO_InputInit(gpioPorts[portIndex],
+								 portLevel,
+								 pinNumber,
+								 pullupConfig,
+								 true);
 	
 	pButton->portIndex = portIndex;
 	pButton->portLevel = portLevel;
@@ -33,10 +33,10 @@ static void Button_Struct_Init(button_t* pButton,
 static bool IsPressed(button_t* pButton)
 {
 	//Since pullups are used, logic 0 means button is pressed.
-	if (!GPIO_Input_Read(gpioPorts[pButton->portIndex], pButton->pin))
+	if (!GPIO_InputRead(gpioPorts[pButton->portIndex], pButton->pin))
 	{
 		SysTick_DelayMs(10);
-		if (!GPIO_Input_Read(gpioPorts[pButton->portIndex], pButton->pin))
+		if (!GPIO_InputRead(gpioPorts[pButton->portIndex], pButton->pin))
 		{
 			return true;
 		}

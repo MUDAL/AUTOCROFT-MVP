@@ -12,6 +12,7 @@
 #include "sensor.h"
 #include "irrigation.h"
 #include "message.h"
+#include "error_correction.h"
 #include "FSM.h"
 
 int main(void)

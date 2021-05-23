@@ -43,10 +43,10 @@ void I2C_Init(I2C_TypeDef* i2cPort,
 	i2cPort->CR1 |= I2C_CR1_PE; //Enable I2C1 peripheral
 }
 
-void I2C_Write(I2C_TypeDef* i2cPort, 
-							 uint8_t slaveAddr,
-							 uint8_t regAddr,
-							 uint8_t data)
+void I2C_WriteByte(I2C_TypeDef* i2cPort, 
+									 uint8_t slaveAddr,
+									 uint8_t regAddr,
+									 uint8_t data)
 {
 	/*
 	Description:
@@ -92,7 +92,7 @@ void I2C_Write(I2C_TypeDef* i2cPort,
 		
 }
 
-void I2C_Write_Multiple(I2C_TypeDef* i2cPort, 
+void I2C_WriteMultiByte(I2C_TypeDef* i2cPort, 
 												uint8_t slaveAddr,
 												uint8_t regAddr,
 												uint8_t* data,
@@ -149,10 +149,10 @@ void I2C_Write_Multiple(I2C_TypeDef* i2cPort,
 	i2cPort->CR1 |= I2C_CR1_STOP; 
 }
 
-void I2C_Read_1Byte(I2C_TypeDef* i2cPort,
-										uint8_t slaveAddr,
-										uint8_t regAddr,
-										uint8_t* data)
+void I2C_ReadByte(I2C_TypeDef* i2cPort,
+									uint8_t slaveAddr,
+									uint8_t regAddr,
+									uint8_t* data)
 {
 	/*
 	Description:
@@ -206,10 +206,10 @@ void I2C_Read_1Byte(I2C_TypeDef* i2cPort,
 		
 }
 
-void I2C_Read_2Bytes(I2C_TypeDef* i2cPort, 
-										 uint8_t slaveAddr,
-										 uint8_t regAddr,
-										 uint8_t* data)
+void I2C_Read2Bytes(I2C_TypeDef* i2cPort, 
+										uint8_t slaveAddr,
+										uint8_t regAddr,
+										uint8_t* data)
 {
 	/*
 	Description:
@@ -266,7 +266,7 @@ void I2C_Read_2Bytes(I2C_TypeDef* i2cPort,
 	
 }
 
-void I2C_Read_Multiple(I2C_TypeDef* i2cPort,
+void I2C_ReadMultiByte(I2C_TypeDef* i2cPort,
 											 uint8_t slaveAddr,
 											 uint8_t regAddr,
 											 uint8_t* data, 

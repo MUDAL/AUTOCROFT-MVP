@@ -19,10 +19,10 @@ void EEPROM_Init(void)
 	
 	*/
 	
-	GPIO_Output_Init(GPIOB,
-									 GPIO_PORT_REG_LOW,
-									(GPIO_PIN6_OUTPUT_MODE_2MHZ | GPIO_PIN7_OUTPUT_MODE_2MHZ),
-									(GPIO_PIN6_ALT_FUNC_OPEN_DRAIN | GPIO_PIN7_ALT_FUNC_OPEN_DRAIN));
+	GPIO_OutputInit(GPIOB,
+									GPIO_PORT_REG_LOW,
+								 (GPIO_PIN6_OUTPUT_MODE_2MHZ | GPIO_PIN7_OUTPUT_MODE_2MHZ),
+								 (GPIO_PIN6_ALT_FUNC_OPEN_DRAIN | GPIO_PIN7_ALT_FUNC_OPEN_DRAIN));
 	
 	I2C_Init(I2C1,
 					 I2C_PERIPH_FREQ_8MHZ,
@@ -30,7 +30,7 @@ void EEPROM_Init(void)
 					 I2C_STANDARD_MODE_8MHZ_TRISE);
 }
 
-void EEPROM_Write_Page(uint8_t pageAddr, uint8_t* pData)
+void EEPROM_WritePage(uint8_t pageAddr, uint8_t* pData)
 {
 	/*
 	Description:
@@ -48,12 +48,12 @@ void EEPROM_Write_Page(uint8_t pageAddr, uint8_t* pData)
 	//extract 4 LSB of EEPROM page address and store in EEPROM word address
 	uint8_t wordAddr = ((pageAddr & 0x0F) << 4);
 	//I2C communication involving EEPROM slave and word address
-	I2C_Write_Multiple(I2C1,deviceAddr ,wordAddr, pData, PAGE_SIZE - 1);
+	I2C_WriteMultiByte(I2C1,deviceAddr ,wordAddr, pData, PAGE_SIZE - 1);
 	//write cycle time
 	SysTick_DelayMs(5);
 }
 
-void EEPROM_Read_Page(uint8_t pageAddr, uint8_t* receiveBuffer)
+void EEPROM_ReadPage(uint8_t pageAddr, uint8_t* receiveBuffer)
 {
 	/*
 	Description:
@@ -71,5 +71,5 @@ void EEPROM_Read_Page(uint8_t pageAddr, uint8_t* receiveBuffer)
 	//extract 4 LSB of EEPROM page address and store in EEPROM word address
 	uint8_t wordAddr = ((pageAddr & 0x0F) << 4);
 	//I2C communication involving EEPROM slave and word address
-	I2C_Read_Multiple(I2C1,deviceAddr, wordAddr, receiveBuffer, PAGE_SIZE - 1);
+	I2C_ReadMultiByte(I2C1,deviceAddr, wordAddr, receiveBuffer, PAGE_SIZE - 1);
 }

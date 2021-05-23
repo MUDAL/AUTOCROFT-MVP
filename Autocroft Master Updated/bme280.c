@@ -100,19 +100,19 @@ void BME280_Init(void)
 	
 	*/
 	
-	GPIO_Output_Init(GPIOB,
-									 GPIO_PORT_REG_LOW,
-									(GPIO_PIN6_OUTPUT_MODE_2MHZ | GPIO_PIN7_OUTPUT_MODE_2MHZ),
-									(GPIO_PIN6_ALT_FUNC_OPEN_DRAIN | GPIO_PIN7_ALT_FUNC_OPEN_DRAIN));
+	GPIO_OutputInit(GPIOB,
+									GPIO_PORT_REG_LOW,
+								 (GPIO_PIN6_OUTPUT_MODE_2MHZ | GPIO_PIN7_OUTPUT_MODE_2MHZ),
+								 (GPIO_PIN6_ALT_FUNC_OPEN_DRAIN | GPIO_PIN7_ALT_FUNC_OPEN_DRAIN));
 	
 	I2C_Init(I2C1,
 					 I2C_PERIPH_FREQ_8MHZ,
 					 I2C_STANDARD_MODE_8MHZ_CCR, 
 					 I2C_STANDARD_MODE_8MHZ_TRISE);
 	
-	I2C_Read_Multiple(I2C1,BME280_ADDR, CALIB_00_25_ADDR, bme280Calib00_25, CALIB_00_25_SIZE);
+	I2C_ReadMultiByte(I2C1,BME280_ADDR, CALIB_00_25_ADDR, bme280Calib00_25, CALIB_00_25_SIZE);
 	//read the first 7 calibration data of calib26_41 register of bme280
-	I2C_Read_Multiple(I2C1,BME280_ADDR, CALIB_26_41_ADDR, bme280Calib26_41,7);
+	I2C_ReadMultiByte(I2C1,BME280_ADDR, CALIB_26_41_ADDR, bme280Calib26_41,7);
 	BME280_Store_Compensation_Parameters(bme280Calib00_25,bme280Calib26_41,&bme280);
 }
 
@@ -133,9 +133,9 @@ void BME280_Get_Data(bme280_t* pSensorData)
 	The actual temperature = sensor reading / 100 (see Bosch Sensortec BME280 datasheet).
 	The actual humidity = sensor reading / 1024 (see Bosch Sensortec BME280 datasheet).
 	*/
-	I2C_Write(I2C1,BME280_ADDR, CTRL_HUM_ADDR, CTRL_HUM_OSRS_H_OVR16);
-	I2C_Write(I2C1,BME280_ADDR, CTRL_MEAS_ADDR, (CTRL_MEAS_OSRS_T_OVR16 | CTRL_MEAS_MODE_FORCED1));
-	I2C_Read_Multiple(I2C1,BME280_ADDR, DATA_REG_ADDR, rawAdcValue, ADC_REGISTER_SIZE);
+	I2C_WriteByte(I2C1,BME280_ADDR, CTRL_HUM_ADDR, CTRL_HUM_OSRS_H_OVR16);
+	I2C_WriteByte(I2C1,BME280_ADDR, CTRL_MEAS_ADDR, (CTRL_MEAS_OSRS_T_OVR16 | CTRL_MEAS_MODE_FORCED1));
+	I2C_ReadMultiByte(I2C1,BME280_ADDR, DATA_REG_ADDR, rawAdcValue, ADC_REGISTER_SIZE);
 	
 	//The calculations below are based on equations from the.....
 	//Bosch Sensortec BME280 datasheet.

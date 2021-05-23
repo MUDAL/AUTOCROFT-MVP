@@ -84,11 +84,11 @@ static void FSM_IrrigTime(uint8_t substate);
 //Function definitions
 void refreshDisplay(uint8_t row, uint8_t column)
 {
-	LCD_Set_Cursor(row,column);
+	LCD_SetCursor(row,column);
 	//Delete line
 	for (uint8_t i = 0; i < 16; i++)
 	{
-		LCD_Write_Byte(' ');
+		LCD_WriteByte(' ');
 	}
 }
 
@@ -119,11 +119,11 @@ void displayBme280Data(char* firstRowHeading,
 		prevRow1Data = row1Data;
 	}
 	
-	LCD_Set_Cursor(0,0);
-	LCD_Write_String(firstRowHeading);
+	LCD_SetCursor(0,0);
+	LCD_WriteString(firstRowHeading);
 	Conv_IntegerToString(row1Data,strData1);
-	LCD_Write_String(strData1);
-	LCD_Write_Byte(measurementUnit1);
+	LCD_WriteString(strData1);
+	LCD_WriteByte(measurementUnit1);
 	
 	//bottom
 	if (prevRow2Data != row2Data)
@@ -132,11 +132,11 @@ void displayBme280Data(char* firstRowHeading,
 		prevRow2Data = row2Data;
 	}
 	
-	LCD_Set_Cursor(1,0);
-	LCD_Write_String(secondRowHeading);
+	LCD_SetCursor(1,0);
+	LCD_WriteString(secondRowHeading);
 	Conv_IntegerToString(row2Data,strData2);
-	LCD_Write_String(strData2);
-	LCD_Write_Byte(measurementUnit2);
+	LCD_WriteString(strData2);
+	LCD_WriteByte(measurementUnit2);
 	
 }
 
@@ -163,18 +163,18 @@ void displayNodeData(char* firstRowHeading,
 	{
 		case SUBSTATE_HIGHLIGHT_NODE_ID:
 			//top
-			LCD_Set_Cursor(0,0);
-			LCD_Write_Byte('>');
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,0);
+			LCD_WriteByte('>');
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 			Conv_IntegerToString(row1Data,strData1);
-			LCD_Write_String(strData1);
+			LCD_WriteString(strData1);
 			//bottom
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(row2Data,strData2);
-			LCD_Write_String(strData2);
-			LCD_Write_Byte('%');
+			LCD_WriteString(strData2);
+			LCD_WriteByte('%');
 			break;
 		
 		case SUBSTATE_SET_NODE_ID:
@@ -184,18 +184,18 @@ void displayNodeData(char* firstRowHeading,
 				prevRow1Data = row1Data;
 			}
 			//top
-			LCD_Set_Cursor(0,0);
-			LCD_Write_String(">>");
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,0);
+			LCD_WriteString(">>");
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 			Conv_IntegerToString(row1Data,strData1);
-			LCD_Write_String(strData1);
+			LCD_WriteString(strData1);
 			//bottom
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(row2Data,strData2);
-			LCD_Write_String(strData2);
-			LCD_Write_Byte('%');
+			LCD_WriteString(strData2);
+			LCD_WriteByte('%');
 			break;
 	}
 }
@@ -222,36 +222,36 @@ void displaySensorThreshold(sensorThreshold_t* pSensorThres,
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
 			//top
-			LCD_Set_Cursor(0,0);
-			LCD_Write_Byte('>');
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,0);
+			LCD_WriteByte('>');
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 			Conv_IntegerToString(pSensorThres->minValue,strMin);
-			LCD_Write_String(strMin);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMin);
+			LCD_WriteByte(measurementUnit);
 			//bottom
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(pSensorThres->maxValue,strMax);
-			LCD_Write_String(strMax);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMax);
+			LCD_WriteByte(measurementUnit);
 			break;
 		
 		case SUBSTATE_HIGHLIGHT_MAX:
 			//top
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 			Conv_IntegerToString(pSensorThres->minValue,strMin);
-			LCD_Write_String(strMin);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMin);
+			LCD_WriteByte(measurementUnit);
 			//bottom
-			LCD_Set_Cursor(1,0);
-			LCD_Write_Byte('>');
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,0);
+			LCD_WriteByte('>');
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(pSensorThres->maxValue,strMax);
-			LCD_Write_String(strMax);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMax);
+			LCD_WriteByte(measurementUnit);
 			break;
 		
 		case SUBSTATE_SET_MIN:
@@ -261,41 +261,41 @@ void displaySensorThreshold(sensorThreshold_t* pSensorThres,
 				refreshDisplay(0,0);
 				prevMinValue = pSensorThres->minValue;
 			}
-			LCD_Set_Cursor(0,0);
-			LCD_Write_String(">>");
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,0);
+			LCD_WriteString(">>");
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 			Conv_IntegerToString(pSensorThres->minValue,strMin);
-			LCD_Write_String(strMin);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMin);
+			LCD_WriteByte(measurementUnit);
 			//bottom
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(pSensorThres->maxValue,strMax);
-			LCD_Write_String(strMax);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMax);
+			LCD_WriteByte(measurementUnit);
 			break;
 		
 		case SUBSTATE_SET_MAX:
 			//top
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 		  Conv_IntegerToString(pSensorThres->minValue,strMin);
-			LCD_Write_String(strMin);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMin);
+			LCD_WriteByte(measurementUnit);
 			//bottom
 			if (prevMaxValue != pSensorThres->maxValue)
 			{
 				refreshDisplay(1,0);
 				prevMaxValue = pSensorThres->maxValue;
 			}
-			LCD_Set_Cursor(1,0);
-			LCD_Write_String(">>");
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,0);
+			LCD_WriteString(">>");
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(pSensorThres->maxValue,strMax);
-			LCD_Write_String(strMax);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMax);
+			LCD_WriteByte(measurementUnit);
 			break;
 	}
 	
@@ -316,36 +316,36 @@ void displayIrrigTime(irrigTime_t* pIrrigTime,
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
 			//top
-			LCD_Set_Cursor(0,0);
-			LCD_Write_Byte('>');
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,0);
+			LCD_WriteByte('>');
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 			Conv_IntegerToString(pIrrigTime->minValue,strMin);
-			LCD_Write_String(strMin);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMin);
+			LCD_WriteByte(measurementUnit);
 			//bottom
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(pIrrigTime->maxValue,strMax);
-			LCD_Write_String(strMax);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMax);
+			LCD_WriteByte(measurementUnit);
 			break;
 		
 		case SUBSTATE_HIGHLIGHT_MAX:
 			//top
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 			Conv_IntegerToString(pIrrigTime->minValue,strMin);
-			LCD_Write_String(strMin);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMin);
+			LCD_WriteByte(measurementUnit);
 			//bottom
-			LCD_Set_Cursor(1,0);
-			LCD_Write_Byte('>');
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,0);
+			LCD_WriteByte('>');
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(pIrrigTime->maxValue,strMax);
-			LCD_Write_String(strMax);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMax);
+			LCD_WriteByte(measurementUnit);
 			break;
 		
 		case SUBSTATE_SET_MIN:
@@ -355,41 +355,41 @@ void displayIrrigTime(irrigTime_t* pIrrigTime,
 				refreshDisplay(0,0);
 				prevMinValue = pIrrigTime->minValue;
 			}
-			LCD_Set_Cursor(0,0);
-			LCD_Write_String(">>");
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,0);
+			LCD_WriteString(">>");
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 			Conv_IntegerToString(pIrrigTime->minValue,strMin);
-			LCD_Write_String(strMin);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMin);
+			LCD_WriteByte(measurementUnit);
 			//bottom
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(pIrrigTime->maxValue,strMax);
-			LCD_Write_String(strMax);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMax);
+			LCD_WriteByte(measurementUnit);
 			break;
 		
 		case SUBSTATE_SET_MAX:
 			//top
-			LCD_Set_Cursor(0,3);
-			LCD_Write_String(firstRowHeading);
+			LCD_SetCursor(0,3);
+			LCD_WriteString(firstRowHeading);
 		  Conv_IntegerToString(pIrrigTime->minValue,strMin);
-			LCD_Write_String(strMin);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMin);
+			LCD_WriteByte(measurementUnit);
 			//bottom
 			if (prevMaxValue != pIrrigTime->maxValue)
 			{
 				refreshDisplay(1,0);
 				prevMaxValue = pIrrigTime->maxValue;
 			}
-			LCD_Set_Cursor(1,0);
-			LCD_Write_String(">>");
-			LCD_Set_Cursor(1,3);
-			LCD_Write_String(secondRowHeading);
+			LCD_SetCursor(1,0);
+			LCD_WriteString(">>");
+			LCD_SetCursor(1,3);
+			LCD_WriteString(secondRowHeading);
 			Conv_IntegerToString(pIrrigTime->maxValue,strMax);
-			LCD_Write_String(strMax);
-			LCD_Write_Byte(measurementUnit);
+			LCD_WriteString(strMax);
+			LCD_WriteByte(measurementUnit);
 			break;
 	}
 	

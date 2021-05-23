@@ -406,7 +406,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Messaging Application</GroupName>
+          <GroupName>Communication App</GroupName>
           <Files>
             <File>
               <FileName>message.c</FileName>
@@ -417,6 +417,16 @@
               <FileName>message.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\message.h</FilePath>
+            </File>
+            <File>
+              <FileName>error_correction.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\error_correction.c</FilePath>
+            </File>
+            <File>
+              <FileName>error_correction.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\error_correction.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -539,16 +549,6 @@
               <FilePath>.\dma.h</FilePath>
             </File>
             <File>
-              <FileName>exti.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\exti.c</FilePath>
-            </File>
-            <File>
-              <FileName>exti.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\exti.h</FilePath>
-            </File>
-            <File>
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\gpio.c</FilePath>
@@ -597,16 +597,6 @@
               <FileName>uart.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\uart.h</FilePath>
-            </File>
-            <File>
-              <FileName>afio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\afio.c</FilePath>
-            </File>
-            <File>
-              <FileName>afio.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\afio.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -49,43 +49,43 @@ static void LCD_Write(bool regSelect, char byte)
 	uint8_t lowNibble = byte << 4;
 	
 	//Select instruction register or data register 
-	GPIO_Output_Write(GPIOA, LCD_RS, regSelect);
+	GPIO_OutputWrite(GPIOA, LCD_RS, regSelect);
 	//Send high nibble to DB4-DB7
-	GPIO_Output_Clear_Reg(GPIOB,
-											 (1<<LCD_D4)|
-											 (1<<LCD_D5)|
-											 (1<<LCD_D6)|
-											 (1<<LCD_D7));
+	GPIO_OutputClearReg(GPIOB,
+										 (1<<LCD_D4)|
+										 (1<<LCD_D5)|
+										 (1<<LCD_D6)|
+										 (1<<LCD_D7));
 	
-	GPIO_Output_Reg_Write(GPIOB,
-											 (((byte & (1<<4)) >> 4) << LCD_D4)|
-											 (((byte & (1<<5)) >> 5) << LCD_D5)|
-											 (((byte & (1<<6)) >> 6) << LCD_D6)|
-											 (((byte & (1<<7)) >> 7) << LCD_D7) );
+	GPIO_OutputRegWrite(GPIOB,
+										 (((byte & (1<<4)) >> 4) << LCD_D4)|
+										 (((byte & (1<<5)) >> 5) << LCD_D5)|
+										 (((byte & (1<<6)) >> 6) << LCD_D6)|
+										 (((byte & (1<<7)) >> 7) << LCD_D7) );
 	
 	//High to Low pulse
-	GPIO_Output_Write(GPIOA,LCD_EN,true);
+	GPIO_OutputWrite(GPIOA,LCD_EN,true);
 	SysTick_DelayMs(1);
-	GPIO_Output_Write(GPIOA,LCD_EN,false);
+	GPIO_OutputWrite(GPIOA,LCD_EN,false);
 	SysTick_DelayMs(1);
 	
 	//Send low nibble to DB4-DB7
-	GPIO_Output_Clear_Reg(GPIOB,
-											 (1<<LCD_D4)|
-											 (1<<LCD_D5)|
-											 (1<<LCD_D6)|
-											 (1<<LCD_D7));
+	GPIO_OutputClearReg(GPIOB,
+										 (1<<LCD_D4)|
+										 (1<<LCD_D5)|
+										 (1<<LCD_D6)|
+										 (1<<LCD_D7));
 	
-	GPIO_Output_Reg_Write(GPIOB,
-											 (((lowNibble & (1<<4)) >> 4) << LCD_D4)|
-											 (((lowNibble & (1<<5)) >> 5) << LCD_D5)|
-											 (((lowNibble & (1<<6)) >> 6) << LCD_D6)|
-											 (((lowNibble & (1<<7)) >> 7) << LCD_D7) );
+	GPIO_OutputRegWrite(GPIOB,
+										 (((lowNibble & (1<<4)) >> 4) << LCD_D4)|
+										 (((lowNibble & (1<<5)) >> 5) << LCD_D5)|
+										 (((lowNibble & (1<<6)) >> 6) << LCD_D6)|
+										 (((lowNibble & (1<<7)) >> 7) << LCD_D7) );
 	
 	//High to Low Pulse
-	GPIO_Output_Write(GPIOA,LCD_EN,true);
+	GPIO_OutputWrite(GPIOA,LCD_EN,true);
 	SysTick_DelayMs(1);
-	GPIO_Output_Write(GPIOA,LCD_EN,false);
+	GPIO_OutputWrite(GPIOA,LCD_EN,false);
 	SysTick_DelayMs(1);
 	
 }
@@ -101,19 +101,19 @@ void LCD_Init(void)
 	
 	*/
 	//PA11 and PA12 as output
-	GPIO_Output_Init(GPIOA,
-									 GPIO_PORT_REG_HIGH,
-									 GPIO_PIN11_OUTPUT_MODE_2MHZ | GPIO_PIN12_OUTPUT_MODE_2MHZ,
-									 GPIO_GEN_PUR_OUTPUT_PUSH_PULL);
+	GPIO_OutputInit(GPIOA,
+									GPIO_PORT_REG_HIGH,
+									GPIO_PIN11_OUTPUT_MODE_2MHZ | GPIO_PIN12_OUTPUT_MODE_2MHZ,
+									GPIO_GEN_PUR_OUTPUT_PUSH_PULL);
 	
 	//PB12-15 as output
-	GPIO_Output_Init(GPIOB,
-									 GPIO_PORT_REG_HIGH,
-									(GPIO_PIN12_OUTPUT_MODE_2MHZ | 
-									 GPIO_PIN13_OUTPUT_MODE_2MHZ | 
-									 GPIO_PIN14_OUTPUT_MODE_2MHZ | 
-									 GPIO_PIN15_OUTPUT_MODE_2MHZ),
-									 GPIO_GEN_PUR_OUTPUT_PUSH_PULL);
+	GPIO_OutputInit(GPIOB,
+									GPIO_PORT_REG_HIGH,
+								 (GPIO_PIN12_OUTPUT_MODE_2MHZ | 
+									GPIO_PIN13_OUTPUT_MODE_2MHZ | 
+									GPIO_PIN14_OUTPUT_MODE_2MHZ | 
+									GPIO_PIN15_OUTPUT_MODE_2MHZ),
+									GPIO_GEN_PUR_OUTPUT_PUSH_PULL);
 	
 	//Initialization sequence (according to HD44780 datasheet)
 	SysTick_DelayMs(16); //Power-on delay (must be greater than 15ms for 4.5v and 40ms for 2.7v)
@@ -130,7 +130,7 @@ void LCD_Init(void)
 	LCD_Write(false,CMD_ENTRY_MODE_INCREMENT_CURSOR); 
 }
 
-void LCD_Write_Byte(char data)
+void LCD_WriteByte(char data)
 {
 	/*
 	Description:
@@ -145,7 +145,7 @@ void LCD_Write_Byte(char data)
 	
 }
 
-void LCD_Write_String(char* pData)
+void LCD_WriteString(char* pData)
 {
 	/*
 	Description:
@@ -158,7 +158,7 @@ void LCD_Write_String(char* pData)
 
 	while(*pData != '\0')
 	{
-		LCD_Write_Byte(*pData);
+		LCD_WriteByte(*pData);
 		pData++;
 	}
 	
@@ -179,7 +179,7 @@ void LCD_Clear(void)
 	LCD_Write(false, CMD_CLEAR_DISPLAY);
 }
 
-void LCD_Set_Cursor(uint8_t row, uint8_t column)
+void LCD_SetCursor(uint8_t row, uint8_t column)
 {
 	/*
 	Description:

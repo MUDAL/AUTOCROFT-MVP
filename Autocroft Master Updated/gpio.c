@@ -24,11 +24,11 @@ void GPIO_Reset(void)
 	GPIOC->CRH &= ~0xCCCCCCCC;
 }
 
-void GPIO_Input_Init(GPIO_TypeDef* gpioPort, 
-										 uint8_t portLevel, 
-										 uint8_t gpioPin,
-										 uint32_t config,  
-										 bool pullupEn)
+void GPIO_InputInit(GPIO_TypeDef* gpioPort, 
+										uint8_t portLevel, 
+										uint8_t gpioPin,
+										uint32_t config,  
+										bool pullupEn)
 											 
 {
 	/*
@@ -82,10 +82,10 @@ void GPIO_Input_Init(GPIO_TypeDef* gpioPort,
 	}
 }
 
-void GPIO_Output_Init(GPIO_TypeDef* gpioPort,
-										  uint8_t portLevel,
-											uint32_t mode,
-											uint32_t config)
+void GPIO_OutputInit(GPIO_TypeDef* gpioPort,
+										 uint8_t portLevel,
+										 uint32_t mode,
+										 uint32_t config)
 
 {
 	/*
@@ -129,9 +129,9 @@ void GPIO_Output_Init(GPIO_TypeDef* gpioPort,
 	*pGpioConfigReg |= config;
 }
 
-void GPIO_Output_Write(GPIO_TypeDef* gpioPort,
-															uint8_t gpioPin,
-															bool gpioPinLogic)
+void GPIO_OutputWrite(GPIO_TypeDef* gpioPort,
+											uint8_t gpioPin,
+											bool gpioPinLogic)
 																
 {
 	
@@ -167,19 +167,17 @@ void GPIO_Output_Write(GPIO_TypeDef* gpioPort,
 	
 }
 
-void GPIO_Output_Clear_Reg(GPIO_TypeDef* gpioPort,
-													 uint32_t gpioPins)
+void GPIO_OutputClearReg(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
 {
 	gpioPort->ODR &= ~gpioPins;
 }
 
-void GPIO_Output_Reg_Write(GPIO_TypeDef* gpioPort,
-													 uint32_t gpioPins)
+void GPIO_OutputRegWrite(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
 {
 	gpioPort->ODR |= gpioPins;
 }
 
-bool GPIO_Input_Read(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
+bool GPIO_InputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
 {
 	/*
 	Description:
@@ -209,7 +207,7 @@ bool GPIO_Input_Read(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
 	return false;
 }
 
-bool GPIO_Output_Read(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
+bool GPIO_OutputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
 {
 	if ( (gpioPort->ODR & (1<<gpioPin)) == (1<<gpioPin) )
 	{

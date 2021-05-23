@@ -40,20 +40,24 @@ void USART_Init(USART_TypeDef* uartPort,
 	
 	switch (dmaMode)
 	{
-		case USART_TX_DMA_DISABLE:
-			uartPort->CR3 &= ~USART_DMA_TX_ENABLE;
+		case TX_DMA_DISABLE:
+			uartPort->CR3 &= ~USART_CR3_DMAT;
 			break;
-		case USART_RX_DMA_DISABLE:
-			uartPort->CR3 &= ~USART_DMA_RX_ENABLE;
+		case RX_DMA_DISABLE:
+			uartPort->CR3 &= ~USART_CR3_DMAR;
+			break;
+		case TX_DMA_ENABLE:
+			uartPort->CR3 |= USART_CR3_DMAT;
+			break;
+		case RX_DMA_ENABLE:
+			uartPort->CR3 |= USART_CR3_DMAR;
 			break;
 	}
-	
-	uartPort->CR3 |= dmaMode;
 	uartPort->BRR = baud;
 	uartPort->CR1 |= uartMode;
 }
 
-void USART_Transmit_Byte(USART_TypeDef* uartPort, char byte)
+void USART_TransmitByte(USART_TypeDef* uartPort, char byte)
 {
 	/*
 	Description:
@@ -80,7 +84,7 @@ void USART_Transmit_Byte(USART_TypeDef* uartPort, char byte)
 	
 }
 
-void USART_Transmit_String(USART_TypeDef* uartPort, char* pString)
+void USART_TransmitString(USART_TypeDef* uartPort, char* pString)
 {
 	/*
 	Description:

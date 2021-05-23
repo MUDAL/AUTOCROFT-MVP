@@ -11,28 +11,28 @@ extern void I2C_Init(I2C_TypeDef* i2cPort,
 										 uint32_t i2cCCR, 
 										 uint32_t i2cTRISE);
 
-extern void I2C_Write(I2C_TypeDef* i2cPort, 
-											uint8_t slaveAddr,
-											uint8_t regAddr,
-											uint8_t data);
+extern void I2C_WriteByte(I2C_TypeDef* i2cPort, 
+													uint8_t slaveAddr,
+													uint8_t regAddr,
+													uint8_t data);
 
-extern void I2C_Write_Multiple(I2C_TypeDef* i2cPort, 
+extern void I2C_WriteMultiByte(I2C_TypeDef* i2cPort, 
 															 uint8_t slaveAddr,
 															 uint8_t regAddr,
 															 uint8_t* data,
 															 uint32_t length);
 
-extern void I2C_Read_1Byte(I2C_TypeDef* i2cPort,
+extern void I2C_ReadByte(I2C_TypeDef* i2cPort,
+													uint8_t slaveAddr,
+													uint8_t regAddr, 
+													uint8_t* data); 
+
+extern void I2C_Read2Bytes(I2C_TypeDef* i2cPort, 
 													 uint8_t slaveAddr,
-													 uint8_t regAddr, 
-													 uint8_t* data); 
+													 uint8_t regAddr,
+													 uint8_t* data);
 
-extern void I2C_Read_2Bytes(I2C_TypeDef* i2cPort, 
-														uint8_t slaveAddr,
-														uint8_t regAddr,
-														uint8_t* data);
-
-extern void I2C_Read_Multiple(I2C_TypeDef* i2cPort,
+extern void I2C_ReadMultiByte(I2C_TypeDef* i2cPort,
 															uint8_t slaveAddr,
 															uint8_t regAddr,
 															uint8_t* data,
