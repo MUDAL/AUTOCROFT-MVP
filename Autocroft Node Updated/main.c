@@ -11,10 +11,9 @@
 #include "eeprom24c16.h"
 #include "hc12.h"
 #include "message.h"
-#include "error_correction.h"
 
 //Private defines
-#define NODE_ID				0
+#define NODE_ID				1
 
 //Private globals
 static MasterMessageDataStructure masterToNode;
@@ -29,11 +28,10 @@ typedef struct
 }autocroft_t;
 
 //Functions
-static autocroft_t Node_GetAllData(void);
+static autocroft_t GetAllData(void);
 
 int main(void)
 {
-	
 	//Local variables
 	static NodeMessageDataStructure nodeToMaster;
 	static sysTimer_t irrigTimer;
@@ -51,7 +49,6 @@ int main(void)
 	//EEPROM_Init();
 	Master_MessageInit(&masterToNode);
 	Node_MessageInit(&nodeToMaster);
-
 	//System_ClearStandbyFlag();
 	
 	while(1)
@@ -60,7 +57,7 @@ int main(void)
 			
 		if (HC12_Rx_BufferFull())
 		{
-			autocroftData = Node_GetAllData();
+			autocroftData = GetAllData();
 
 			switch (autocroftData.irrigation.wateringMethod)
 			{
@@ -101,12 +98,10 @@ int main(void)
 				Solenoid_Switch(SOLENOID_OFF);
 			}
 		}
-		
 	}
-	
 }
 
-autocroft_t Node_GetAllData(void)
+autocroft_t GetAllData(void)
 {
 	static autocroft_t autocroftData;
 	
