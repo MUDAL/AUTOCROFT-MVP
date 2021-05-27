@@ -116,7 +116,7 @@ void BME280_Init(void)
 	BME280_Store_Compensation_Parameters(bme280Calib00_25,bme280Calib26_41,&bme280);
 }
 
-void BME280_Get_Data(bme280_t* pSensorData)
+void BME280_GetData(bme280_t* pSensorData)
 {
 	/*
 	Description:

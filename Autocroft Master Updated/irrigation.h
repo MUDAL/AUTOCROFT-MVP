@@ -3,10 +3,8 @@
 
 typedef struct
 {
-	
 	uint16_t minValue;
 	uint16_t maxValue;
-	
 }irrigTime_t;
 
 #endif //_IRRIGATION_H

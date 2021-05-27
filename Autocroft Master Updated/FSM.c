@@ -409,7 +409,7 @@ void FSM_StateTransition(button_t* pButton, uint8_t state, uint8_t substate)
 void FSM_DisplayBme280Data(uint8_t substate)
 {
 	bme280_t bme280Data;
-	BME280_Get_Data(&bme280Data);
+	BME280_GetData(&bme280Data);
 	
 	displayBme280Data("Hum: ",
 										"Temp: ",

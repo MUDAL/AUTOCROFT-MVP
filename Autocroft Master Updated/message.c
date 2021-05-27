@@ -8,17 +8,20 @@
 //Private defines
 #define NO_OF_MSG_STRUCT				11
 
+//Private variables
 const char masterMsgTemplate[MASTER_TO_NODE_MSG_SIZE] =
 	"mMin:0000,mMax:0000,hMin:0000,hMax:0000,tMin:0000,tMax:0000,iMin:0000,iMax:0000,h:0000,t:0000,nID:0000,";
 
 const char nodeMsgTemplate[HC12_RX_BUFFER_SIZE] = "moisture:0000,";
 
+//Private functions
 static void Message_Struct_Init(message_t* pMsgStruct, uint8_t colonIndx, uint8_t commaIndx)
 {
 	pMsgStruct->colonIndex = colonIndx;
 	pMsgStruct->commaIndex = commaIndx;
 }
 
+//External functions
 void Master_MessageInit(MasterMessageDataStructure* pMessage)
 {
 	uint8_t i = 0;
@@ -73,6 +76,8 @@ void Node_MessageInit(NodeMessageDataStructure* pMessage)
 	uint8_t nodeColonIndex;
 	uint8_t nodeCommaIndex;
 	
+	strcpy(pMessage->data,nodeMsgTemplate);
+	
 	while(nodeMsgTemplate[i] != '\0')
 	{
 		if (nodeMsgTemplate[i] == ':')
@@ -85,7 +90,6 @@ void Node_MessageInit(NodeMessageDataStructure* pMessage)
 		}
 		i++;
 	}
-		
 	Message_Struct_Init(&pMessage->moistStruct, nodeColonIndex , nodeCommaIndex);
 }
 
@@ -145,4 +149,3 @@ uint16_t Node_MessageDecode(message_t* pMsgStruct, char* nodeToMasterData)
 	uint16_t intData = Conv_StringToInteger(strData);
 	return intData;
 }
-

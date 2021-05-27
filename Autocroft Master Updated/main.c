@@ -12,8 +12,11 @@
 #include "sensor.h"
 #include "irrigation.h"
 #include "message.h"
-#include "error_correction.h"
 #include "FSM.h"
+
+//Private functions
+static void StoreNodeData(MasterMessageDataStructure* pMasterToNode,
+													NodeMessageDataStructure* pNodeToMaster);
 
 int main(void)
 {
@@ -31,7 +34,6 @@ int main(void)
 	HC12_Rx_BufferInit(nodeToMaster.data, HC12_RX_BUFFER_SIZE);
 	BME280_Init();
 	Button_Init(&button);
-	
 	Master_MessageInit(&masterToNode);
 	Node_MessageInit(&nodeToMaster);
 	FSM_Init(&button,&masterToNode,&nodeToMaster);
@@ -42,7 +44,7 @@ int main(void)
 		
 		if (Button_Read(&button.send))
 		{
-			BME280_Get_Data(&bme280Data);
+			BME280_GetData(&bme280Data);
 			Master_MessageEncode(masterToNode.data, 
 													 &masterToNode.humStruct,
 													 bme280Data.humidity);
@@ -56,11 +58,14 @@ int main(void)
 		
 		if (HC12_Rx_BufferFull())
 		{
-			nodeToMaster.moistureArr[masterToNode.nodeID] = 
-				Node_MessageDecode(&nodeToMaster.moistStruct,
-														nodeToMaster.data);
+			StoreNodeData(&masterToNode,&nodeToMaster);
 		}			
-		
 	}
-	
+}
+
+void StoreNodeData(MasterMessageDataStructure* pMasterToNode,
+									 NodeMessageDataStructure* pNodeToMaster)
+{
+	pNodeToMaster->moistureArr[pMasterToNode->nodeID] = 
+	Node_MessageDecode(&pNodeToMaster->moistStruct,pNodeToMaster->data);
 }

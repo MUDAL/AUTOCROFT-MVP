@@ -418,16 +418,6 @@
               <FileType>5</FileType>
               <FilePath>.\message.h</FilePath>
             </File>
-            <File>
-              <FileName>error_correction.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\error_correction.c</FilePath>
-            </File>
-            <File>
-              <FileName>error_correction.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\error_correction.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -442,16 +432,6 @@
               <FileName>bme280.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\bme280.h</FilePath>
-            </File>
-            <File>
-              <FileName>bms.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\bms.c</FilePath>
-            </File>
-            <File>
-              <FileName>bms.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\bms.h</FilePath>
             </File>
             <File>
               <FileName>button.c</FileName>

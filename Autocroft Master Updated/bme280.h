@@ -14,6 +14,6 @@ Obtains the value of humidity and temperature from the BME280
 sensor and stores in a variable of type 'bme280_t'. A pointer
 to this variable has to be passed into the function.
 */
-extern void BME280_Get_Data(bme280_t* pSensorData);
+extern void BME280_GetData(bme280_t* pSensorData);
 
 #endif //_BME280_H
