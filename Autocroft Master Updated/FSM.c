@@ -633,9 +633,7 @@ void FSM_Init(ButtonDataStructure* pButton,
 	ptrNodeToMaster = pNodeToMaster;
 }
 
-void FSM_Execute(ButtonDataStructure* pButton,
-								 MasterMessageDataStructure* pMasterToNode,
-							   NodeMessageDataStructure* pNodeToMaster)
+void FSM_Execute(void)
 {
 	static void (*pStateFunction[NUMBER_OF_STATES])(uint8_t substate) = 
 	{
