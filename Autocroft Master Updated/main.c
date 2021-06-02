@@ -40,7 +40,7 @@ int main(void)
 	
 	while(1)
 	{
-		FSM_Execute(&button,&masterToNode,&nodeToMaster);
+		FSM_Execute();
 		
 		if (Button_Read(&button.send))
 		{
