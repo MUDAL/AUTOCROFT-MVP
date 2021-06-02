@@ -43,7 +43,7 @@ int main(void)
 	
 	while(1)
 	{
-		FSM_Execute(&button,&masterTx,&masterRx);
+		FSM_Execute();
 		
 		if (Button_Read(&button.send))
 		{
