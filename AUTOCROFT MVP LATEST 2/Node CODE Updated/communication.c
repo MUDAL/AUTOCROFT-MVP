@@ -8,10 +8,6 @@
 uint16_t Node_DecodeRxData(NodeRxDataStructure* pNodeRx, dataIndex_t dataIndex)
 {
 	uint16_t masterToNodeData = 0;
-	if(dataIndex > MAX_IRRIG_TIME)
-	{//Invalid input
-		return 0;
-	}
 	if(dataIndex != MIN_IRRIG_TIME && dataIndex != MAX_IRRIG_TIME)
 	{
 		masterToNodeData = pNodeRx->data[dataIndex];
