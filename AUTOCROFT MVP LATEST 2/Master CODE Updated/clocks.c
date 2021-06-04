@@ -20,8 +20,6 @@ void Clocks_Init(void)
 	RCC->CFGR &= ~RCC_CFGR_PPRE1; //No APB1 prescaler, run it at 8MHz
 	RCC->CR &= ~RCC_CR_PLLON;	//disable PLL
 	RCC->CR &= ~RCC_CR_HSEON; //disable external oscillator
-	//enable clock for DMA1
-	RCC->AHBENR |= RCC_AHBENR_DMA1EN;
 	//enable clock access for GPIOA, GPIOB, USART1, ADC1, ADC2
 	RCC->APB2ENR |= (RCC_APB2ENR_IOPAEN 	| 
 									 RCC_APB2ENR_IOPBEN 	| 

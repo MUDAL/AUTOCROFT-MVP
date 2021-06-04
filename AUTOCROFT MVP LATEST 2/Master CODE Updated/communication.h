@@ -9,6 +9,12 @@ transfer between master and node.
 #define NEUTRAL_NODE_ID				0 /*valid node ID starts from 1*/
 #define NO_OF_NODES						101
 
+/**
+@brief Each part of the data to be transmitted is an element
+of an array of bytes. e.g. minimum moisture is the first element  
+of the array with an index of 0, maximum humidity is the 4th element  
+of the array with an index of 3.
+*/
 typedef enum
 {
 	MIN_MOISTURE = 0,
@@ -46,9 +52,6 @@ typedef struct
 	uint8_t moistureArr[NO_OF_NODES];
 }MasterRxDataStructure;
 
-extern void Master_TxInit(MasterTxDataStructure* pMasterTx);
-extern void Master_RxInit(MasterRxDataStructure* pMasterRx);
-extern void Master_EncodeTxMessage(MasterTxDataStructure* pMasterTx, uint16_t data, dataIndex_t dataIndex);
-extern uint8_t Master_DecodeRxMessage(MasterRxDataStructure* pMasterRx);
+extern void Master_EncodeTxData(MasterTxDataStructure* pMasterTx, uint16_t data, dataIndex_t dataIndex);
 
 #endif //_COMMUNICATION_H

@@ -313,9 +313,7 @@ void FSM_DisplayBme280Data(uint8_t substate)
 										bme280Data.temperature,
 										'%',
 										'C');
-	FSM_StateTransition(&ptrButton->forward,
-									    STATE_NODE,
-										  SUBSTATE_HIGHLIGHT_NODE_ID);	
+	FSM_StateTransition(&ptrButton->forward, STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);	
 }
 
 void FSM_Node(uint8_t substate)
@@ -337,13 +335,9 @@ void FSM_Node(uint8_t substate)
 		case SUBSTATE_SET_NODE_ID:
 			ptrMasterToNode->nodeID = Potentiometer_GetPercentPosition();
 		
-			FSM_StateTransition(&ptrButton->enter, 
-													STATE_NODE,
-													SUBSTATE_HIGHLIGHT_NODE_ID);
+			FSM_StateTransition(&ptrButton->enter, STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);
 		
-			Master_EncodeTxMessage(ptrMasterToNode,
-														 ptrMasterToNode->nodeID,
-														 NODE_ID);
+			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->nodeID, NODE_ID);
 			break;
 	}	
 }
@@ -375,17 +369,13 @@ void FSM_Moisture(uint8_t substate)
 		case SUBSTATE_SET_MIN:
 			ptrMasterToNode->minMoist = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
-			Master_EncodeTxMessage(ptrMasterToNode,
-													   ptrMasterToNode->minMoist,
-													   MIN_MOISTURE);
+			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->minMoist, MIN_MOISTURE);
 			break;
 		
 		case SUBSTATE_SET_MAX:
 			ptrMasterToNode->maxMoist = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MAX);
-			Master_EncodeTxMessage(ptrMasterToNode,
-													   ptrMasterToNode->maxMoist,
-													   MAX_MOISTURE);
+			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->maxMoist, MAX_MOISTURE);
 			break;
 	}
 }
@@ -417,17 +407,13 @@ void FSM_Humidity(uint8_t substate)
 		case SUBSTATE_SET_MIN:
 			ptrMasterToNode->minHum = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
-			Master_EncodeTxMessage(ptrMasterToNode,
-													   ptrMasterToNode->minHum,
-													   MIN_HUMIDITY);
+			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->minHum, MIN_HUMIDITY);
 			break;
 		
 		case SUBSTATE_SET_MAX:
 			ptrMasterToNode->maxHum = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MAX);
-			Master_EncodeTxMessage(ptrMasterToNode,
-													   ptrMasterToNode->maxHum,
-													   MAX_HUMIDITY);
+			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->maxHum, MAX_HUMIDITY);
 			break;
 	}
 }
@@ -460,17 +446,13 @@ void FSM_Temperature(uint8_t substate)
 		case SUBSTATE_SET_MIN:
 			ptrMasterToNode->minTemp = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
-			Master_EncodeTxMessage(ptrMasterToNode,
-													   ptrMasterToNode->minTemp,
-													   MIN_TEMPERATURE);
+			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->minTemp, MIN_TEMPERATURE);
 			break;
 		
 		case SUBSTATE_SET_MAX:
 			ptrMasterToNode->maxTemp = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MAX);	
-			Master_EncodeTxMessage(ptrMasterToNode,
-													   ptrMasterToNode->maxTemp,
-													   MAX_TEMPERATURE);
+			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->maxTemp, MAX_TEMPERATURE);
 			break;
 	}
 }
@@ -500,17 +482,13 @@ void FSM_IrrigTime(uint8_t substate)
 		case SUBSTATE_SET_MIN:
 			ptrMasterToNode->minIrrigTime = Potentiometer_GetRawPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MIN);	
-			Master_EncodeTxMessage(ptrMasterToNode,
-													   ptrMasterToNode->minIrrigTime,
-													   MIN_IRRIG_TIME);
+			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->minIrrigTime, MIN_IRRIG_TIME);
 			break;
 		
 		case SUBSTATE_SET_MAX:
 			ptrMasterToNode->maxIrrigTime = Potentiometer_GetRawPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MAX);	
-			Master_EncodeTxMessage(ptrMasterToNode,
-													   ptrMasterToNode->maxIrrigTime,
-													   MAX_IRRIG_TIME);
+			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->maxIrrigTime, MAX_IRRIG_TIME);
 			break;
 	}
 }

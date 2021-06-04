@@ -2,27 +2,20 @@
 #include <stdbool.h>
 #include "gpio.h"
 #include "uart.h"
-#include "dma.h"
 #include "hc12.h"
 
 void HC12_TxInit(void)
 {
-	
 	//GPIO configuration for USART1 Tx
 	GPIO_OutputInit(GPIOA,
 									GPIO_PORT_REG_HIGH,
 									GPIO_PIN9_OUTPUT_MODE_2MHZ,
 									GPIO_PIN9_ALT_FUNC_PUSH_PULL);
-	
 	//USART1 configuration
-	USART_Init(USART1,
-						 BAUD_9600,
-						 TX_DMA_DISABLE,
-						 USART_TX_ENABLE);
-	
+	USART_Init(USART1,BAUD_9600,USART_TX_ENABLE);
 }
 
-void HC12_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
+void HC12_RxInit(void)
 {
 	//GPIO configuration for USART1 Rx
 	GPIO_InputInit(GPIOA,
@@ -30,21 +23,8 @@ void HC12_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
 								 GPIO_PIN10,
 								 GPIO_PIN10_INPUT_PULLUP_OR_PULLDOWN,
 								 GPIO_PULLUP_ENABLE);
-	
 	//USART1 configuration
-	USART_Init(USART1,
-						 BAUD_9600,
-						 RX_DMA_ENABLE,
-						 USART_RX_ENABLE);
-	
-	//DMA1 channel 5 configuration for USART1 Rx
-	DMA_USART_Rx_Init(DMA1_Channel5,
-										USART1,
-										pBuffer,
-										bufferSize, 
-										DMA_CHANNEL5_MEMORY_INC_MODE |
-										DMA_CHANNEL5_CIRCULAR_BUFFER |
-										DMA_CHANNEL5_ENABLE);
+	USART_Init(USART1,BAUD_9600,USART_RX_ENABLE);
 }
 	
 void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)
@@ -62,16 +42,11 @@ void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)
 
 bool HC12_Rx_BufferFull(void)
 {
-	return DMA_Rx_BufferFull(DMA1, DMA_CHANNEL5);
+	return USART_RxBufferFull(USART1);
 }
 
-uint32_t HC12_BaudRate(void)
+uint8_t HC12_ReadByte(void)
 {
-	return USART_GetBaudRate(USART1);
-}
-
-uint16_t HC12_NumberOfBytesToReceive(void)
-{
-	return DMA_Rx_CNDTR(DMA1_Channel5);
+	return USART_ReadByte(USART1);
 }
 

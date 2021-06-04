@@ -12,9 +12,16 @@
 #include "communication.h"
 #include "FSM.h"
 
-//Private functions
-static void StoreNodeData(MasterTxDataStructure* pMasterTx,
-													MasterRxDataStructure* pMasterRx);
+/**
+@Description Autocroft master.  
+Next development:
+*Drivers for a keypad to replace buttons and potentiometer
+*Bluetooth and WiFi functionality (no user interface)
+*/
+
+//Debug
+//uint8_t inc = 0;
+//uint8_t received = 0;
 
 int main(void)
 {
@@ -29,42 +36,31 @@ int main(void)
 	Potentiometer_Init();
 	LCD_Init();
 	HC12_TxInit();
-	HC12_RxBufferInit(&masterRx.data, HC12_RX_BUFFER_SIZE);
+	HC12_RxInit();
 	BME280_Init();
 	Button_Init(&button);
-	Master_TxInit(&masterTx);
-	Master_RxInit(&masterRx);
 	FSM_Init(&button,&masterTx,&masterRx);
 	
 	while(1)
 	{
 		FSM_Execute();
-		
 		if (Button_Read(&button.send))
-		{
+		{ 
+			//inc++;
 			BME280_GetData(&bme280Data);
 			masterTx.humidity = bme280Data.humidity;
 			masterTx.temperature = bme280Data.temperature;
-			
-			Master_EncodeTxMessage(&masterTx, 
-													   masterTx.humidity,
-													   HUMIDITY);
-			Master_EncodeTxMessage(&masterTx,
-													   masterTx.temperature,
-													   TEMPERATURE);
+			Master_EncodeTxData(&masterTx,masterTx.humidity,HUMIDITY);
+			Master_EncodeTxData(&masterTx,masterTx.temperature,TEMPERATURE);
 			HC12_TransmitBytes(masterTx.data, MASTER_TX_MSG_SIZE);
 		}
-		
 		if (HC12_Rx_BufferFull())
-		{
-			StoreNodeData(&masterTx,&masterRx); //shouldn't be called if error is detected
+		{ 
+			//received++;
+			masterRx.data = HC12_ReadByte();
+			masterRx.moistureArr[masterTx.nodeID] = masterRx.data; //shouldn't be executed if error is detected
 		}
 	}
 }
 
-void StoreNodeData(MasterTxDataStructure* pMasterTx,
-									 MasterRxDataStructure* pMasterRx)
-{
-	pMasterRx->moistureArr[pMasterTx->nodeID] = 
-	Master_DecodeRxMessage(pMasterRx);
-}
+
