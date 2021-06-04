@@ -69,14 +69,3 @@ bool HC12_Rx_BufferFull(void)
 {
 	return DMA_Rx_BufferFull(DMA1, DMA_CHANNEL5);
 }
-
-uint32_t HC12_BaudRate(void)
-{
-	return USART_GetBaudRate(USART1);
-}
-
-uint16_t HC12_NumberOfBytesToReceive(void)
-{
-	return DMA_Rx_CNDTR(DMA1_Channel5);
-}
-

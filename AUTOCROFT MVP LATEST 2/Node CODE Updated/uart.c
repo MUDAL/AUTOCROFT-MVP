@@ -36,8 +36,8 @@ void USART_Init(USART_TypeDef* uartPort,
 	None
 	
 	*/
-	
 	uartPort->CR1 |= USART_CR1_UE;
+	uartPort->CR1 &= ~uartMode;
 	switch (dmaMode)
 	{
 		case TX_DMA_DISABLE:

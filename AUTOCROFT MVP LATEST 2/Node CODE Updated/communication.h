@@ -5,6 +5,12 @@
 transfer between master and node.
 */
 
+/**
+@brief Each part of the data to be received is an element
+of an array of bytes. e.g. minimum moisture is the first element  
+of the array with an index of 0, maximum humidity is the 4th element  
+of the array with an index of 3.
+*/
 typedef enum
 {
 	MIN_MOISTURE = 0,
@@ -22,11 +28,7 @@ typedef enum
 
 typedef struct
 {
-	uint8_t TxData; /** Node Tx data member*/
-	/**
-	@brief Node Rx data members
-	*/
-	uint8_t RxData[HC12_RX_BUFFER_SIZE];
+	uint8_t data[HC12_RX_BUFFER_SIZE];
 	uint8_t minMoist;
 	uint8_t maxMoist;
 	uint8_t minHum;
@@ -39,10 +41,9 @@ typedef struct
 	uint16_t minIrrigTime;
 	uint16_t maxIrrigTime;
 	uint32_t dataRxTimeMs;
-}NodeDataStructure;
+}NodeRxDataStructure;
 
-
-extern void Node_Init(NodeDataStructure* pNode);
-extern uint16_t Node_DecodeRxMessage(NodeDataStructure* pNode, dataIndex_t dataIndex);
+extern uint16_t Node_DecodeRxData(NodeRxDataStructure* pNodeRx, dataIndex_t dataIndex);
+extern void Node_StoreRxData(NodeRxDataStructure* pNodeRx);
 
 #endif //_COMMUNICATION_H

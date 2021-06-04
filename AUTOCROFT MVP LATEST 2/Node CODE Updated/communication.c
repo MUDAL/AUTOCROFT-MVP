@@ -5,39 +5,7 @@
 #include "hc12.h"
 #include "communication.h"
 
-//Private variables
-/**
-@brief template for data the node expects from the master.  
-*/
-static const uint8_t nodeRxDataTemplate[HC12_RX_BUFFER_SIZE];
-/**
-@brief template for data the node will transmit to the master.
-*/
-static const uint8_t nodeTxDataTemplate;
-
-//Private functions
-static void copyIntArray(uint8_t* pDest, const uint8_t* pSource, uint8_t length)
-{
-	if (length < 1)
-	{//Invalid input
-		return;
-	}
-	for(uint8_t i = 0; i < length; i++)
-	{
-		pDest[i] = pSource[i];
-	}
-}
-
-//External functions
-void Node_Init(NodeDataStructure* pNode)
-{
-	//Rx initialization
-	copyIntArray(pNode->RxData, nodeRxDataTemplate, HC12_RX_BUFFER_SIZE);
-	//Tx initialization
-	pNode->TxData = nodeTxDataTemplate;
-}
-
-uint16_t Node_DecodeRxMessage(NodeDataStructure* pNode, dataIndex_t dataIndex)
+uint16_t Node_DecodeRxData(NodeRxDataStructure* pNodeRx, dataIndex_t dataIndex)
 {
 	uint16_t masterToNodeData = 0;
 	if(dataIndex > MAX_IRRIG_TIME)
@@ -46,13 +14,31 @@ uint16_t Node_DecodeRxMessage(NodeDataStructure* pNode, dataIndex_t dataIndex)
 	}
 	if(dataIndex != MIN_IRRIG_TIME && dataIndex != MAX_IRRIG_TIME)
 	{
-		masterToNodeData = pNode->RxData[dataIndex];
+		masterToNodeData = pNodeRx->data[dataIndex];
 	}
 	else
 	{
-		uint8_t upperByte = pNode->RxData[dataIndex];
-		uint8_t lowerByte = pNode->RxData[dataIndex + 1];
+		uint8_t upperByte = pNodeRx->data[dataIndex];
+		uint8_t lowerByte = pNodeRx->data[dataIndex + 1];
 		masterToNodeData = (upperByte<<8)|lowerByte;
 	}
 	return masterToNodeData;
 }
+
+void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
+{
+	pNodeRx->minMoist = Node_DecodeRxData(pNodeRx,MIN_MOISTURE);
+	pNodeRx->maxMoist = Node_DecodeRxData(pNodeRx,MAX_MOISTURE);
+	
+	pNodeRx->humidity= Node_DecodeRxData(pNodeRx,HUMIDITY);
+	pNodeRx->minHum = Node_DecodeRxData(pNodeRx,MIN_HUMIDITY);
+	pNodeRx->maxHum = Node_DecodeRxData(pNodeRx,MAX_HUMIDITY);
+	
+	pNodeRx->temperature = Node_DecodeRxData(pNodeRx,TEMPERATURE);
+	pNodeRx->minTemp = Node_DecodeRxData(pNodeRx,MIN_TEMPERATURE);
+	pNodeRx->maxTemp = Node_DecodeRxData(pNodeRx,MAX_TEMPERATURE);
+			
+	pNodeRx->minIrrigTime = Node_DecodeRxData(pNodeRx,MIN_IRRIG_TIME);
+	pNodeRx->maxIrrigTime = Node_DecodeRxData(pNodeRx,MAX_IRRIG_TIME);
+}
+

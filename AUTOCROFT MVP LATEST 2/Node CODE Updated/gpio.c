@@ -164,7 +164,6 @@ void GPIO_OutputWrite(GPIO_TypeDef* gpioPort,
 	{
 		gpioPort->ODR |= (1<<gpioPin);
 	}
-	
 }
 
 void GPIO_OutputClearReg(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
@@ -198,12 +197,10 @@ bool GPIO_InputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
 	2.) false if GPIO pin is low
 	
 	*/
-	
 	if ( (gpioPort->IDR & (1<<gpioPin)) == (1<<gpioPin) )
 	{
 		return true;
 	}
-	
 	return false;
 }
 
@@ -213,7 +210,6 @@ bool GPIO_OutputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
 	{
 		return true;
 	}
-	
 	return false;	
 }
 	
