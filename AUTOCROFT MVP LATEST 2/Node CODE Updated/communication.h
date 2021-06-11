@@ -40,7 +40,6 @@ typedef struct
 	uint8_t nodeID;
 	uint16_t minIrrigTime;
 	uint16_t maxIrrigTime;
-	uint32_t dataRxTimeMs;
 }NodeRxDataStructure;
 
 extern uint16_t Node_DecodeRxData(NodeRxDataStructure* pNodeRx, dataIndex_t dataIndex);

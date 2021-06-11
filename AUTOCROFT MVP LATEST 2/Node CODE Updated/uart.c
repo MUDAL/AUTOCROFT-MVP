@@ -92,7 +92,6 @@ void USART_TransmitByte(USART_TypeDef* uartPort, uint8_t byte)
 	
 	while ( (uartPort->SR & USART_SR_TXE) != USART_SR_TXE);
 	uartPort->DR = byte;
-	
 }
 
 void USART_TransmitBytes(USART_TypeDef* uartPort, uint8_t* bytes, uint8_t len)

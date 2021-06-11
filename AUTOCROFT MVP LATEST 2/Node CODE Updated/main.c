@@ -65,7 +65,6 @@ int main(void)
 					Solenoid_Switch(SOLENOID_ON);
 					break;
 			}
-			nodeRx.nodeID = Node_DecodeRxData(&nodeRx,NODE_ID);
 			if (nodeRx.nodeID == ASSIGNED_ID)
 			{
 				HC12_TransmitByte(soilMoisture);

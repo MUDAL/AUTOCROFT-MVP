@@ -34,7 +34,9 @@ void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 	pNodeRx->temperature = Node_DecodeRxData(pNodeRx,TEMPERATURE);
 	pNodeRx->minTemp = Node_DecodeRxData(pNodeRx,MIN_TEMPERATURE);
 	pNodeRx->maxTemp = Node_DecodeRxData(pNodeRx,MAX_TEMPERATURE);
-			
+	
+	pNodeRx->nodeID = Node_DecodeRxData(pNodeRx,NODE_ID);
+	
 	pNodeRx->minIrrigTime = Node_DecodeRxData(pNodeRx,MIN_IRRIG_TIME);
 	pNodeRx->maxIrrigTime = Node_DecodeRxData(pNodeRx,MAX_IRRIG_TIME);
 }
