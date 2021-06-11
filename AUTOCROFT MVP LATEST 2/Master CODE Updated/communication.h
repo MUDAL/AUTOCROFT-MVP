@@ -5,8 +5,7 @@
 transfer between master and node.
 */
 
-#define MASTER_TX_MSG_SIZE		13
-#define NEUTRAL_NODE_ID				0 /*valid node ID starts from 1*/
+#define MASTER_TX_DATA_SIZE		13
 #define NO_OF_NODES						101
 
 /**
@@ -30,28 +29,10 @@ typedef enum
 	MAX_IRRIG_TIME = 11 /**Index 11 - 12 for maximum irrigation time*/
 }dataIndex_t;
 
-typedef struct
-{
-	uint8_t data[MASTER_TX_MSG_SIZE];
-	uint8_t minMoist;
-	uint8_t maxMoist;
-	uint8_t minHum;
-	uint8_t maxHum;
-	uint8_t minTemp;
-	uint8_t maxTemp;
-	uint8_t humidity;
-	uint8_t temperature;
-	uint8_t nodeID;
-	uint16_t minIrrigTime;
-	uint16_t maxIrrigTime;
-}MasterTxDataStructure;
-
-typedef struct
-{
-	uint8_t data;
-	uint8_t moistureArr[NO_OF_NODES];
-}MasterRxDataStructure;
-
-extern void Master_EncodeTxData(MasterTxDataStructure* pMasterTx, uint16_t data, dataIndex_t dataIndex);
+extern void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex);
+extern void Master_SetNodeID(uint8_t id);
+extern uint8_t Master_GetNodeID(void);
+extern void Master_StoreNodeData(uint8_t id, uint8_t nodeData);
+extern uint8_t Master_GetNodeData(uint8_t id);
 
 #endif //_COMMUNICATION_H

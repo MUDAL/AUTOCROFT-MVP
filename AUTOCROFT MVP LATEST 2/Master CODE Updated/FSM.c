@@ -5,7 +5,6 @@
 #include "potentiometer.h"
 #include "lcd.h"
 #include "bme280.h"
-#include "hc12.h"
 #include "communication.h"
 #include "FSM.h"
 
@@ -36,46 +35,12 @@ enum Substates
 
 //Private globals
 static ButtonDataStructure* ptrButton;
-static MasterTxDataStructure* ptrMasterToNode;
-static MasterRxDataStructure* ptrNodeToMaster;
+static uint8_t* ptrMasterToNode;
 static uint8_t currentState = STATE_DISPLAY_READINGS;
 static uint8_t currentSubstate = SUBSTATE_NIL;
 
-//Function prototypes
-static void refreshDisplay(uint8_t row, uint8_t column);
-static void displayBme280Data(char* firstRowHeading,
-														  char* secondRowHeading,
-														  uint8_t row1Data,
-														  uint8_t row2Data,
-														  char measurementUnit1,
-														  char measurementUnit2);
-									
-static void displayNodeData(char* firstRowHeading,
-													  char* secondRowHeading,
-													  uint8_t displayMode,
-													  uint8_t row1Data,
-													  uint8_t row2Data);
-
-static void displayThreshold(uint16_t minValue,
-														 uint16_t maxValue,
-														 uint8_t displayMode,
-														 char* firstRowHeading,
-														 char* secondRowHeading,
-														 char measurementUnit);																	
-	
-static void FSM_StateTransition(button_t* pButton,
-																uint8_t state,
-																uint8_t substate);
-
-static void FSM_DisplayBme280Data(uint8_t substate);
-static void FSM_Node(uint8_t substate);
-static void FSM_Moisture(uint8_t substate);
-static void FSM_Humidity(uint8_t substate);
-static void FSM_Temperature(uint8_t substate);
-static void FSM_IrrigTime(uint8_t substate);
-
 //Function definitions
-void refreshDisplay(uint8_t row, uint8_t column)
+static void refreshDisplay(uint8_t row, uint8_t column)
 {
 	LCD_SetCursor(row,column);
 	//Delete line
@@ -85,12 +50,12 @@ void refreshDisplay(uint8_t row, uint8_t column)
 	}
 }
 
-void displayBme280Data(char* firstRowHeading,
-											 char* secondRowHeading,
-											 uint8_t row1Data,
-											 uint8_t row2Data,
-											 char measurementUnit1,
-											 char measurementUnit2)
+static void displayBme280Data(char* firstRowHeading,
+															char* secondRowHeading,
+															uint8_t row1Data,
+															uint8_t row2Data,
+															char measurementUnit1,
+															char measurementUnit2)
 										
 {
 	/*
@@ -131,11 +96,11 @@ void displayBme280Data(char* firstRowHeading,
 }
 
 
-void displayNodeData(char* firstRowHeading,
-										 char* secondRowHeading,
-									   uint8_t displayMode,
-								     uint8_t row1Data,
-								     uint8_t row2Data)
+static void displayNodeData(char* firstRowHeading,
+														char* secondRowHeading,
+														uint8_t displayMode,
+														uint8_t row1Data,
+														uint8_t row2Data)
 										
 {
 	char strData1[4] = "0";
@@ -190,12 +155,12 @@ void displayNodeData(char* firstRowHeading,
 	}
 }
 
-void displayThreshold(uint16_t minValue,
-											uint16_t maxValue,
-											uint8_t displayMode,
-											char* firstRowHeading,
-											char* secondRowHeading,
-											char measurementUnit)
+static void displayThreshold(uint16_t minValue,
+														 uint16_t maxValue,
+														 uint8_t displayMode,
+														 char* firstRowHeading,
+														 char* secondRowHeading,
+														 char measurementUnit)
 {
 	/*
 	strMin and strMax character arrays
@@ -291,7 +256,9 @@ void displayThreshold(uint16_t minValue,
 	}
 }
 
-void FSM_StateTransition(button_t* pButton, uint8_t state, uint8_t substate)
+static void FSM_StateTransition(button_t* pButton,
+																uint8_t state,
+																uint8_t substate)
 {
 	if (Button_Read(pButton))
 	{
@@ -302,7 +269,7 @@ void FSM_StateTransition(button_t* pButton, uint8_t state, uint8_t substate)
 	}
 }
 
-void FSM_DisplayBme280Data(uint8_t substate)
+static void FSM_DisplayBme280Data(uint8_t substate)
 {
 	bme280_t bme280Data;
 	BME280_GetData(&bme280Data);
@@ -316,13 +283,16 @@ void FSM_DisplayBme280Data(uint8_t substate)
 	FSM_StateTransition(&ptrButton->forward, STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);	
 }
 
-void FSM_Node(uint8_t substate)
+static void FSM_Node(uint8_t substate)
 {
+	static uint16_t nodeID;
+	uint8_t nodeMoisture = Master_GetNodeData(nodeID);
+	
 	displayNodeData("Node ID: ",
 									"Moisture: ",
 									substate,
-									ptrMasterToNode->nodeID,
-									ptrNodeToMaster->moistureArr[ptrMasterToNode->nodeID]);
+									nodeID,
+									nodeMoisture);
 
 	switch (substate)
 	{
@@ -333,19 +303,21 @@ void FSM_Node(uint8_t substate)
 			break;
 			
 		case SUBSTATE_SET_NODE_ID:
-			ptrMasterToNode->nodeID = Potentiometer_GetPercentPosition();
-		
+			nodeID = Potentiometer_GetPercentPosition();
+			Master_SetNodeID(nodeID);
 			FSM_StateTransition(&ptrButton->enter, STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);
-		
-			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->nodeID, NODE_ID);
+			Master_EncodeTxData(ptrMasterToNode,nodeID,NODE_ID);
 			break;
 	}	
 }
 
-void FSM_Moisture(uint8_t substate)
+static void FSM_Moisture(uint8_t substate)
 {
-	displayThreshold(ptrMasterToNode->minMoist,
-									 ptrMasterToNode->maxMoist,
+	static uint8_t minMoist;
+	static uint8_t maxMoist;
+	
+	displayThreshold(minMoist,
+									 maxMoist,
 									 substate,
 									 "MoistMin:",
 									 "MoistMax:",
@@ -367,23 +339,26 @@ void FSM_Moisture(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			ptrMasterToNode->minMoist = Potentiometer_GetPercentPosition();
+			minMoist = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
-			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->minMoist, MIN_MOISTURE);
+			Master_EncodeTxData(ptrMasterToNode, minMoist, MIN_MOISTURE);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			ptrMasterToNode->maxMoist = Potentiometer_GetPercentPosition();
+			maxMoist = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MAX);
-			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->maxMoist, MAX_MOISTURE);
+			Master_EncodeTxData(ptrMasterToNode, maxMoist, MAX_MOISTURE);
 			break;
 	}
 }
 	
-void FSM_Humidity(uint8_t substate)
+static void FSM_Humidity(uint8_t substate)
 {
-	displayThreshold(ptrMasterToNode->minHum,
-									 ptrMasterToNode->maxHum,
+	static uint8_t minHum;
+	static uint8_t maxHum;
+	
+	displayThreshold(minHum,
+									 maxHum,
 									 substate,
 									 "HumMin:",
 									 "HumMax:",
@@ -405,24 +380,27 @@ void FSM_Humidity(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			ptrMasterToNode->minHum = Potentiometer_GetPercentPosition();
+			minHum = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
-			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->minHum, MIN_HUMIDITY);
+			Master_EncodeTxData(ptrMasterToNode, minHum, MIN_HUMIDITY);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			ptrMasterToNode->maxHum = Potentiometer_GetPercentPosition();
+			maxHum = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MAX);
-			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->maxHum, MAX_HUMIDITY);
+			Master_EncodeTxData(ptrMasterToNode, maxHum, MAX_HUMIDITY);
 			break;
 	}
 }
 
 
-void FSM_Temperature(uint8_t substate)
+static void FSM_Temperature(uint8_t substate)
 {	
-	displayThreshold(ptrMasterToNode->minTemp,
-									 ptrMasterToNode->maxTemp,
+	static uint8_t minTemp;
+	static uint8_t maxTemp;
+	
+	displayThreshold(minTemp,
+									 maxTemp,
 									 substate,
 									 "TempMin:",
 									 "TempMax:",
@@ -444,23 +422,26 @@ void FSM_Temperature(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			ptrMasterToNode->minTemp = Potentiometer_GetPercentPosition();
+			minTemp = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
-			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->minTemp, MIN_TEMPERATURE);
+			Master_EncodeTxData(ptrMasterToNode, minTemp, MIN_TEMPERATURE);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			ptrMasterToNode->maxTemp = Potentiometer_GetPercentPosition();
+			maxTemp = Potentiometer_GetPercentPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MAX);	
-			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->maxTemp, MAX_TEMPERATURE);
+			Master_EncodeTxData(ptrMasterToNode, maxTemp, MAX_TEMPERATURE);
 			break;
 	}
 }
 	
-void FSM_IrrigTime(uint8_t substate)
+static void FSM_IrrigTime(uint8_t substate)
 {
-	displayThreshold(ptrMasterToNode->minIrrigTime,
-									 ptrMasterToNode->maxIrrigTime,
+	static uint16_t minIrrigTime;
+	static uint16_t maxIrrigTime;
+	
+	displayThreshold(minIrrigTime,
+									 maxIrrigTime,
 									 substate,
 									 "TimeMin:",
 									 "TimeMax:",
@@ -480,26 +461,23 @@ void FSM_IrrigTime(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			ptrMasterToNode->minIrrigTime = Potentiometer_GetRawPosition();
+			minIrrigTime = Potentiometer_GetRawPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MIN);	
-			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->minIrrigTime, MIN_IRRIG_TIME);
+			Master_EncodeTxData(ptrMasterToNode, minIrrigTime, MIN_IRRIG_TIME);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			ptrMasterToNode->maxIrrigTime = Potentiometer_GetRawPosition();
+			maxIrrigTime = Potentiometer_GetRawPosition();
 			FSM_StateTransition(&ptrButton->enter, STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MAX);	
-			Master_EncodeTxData(ptrMasterToNode, ptrMasterToNode->maxIrrigTime, MAX_IRRIG_TIME);
+			Master_EncodeTxData(ptrMasterToNode, maxIrrigTime, MAX_IRRIG_TIME);
 			break;
 	}
 }
 
-void FSM_Init(ButtonDataStructure* pButton,
-							MasterTxDataStructure* pMasterToNode,
-							MasterRxDataStructure* pNodeToMaster)
+void FSM_Init(ButtonDataStructure* pButton,uint8_t* pMasterToNode)
 {
 	ptrButton = pButton;
 	ptrMasterToNode = pMasterToNode;
-	ptrNodeToMaster = pNodeToMaster;
 }
 
 void FSM_Execute(void)

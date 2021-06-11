@@ -15,21 +15,21 @@
 /**
 @Description Autocroft master.  
 Next development:
-*Drivers for a keypad to replace buttons and potentiometer
-*Bluetooth and WiFi functionality (no user interface)
+*Drivers for a keypad to replace potentiometer and buttons
+*Bluetooth and WiFi functionality
+**Add:
+-USART and DMA for bluetooth Rx
+-USART for wifi Tx
 */
-
-//Debug
-//uint8_t inc = 0;
-//uint8_t received = 0;
 
 int main(void)
 {
 	//Local variables
 	static ButtonDataStructure button;
-	static MasterTxDataStructure masterTx;
-	static MasterRxDataStructure masterRx;
+	static uint8_t masterToNodeData[MASTER_TX_DATA_SIZE];
 	static bme280_t bme280Data;
+	uint8_t nodeID = 0; //valid node ID starts from 1
+	uint8_t nodeData = 0; //soil moisture measured by a node
 	
 	//Initializations
 	System_Init();
@@ -39,26 +39,26 @@ int main(void)
 	HC12_RxInit();
 	BME280_Init();
 	Button_Init(&button);
-	FSM_Init(&button,&masterTx,&masterRx);
+	FSM_Init(&button,masterToNodeData);
+	//WELCOME MESSAGE
+	LCD_WriteString("*** WELCOME ***");
+	System_TimerDelayMs(1000);
 	
 	while(1)
 	{
 		FSM_Execute();
 		if (Button_Read(&button.send))
 		{ 
-			//inc++;
 			BME280_GetData(&bme280Data);
-			masterTx.humidity = bme280Data.humidity;
-			masterTx.temperature = bme280Data.temperature;
-			Master_EncodeTxData(&masterTx,masterTx.humidity,HUMIDITY);
-			Master_EncodeTxData(&masterTx,masterTx.temperature,TEMPERATURE);
-			HC12_TransmitBytes(masterTx.data, MASTER_TX_MSG_SIZE);
+			Master_EncodeTxData(masterToNodeData,bme280Data.humidity,HUMIDITY);
+			Master_EncodeTxData(masterToNodeData,bme280Data.temperature,TEMPERATURE);
+			HC12_TransmitBytes(masterToNodeData, MASTER_TX_DATA_SIZE);
 		}
 		if (HC12_Rx_BufferFull())
 		{ 
-			//received++;
-			masterRx.data = HC12_ReadByte();
-			masterRx.moistureArr[masterTx.nodeID] = masterRx.data; //shouldn't be executed if error is detected
+			nodeData = HC12_ReadByte();
+			nodeID = Master_GetNodeID();
+			Master_StoreNodeData(nodeID,nodeData); //shouldn't be executed if error is detected
 		}
 	}
 }
