@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "conversions.h"
-#include "sysTimer_struct.h"
 #include "system.h"
 #include "bme280.h"
 #include "eeprom24c16.h"
@@ -10,7 +9,7 @@
 #include "potentiometer.h"
 #include "button.h"
 #include "communication.h"
-#include "FSM.h"
+#include "hmi.h"
 
 /**
 @Description Autocroft master.  
@@ -27,7 +26,6 @@ int main(void)
 	//Local variables
 	static ButtonDataStructure button;
 	static uint8_t masterToNodeData[MASTER_TX_DATA_SIZE];
-	static bme280_t bme280Data;
 	uint8_t nodeID = 0; //valid node ID starts from 1
 	uint8_t nodeData = 0; //soil moisture measured by a node
 	
@@ -39,21 +37,28 @@ int main(void)
 	HC12_RxInit();
 	BME280_Init();
 	Button_Init(&button);
-	FSM_Init(&button,masterToNodeData);
+	HMI_Init(&button,masterToNodeData);
 	//WELCOME MESSAGE
-	LCD_WriteString("*** WELCOME ***");
+	LCD_WriteString("*** HELLO ***");
 	System_TimerDelayMs(1000);
+	
+	//STEPS
+	//1.)Initializations
+	//2.)Clear standby flag (after system wakeup)
 	
 	while(1)
 	{
-		FSM_Execute();
-		if (Button_Read(&button.send))
-		{ 
-			BME280_GetData(&bme280Data);
-			Master_EncodeTxData(masterToNodeData,bme280Data.humidity,HUMIDITY);
-			Master_EncodeTxData(masterToNodeData,bme280Data.temperature,TEMPERATURE);
-			HC12_TransmitBytes(masterToNodeData, MASTER_TX_DATA_SIZE);
-		}
+		//3.)Request for all node data and store the data... 
+		//[allocate about 2 minutes for this using real-time clock]
+		//4.)Check for bluetooth data
+		//5.)If valid bluetooth data is received i.e. the ...
+		//SSID and password of WiFi network to connect to,
+		//6.)Send the bluetooth data (WiFi SSID and password) to the ...
+		//WiFi module.
+		//7.)Execute Human Machine Interface (significant aspect of the application)
+		
+		HMI_Execute();
+
 		if (HC12_Rx_BufferFull())
 		{ 
 			nodeData = HC12_ReadByte();

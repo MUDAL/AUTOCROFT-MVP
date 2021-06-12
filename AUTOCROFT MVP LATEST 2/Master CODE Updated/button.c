@@ -1,7 +1,6 @@
 #include "stm32f10x.h"                  // Device header
 #include <stdbool.h>
 #include "gpio.h"
-#include "sysTimer_struct.h"
 #include "systick.h"
 #include "button.h"
 

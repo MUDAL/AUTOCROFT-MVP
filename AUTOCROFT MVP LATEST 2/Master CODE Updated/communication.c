@@ -2,7 +2,7 @@
 #include "communication.h"
 
 static uint8_t nodeID;
-static uint8_t masterRxArr[NO_OF_NODES];
+static uint8_t nodeMoistureArr[NO_OF_NODES];
 
 void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex)
 {
@@ -37,14 +37,14 @@ an array.
 */
 void Master_StoreNodeData(uint8_t id, uint8_t nodeData)
 {
-	masterRxArr[id] = nodeData;
+	nodeMoistureArr[id] = nodeData;
 }
 
 /**
-@brief Gets data for a particular node by using the ID of  
+@brief Gets moisture data for a particular node by using the ID of  
 that node.
 */
 uint8_t Master_GetNodeData(uint8_t id)
 {
-	return masterRxArr[id];
+	return nodeMoistureArr[id];
 }

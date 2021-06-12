@@ -391,17 +391,17 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>FSM Application</GroupName>
+          <GroupName>HMI Application</GroupName>
           <Files>
             <File>
-              <FileName>FSM.c</FileName>
+              <FileName>hmi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\FSM.c</FilePath>
+              <FilePath>.\hmi.c</FilePath>
             </File>
             <File>
-              <FileName>FSM.h</FileName>
+              <FileName>hmi.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\FSM.h</FilePath>
+              <FilePath>.\hmi.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -572,11 +572,6 @@
               <FileName>conversions.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\conversions.h</FilePath>
-            </File>
-            <File>
-              <FileName>sysTimer_struct.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\sysTimer_struct.h</FilePath>
             </File>
           </Files>
         </Group>

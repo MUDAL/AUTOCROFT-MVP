@@ -1,6 +1,4 @@
 #include "stm32f10x.h"                  // Device header
-#include <stdbool.h>
-#include "sysTimer_struct.h"
 #include "systick.h"
 
 static volatile uint32_t numberOfTicks = 0;
@@ -61,35 +59,6 @@ void SysTick_DelayMs(uint32_t delayTime)
 	*/
 	uint32_t startTick = numberOfTicks;
 	while((numberOfTicks - startTick) < delayTime){}
-}
-
-bool SysTick_DoneCounting(sysTimer_t* pTimer)
-{
-	/*
-	Description:
-	Function to determine whether a software timer of
-	the type 'sysTimer_t' is done counting.
-	
-	Parameters:
-	1.) pTimer: pointer to a software timer of the type
-	'sysTimer_t'. This parameter is passed with the address
-	of a software timer that is used to periodically run a
-	block of code.
-	
-	Return:
-	1.) true: if software timer (whose address is passed as an 
-	argument) is done counting.
-	2.) false: if the software timer is still counting.
-	
-	*/
-	bool countingComplete = false;
-		
-	if ( (SysTick_GetTick() - pTimer->start) >= pTimer->ticksToWait )
-	{
-		countingComplete = true;
-	}
-	
-	return countingComplete;
 }
 
 void SysTick_Handler(void)
