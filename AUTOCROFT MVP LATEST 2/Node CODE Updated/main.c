@@ -37,7 +37,7 @@ int main(void)
 
 	while(1)
 	{
-//		//DS3231_GetTime(&rtc);
+		//DS3231_GetTime(&rtc);
 		if (HC12_Rx_BufferFull())
 		{
 			Node_StoreRxData(&nodeRx);

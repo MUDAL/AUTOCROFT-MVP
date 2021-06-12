@@ -2,9 +2,9 @@
 #include <stdbool.h>
 #include "clocks.h"
 #include "gpio.h"
+#include "pwr.h"
 #include "systick.h"
 #include "system.h"
-#include "pwr.h"
 
 void System_Init(void)
 {
@@ -74,4 +74,3 @@ void System_GoToStandbyMode(void)
 {
 	PWR_GoToStandbyMode();
 }
-	
