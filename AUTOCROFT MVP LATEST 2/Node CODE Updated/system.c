@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "clocks.h"
 #include "gpio.h"
-#include "sysTimer_struct.h"
 #include "systick.h"
 #include "system.h"
 #include "pwr.h"
@@ -56,14 +55,13 @@ bool System_TimerDoneCounting(sysTimer_t* pSysTimer)
 	
 	else
 	{
-		if (SysTick_DoneCounting(pSysTimer))
+		if ((SysTick_GetTick() - pSysTimer->start) >= pSysTimer->ticksToWait)
 		{
 			countingComplete = true;
 			pSysTimer->start = 0;
 			pSysTimer->isCounting = false;
 		}
 	}
-	
 	return countingComplete;
 }
 

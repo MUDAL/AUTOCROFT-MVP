@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "conversions.h"
-#include "sysTimer_struct.h"
 #include "system.h"
 #include "sensor.h"
 #include "irrigation.h"

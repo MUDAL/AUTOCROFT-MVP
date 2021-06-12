@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "i2c.h"
 #include "gpio.h"
-#include "sysTimer_struct.h"
 #include "systick.h"
 #include "eeprom24c16.h"
 
