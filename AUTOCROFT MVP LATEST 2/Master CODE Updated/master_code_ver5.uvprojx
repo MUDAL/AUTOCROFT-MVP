@@ -493,6 +493,16 @@
               <FileType>5</FileType>
               <FilePath>.\system.h</FilePath>
             </File>
+            <File>
+              <FileName>ds3231.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ds3231.c</FilePath>
+            </File>
+            <File>
+              <FileName>ds3231.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ds3231.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -557,6 +567,16 @@
               <FileName>uart.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\uart.h</FilePath>
+            </File>
+            <File>
+              <FileName>pwr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\pwr.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\pwr.h</FilePath>
             </File>
           </Files>
         </Group>

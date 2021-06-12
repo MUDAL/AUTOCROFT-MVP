@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "clocks.h"
 #include "gpio.h"
+#include "pwr.h"
 #include "systick.h"
 #include "system.h"
 
@@ -62,4 +63,14 @@ bool System_TimerDoneCounting(sysTimer_t* pSysTimer)
 		}
 	}
 	return countingComplete;
+}
+
+void System_ClearStandbyFlag(void)
+{
+	PWR_ClearStandbyFlag();
+}
+
+void System_GoToStandbyMode(void)
+{
+	PWR_GoToStandbyMode();
 }

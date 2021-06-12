@@ -6,6 +6,7 @@
 #include "eeprom24c16.h"
 #include "hc12.h"
 #include "lcd.h"
+#include "ds3231.h"
 #include "potentiometer.h"
 #include "button.h"
 #include "communication.h"
@@ -26,6 +27,7 @@ int main(void)
 	//Local variables
 	static ButtonDataStructure button;
 	static uint8_t masterToNodeData[MASTER_TX_DATA_SIZE];
+	//static ds3231_t rtc;
 	uint8_t nodeID = 0; //valid node ID starts from 1
 	uint8_t nodeData = 0; //soil moisture measured by a node
 	
@@ -38,6 +40,10 @@ int main(void)
 	BME280_Init();
 	Button_Init(&button);
 	HMI_Init(&button,masterToNodeData);
+	//DS3231_Init();
+	//EEPROM_Init();
+	//System_ClearStandbyFlag();
+	
 	//WELCOME MESSAGE
 	LCD_WriteString("*** HELLO ***");
 	System_TimerDelayMs(1000);
@@ -57,6 +63,7 @@ int main(void)
 		//WiFi module.
 		//7.)Execute Human Machine Interface (significant aspect of the application)
 		
+		//DS3231_GetTime(&rtc);
 		HMI_Execute();
 
 		if (HC12_Rx_BufferFull())

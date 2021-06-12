@@ -48,7 +48,7 @@ static uint8_t currentState = STATE_DISPLAY_READINGS;
 static uint8_t currentSubstate = SUBSTATE_NIL;
 
 //Function definitions
-static void refreshDisplay(uint8_t row, uint8_t column)
+static void RefreshDisplay(uint8_t row, uint8_t column)
 {
 	LCD_SetCursor(row,column);
 	//Delete line
@@ -58,7 +58,7 @@ static void refreshDisplay(uint8_t row, uint8_t column)
 	}
 }
 
-static void displayBme280Data(char* firstRowHeading,
+static void DisplayBme280Data(char* firstRowHeading,
 															char* secondRowHeading,
 															uint8_t row1Data,
 															uint8_t row2Data,
@@ -81,7 +81,7 @@ static void displayBme280Data(char* firstRowHeading,
 	//top
 	if (prevRow1Data != row1Data)
 	{
-		refreshDisplay(0,0);
+		RefreshDisplay(0,0);
 		prevRow1Data = row1Data;
 	}
 	LCD_SetCursor(0,0);
@@ -93,7 +93,7 @@ static void displayBme280Data(char* firstRowHeading,
 	//bottom
 	if (prevRow2Data != row2Data)
 	{
-		refreshDisplay(1,0);
+		RefreshDisplay(1,0);
 		prevRow2Data = row2Data;
 	}
 	LCD_SetCursor(1,0);
@@ -104,7 +104,7 @@ static void displayBme280Data(char* firstRowHeading,
 }
 
 
-static void displayNodeData(char* firstRowHeading,
+static void DisplayNodeData(char* firstRowHeading,
 														char* secondRowHeading,
 														uint8_t displayMode,
 														uint8_t row1Data,
@@ -118,7 +118,7 @@ static void displayNodeData(char* firstRowHeading,
 	
 	if (prevRow2Data != row2Data)
 	{
-		refreshDisplay(1,0);
+		RefreshDisplay(1,0);
 		prevRow2Data = row2Data;
 	}
 	
@@ -143,7 +143,7 @@ static void displayNodeData(char* firstRowHeading,
 		case SUBSTATE_SET_NODE_ID:
 			if (prevRow1Data != row1Data)
 			{
-				refreshDisplay(0,0);
+				RefreshDisplay(0,0);
 				prevRow1Data = row1Data;
 			}
 			//top
@@ -163,7 +163,7 @@ static void displayNodeData(char* firstRowHeading,
 	}
 }
 
-static void displayThreshold(uint16_t minValue,
+static void DisplayThreshold(uint16_t minValue,
 														 uint16_t maxValue,
 														 uint8_t displayMode,
 														 char* firstRowHeading,
@@ -222,7 +222,7 @@ static void displayThreshold(uint16_t minValue,
 			//top
 			if (prevMinValue != minValue)
 			{
-				refreshDisplay(0,0);
+				RefreshDisplay(0,0);
 				prevMinValue = minValue;
 			}
 			LCD_SetCursor(0,0);
@@ -250,7 +250,7 @@ static void displayThreshold(uint16_t minValue,
 			//bottom
 			if (prevMaxValue != maxValue)
 			{
-				refreshDisplay(1,0);
+				RefreshDisplay(1,0);
 				prevMaxValue = maxValue;
 			}
 			LCD_SetCursor(1,0);
@@ -282,7 +282,7 @@ static void FSM_DisplayBme280Data(uint8_t substate)
 	bme280_t bme280Data;
 	BME280_GetData(&bme280Data);
 	
-	displayBme280Data("Hum: ",
+	DisplayBme280Data("Hum: ",
 										"Temp: ",
 										bme280Data.humidity,
 										bme280Data.temperature,
@@ -296,7 +296,7 @@ static void FSM_Node(uint8_t substate)
 	static uint16_t nodeID;
 	uint8_t nodeMoisture = Master_GetNodeData(nodeID);
 	
-	displayNodeData("Node ID: ",
+	DisplayNodeData("Node ID: ",
 									"Moisture: ",
 									substate,
 									nodeID,
@@ -324,7 +324,7 @@ static void FSM_Moisture(uint8_t substate)
 	static uint8_t minMoist;
 	static uint8_t maxMoist;
 	
-	displayThreshold(minMoist,
+	DisplayThreshold(minMoist,
 									 maxMoist,
 									 substate,
 									 "MoistMin:",
@@ -365,7 +365,7 @@ static void FSM_Humidity(uint8_t substate)
 	static uint8_t minHum;
 	static uint8_t maxHum;
 	
-	displayThreshold(minHum,
+	DisplayThreshold(minHum,
 									 maxHum,
 									 substate,
 									 "HumMin:",
@@ -407,7 +407,7 @@ static void FSM_Temperature(uint8_t substate)
 	static uint8_t minTemp;
 	static uint8_t maxTemp;
 	
-	displayThreshold(minTemp,
+	DisplayThreshold(minTemp,
 									 maxTemp,
 									 substate,
 									 "TempMin:",
@@ -448,7 +448,7 @@ static void FSM_IrrigTime(uint8_t substate)
 	static uint16_t minIrrigTime;
 	static uint16_t maxIrrigTime;
 	
-	displayThreshold(minIrrigTime,
+	DisplayThreshold(minIrrigTime,
 									 maxIrrigTime,
 									 substate,
 									 "TimeMin:",
