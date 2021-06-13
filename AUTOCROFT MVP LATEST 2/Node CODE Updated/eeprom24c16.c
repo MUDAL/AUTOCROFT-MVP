@@ -9,15 +9,6 @@
 
 void EEPROM_Init(void)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
-	
 	GPIO_OutputInit(GPIOB,
 									GPIO_PORT_REG_LOW,
 								 (GPIO_PIN6_OUTPUT_MODE_2MHZ | GPIO_PIN7_OUTPUT_MODE_2MHZ),
@@ -31,15 +22,6 @@ void EEPROM_Init(void)
 
 void EEPROM_WritePage(uint8_t pageAddr, uint8_t* pData)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
-	
 	//optional but ensures the user's input doesn't exceed 127
 	pageAddr = pageAddr % 128; 
 	//extract 3 MSB of EEPROM page address and store in EEPROM slave address
@@ -54,15 +36,6 @@ void EEPROM_WritePage(uint8_t pageAddr, uint8_t* pData)
 
 void EEPROM_ReadPage(uint8_t pageAddr, uint8_t* receiveBuffer)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
-	
 	//optional but ensures the user's input doesn't exceed 127
 	pageAddr = pageAddr % 128; 
 	//extract 3 MSB of EEPROM page address and store in EEPROM slave address

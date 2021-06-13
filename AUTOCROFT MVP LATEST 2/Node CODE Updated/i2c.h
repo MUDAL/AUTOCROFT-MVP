@@ -19,23 +19,23 @@ extern void I2C_WriteByte(I2C_TypeDef* i2cPort,
 extern void I2C_WriteMultiByte(I2C_TypeDef* i2cPort, 
 															 uint8_t slaveAddr,
 															 uint8_t regAddr,
-															 uint8_t* data,
+															 uint8_t* pData,
 															 uint32_t length);
 
 extern void I2C_ReadByte(I2C_TypeDef* i2cPort,
 												 uint8_t slaveAddr,
 												 uint8_t regAddr, 
-												 uint8_t* data); 
+												 uint8_t* pData); 
 
 extern void I2C_Read2Bytes(I2C_TypeDef* i2cPort, 
 													 uint8_t slaveAddr,
 													 uint8_t regAddr,
-													 uint8_t* data);
+													 uint8_t* pData);
 
 extern void I2C_ReadMultiByte(I2C_TypeDef* i2cPort,
 															uint8_t slaveAddr,
 															uint8_t regAddr,
-															uint8_t* data,
+															uint8_t* pData,
 															uint32_t length); 
 
 
