@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include "conversions.h"
-#include "hc12.h"
 #include "communication.h"
 
 uint16_t Node_DecodeRxData(NodeRxDataStructure* pNodeRx, dataIndex_t dataIndex)

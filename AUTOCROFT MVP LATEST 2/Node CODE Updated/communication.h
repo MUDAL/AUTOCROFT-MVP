@@ -5,6 +5,8 @@
 transfer between master and node.
 */
 
+#define NODE_RX_DATA_SIZE				13
+
 /**
 @brief Each part of the data to be received is an element
 of an array of bytes. e.g. minimum moisture is the first element  
@@ -28,7 +30,7 @@ typedef enum
 
 typedef struct
 {
-	uint8_t data[HC12_RX_BUFFER_SIZE];
+	uint8_t data[NODE_RX_DATA_SIZE];
 	uint8_t minMoist;
 	uint8_t maxMoist;
 	uint8_t minHum;
