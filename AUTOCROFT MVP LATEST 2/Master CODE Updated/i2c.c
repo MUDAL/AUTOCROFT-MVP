@@ -95,7 +95,7 @@ void I2C_WriteByte(I2C_TypeDef* i2cPort,
 void I2C_WriteMultiByte(I2C_TypeDef* i2cPort, 
 												uint8_t slaveAddr,
 												uint8_t regAddr,
-												uint8_t* data,
+												uint8_t* pData,
 												uint32_t length)
 
 {
@@ -118,7 +118,7 @@ void I2C_WriteMultiByte(I2C_TypeDef* i2cPort,
 	data. The argument passed to this parameter depends on the I2C slave device
 	used.
 	
-	4.) data: pointer to data to be written to the I2C bus.
+	4.) pData: pointer to data to be written to the I2C bus.
 	
 	5.) length: number of bytes of data to be written to the I2C bus.
 	
@@ -141,7 +141,7 @@ void I2C_WriteMultiByte(I2C_TypeDef* i2cPort,
 	for (uint32_t i = 0; i < length; i++)
 	{
 		while((i2cPort->SR1 & I2C_SR1_TXE) != I2C_SR1_TXE); 
-		i2cPort->DR = data[i];
+		i2cPort->DR = pData[i];
 	}
 	
 	while( ((i2cPort->SR1 & I2C_SR1_TXE) != I2C_SR1_TXE) || 
@@ -152,7 +152,7 @@ void I2C_WriteMultiByte(I2C_TypeDef* i2cPort,
 void I2C_ReadByte(I2C_TypeDef* i2cPort,
 									uint8_t slaveAddr,
 									uint8_t regAddr,
-									uint8_t* data)
+									uint8_t* pData)
 {
 	/*
 	Description:
@@ -173,7 +173,7 @@ void I2C_ReadByte(I2C_TypeDef* i2cPort,
 	data. The argument passed to this parameter depends on the I2C slave device
 	used.
 	
-	4.) data: pointer to data to be read from the I2C bus.
+	4.) pData: pointer to data to be read from the I2C bus.
 	
 	Return:
 	None
@@ -202,14 +202,14 @@ void I2C_ReadByte(I2C_TypeDef* i2cPort,
 		
 	i2cPort->CR1 |= I2C_CR1_STOP; //Send STOP
 	while((i2cPort->SR1 & I2C_SR1_RXNE) != I2C_SR1_RXNE); //Wait for RXNE bit to be set
-	*data = i2cPort->DR;
+	*pData = i2cPort->DR;
 		
 }
 
 void I2C_Read2Bytes(I2C_TypeDef* i2cPort, 
 										uint8_t slaveAddr,
 										uint8_t regAddr,
-										uint8_t* data)
+										uint8_t* pData)
 {
 	/*
 	Description:
@@ -230,7 +230,7 @@ void I2C_Read2Bytes(I2C_TypeDef* i2cPort,
 	data. The argument passed to this parameter depends on the I2C slave device
 	used.
 	
-	4.) data: pointer to data to be read from the I2C bus.
+	4.) pData: pointer to data to be read from the I2C bus.
 	
 	Return:
 	None
@@ -261,15 +261,15 @@ void I2C_Read2Bytes(I2C_TypeDef* i2cPort,
 		
 	while((i2cPort->SR1 & I2C_SR1_BTF) != I2C_SR1_BTF);//Wait for BTF bit to be set
 	i2cPort->CR1 |= I2C_CR1_STOP; //Send STOP
-	data[0] = i2cPort->DR;
-	data[1] = i2cPort->DR;
+	pData[0] = i2cPort->DR;
+	pData[1] = i2cPort->DR;
 	
 }
 
 void I2C_ReadMultiByte(I2C_TypeDef* i2cPort,
 											 uint8_t slaveAddr,
 											 uint8_t regAddr,
-											 uint8_t* data, 
+											 uint8_t* pData, 
 											 uint32_t length)
 {
 	/*
@@ -292,7 +292,7 @@ void I2C_ReadMultiByte(I2C_TypeDef* i2cPort,
 	data. The argument passed to this parameter depends on the I2C slave device
 	used.
 	
-	4.) data: pointer to data to be read from the I2C bus.
+	4.) pData: pointer to data to be read from the I2C bus.
 	
 	5.) length: number of bytes of data to be read from the I2C bus.
 	
@@ -302,7 +302,7 @@ void I2C_ReadMultiByte(I2C_TypeDef* i2cPort,
 	*/
 	
 	if (length < 3)
-	{
+	{//Invalid input
 		return;
 	}
 	
@@ -333,16 +333,16 @@ void I2C_ReadMultiByte(I2C_TypeDef* i2cPort,
 		for (uint32_t i = 0; i < length - 3; i++)
 		{
 			while((i2cPort->SR1 & I2C_SR1_RXNE) != I2C_SR1_RXNE); //Wait for RXNE bit to be set
-			data[i] = i2cPort->DR;
+			pData[i] = i2cPort->DR;
 		}
 		
 		while((i2cPort->SR1 & I2C_SR1_BTF) != I2C_SR1_BTF);//Wait for BTF bit to be set
 		i2cPort->CR1 &= ~I2C_CR1_ACK;//Send NACK	
-		data[length - 3] = I2C1->DR;
+		pData[length - 3] = I2C1->DR;
 			
 		while((i2cPort->SR1 & I2C_SR1_BTF) != I2C_SR1_BTF);
 		i2cPort->CR1 |= I2C_CR1_STOP; //Send STOP
-		data[length - 2] = i2cPort->DR;
-		data[length - 1] = i2cPort->DR;
+		pData[length - 2] = i2cPort->DR;
+		pData[length - 1] = i2cPort->DR;
 	}
 }

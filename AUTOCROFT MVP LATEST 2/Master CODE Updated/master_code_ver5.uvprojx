@@ -503,6 +503,16 @@
               <FileType>5</FileType>
               <FilePath>.\ds3231.h</FilePath>
             </File>
+            <File>
+              <FileName>wifi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\wifi.c</FilePath>
+            </File>
+            <File>
+              <FileName>wifi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\wifi.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -577,6 +587,16 @@
               <FileName>pwr.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\pwr.h</FilePath>
+            </File>
+            <File>
+              <FileName>dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\dma.h</FilePath>
             </File>
           </Files>
         </Group>

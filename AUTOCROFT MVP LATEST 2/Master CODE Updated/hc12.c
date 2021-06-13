@@ -12,7 +12,10 @@ void HC12_TxInit(void)
 									GPIO_PIN9_OUTPUT_MODE_2MHZ,
 									GPIO_PIN9_ALT_FUNC_PUSH_PULL);
 	//USART1 configuration
-	USART_Init(USART1,BAUD_9600,USART_TX_ENABLE);
+	USART_Init(USART1,
+						 BAUD_9600,
+						 TX_DMA_DISABLE,
+						 USART_TX_ENABLE);
 }
 
 void HC12_RxInit(void)
@@ -24,7 +27,10 @@ void HC12_RxInit(void)
 								 GPIO_PIN10_INPUT_PULLUP_OR_PULLDOWN,
 								 GPIO_PULLUP_ENABLE);
 	//USART1 configuration
-	USART_Init(USART1,BAUD_9600,USART_RX_ENABLE);
+	USART_Init(USART1,
+						 BAUD_9600,
+						 RX_DMA_DISABLE,
+	           USART_RX_ENABLE);
 }
 	
 void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)
