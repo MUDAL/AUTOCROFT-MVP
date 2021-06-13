@@ -71,7 +71,8 @@ void USART_TransmitByte(USART_TypeDef* uartPort, uint8_t byte)
 @param uartPort: pointer to USART_TypeDef struct which contains all registers for the desired   
 USART peripheral e.g. if uartPort is passed an argument of USART1, the USART1 peripheral  
 is configured and if passed an argument of USART2, the USART2 peripheral is configured etc.  
-@param bytes: pointer to data to be transmitted. The data to be transmitted is an array of bytes.    
+@param bytes: pointer to data array to be transmitted. The data to be transmitted is an array of bytes.    
+@param len: number of bytes in the data array to be transmitted.  
 @return None  
 */
 void USART_TransmitBytes(USART_TypeDef* uartPort, uint8_t* bytes, uint8_t len)

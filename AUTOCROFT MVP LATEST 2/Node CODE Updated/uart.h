@@ -21,7 +21,7 @@ enum BaudRate
 enum UartDma
 {
 	TX_RX_DMA_DISABLE,
-	RX_DMA_ENABLE,
+	RX_DMA_ENABLE
 };
 
 extern void USART_Init(USART_TypeDef* uartPort, uint32_t baud, uint8_t dmaMode, uint8_t uartMode);
