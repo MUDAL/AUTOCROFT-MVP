@@ -4,22 +4,13 @@
 #include "uart.h"
 #include "hc12.h"
 
-void HC12_TxInit(void)
+void HC12_Init(void)
 {
 	//GPIO configuration for USART1 Tx
 	GPIO_OutputInit(GPIOA,
 									GPIO_PORT_REG_HIGH,
 									GPIO_PIN9_OUTPUT_MODE_2MHZ,
 									GPIO_PIN9_ALT_FUNC_PUSH_PULL);
-	//USART1 configuration
-	USART_Init(USART1,
-						 BAUD_9600,
-						 TX_DMA_DISABLE,
-						 USART_TX_ENABLE);
-}
-
-void HC12_RxInit(void)
-{
 	//GPIO configuration for USART1 Rx
 	GPIO_InputInit(GPIOA,
 								 GPIO_PORT_REG_HIGH,
@@ -29,8 +20,8 @@ void HC12_RxInit(void)
 	//USART1 configuration
 	USART_Init(USART1,
 						 BAUD_9600,
-						 RX_DMA_DISABLE,
-	           USART_RX_ENABLE);
+						 TX_RX_DMA_DISABLE,
+						 (USART_TX_ENABLE | USART_RX_ENABLE));
 }
 	
 void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)
