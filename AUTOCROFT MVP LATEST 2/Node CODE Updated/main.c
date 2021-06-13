@@ -29,7 +29,7 @@ int main(void)
 	System_Init();
 	CMS_Init();
 	Solenoid_Init();
-	HC12_TxInit();
+	HC12_Init();
 	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE);
 	//DS3231_Init();
 	//EEPROM_Init();
