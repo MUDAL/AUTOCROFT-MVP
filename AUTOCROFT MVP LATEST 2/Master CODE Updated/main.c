@@ -62,7 +62,7 @@ int main(void)
 		//[allocate about 2 minutes for this using real-time clock]
 		//5.)Check for bluetooth data
 		//6.)If valid bluetooth data is received i.e. the ...
-		//SSID and password of WiFi network to connect to,
+		//SSID and password of WiFi network to connect to.
 		//7.)Send the bluetooth data (WiFi SSID and password) to the ...
 		//WiFi module.
 		//8.)Execute Human Machine Interface (significant aspect of the application)

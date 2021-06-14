@@ -24,3 +24,7 @@ void WiFi_Init(void)
 						 (USART_TX_ENABLE | USART_RX_ENABLE));
 }
 
+void WiFi_TransmitBytes(uint8_t* bytes, uint8_t len)
+{
+	USART_TransmitBytes(USART2,bytes,len);
+}

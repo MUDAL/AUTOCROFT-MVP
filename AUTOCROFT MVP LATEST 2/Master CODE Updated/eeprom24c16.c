@@ -20,8 +20,12 @@ void EEPROM_Init(void)
 					 I2C_STANDARD_MODE_8MHZ_TRISE);
 }
 
-void EEPROM_WritePage(uint8_t pageAddr, uint8_t* pData)
+void EEPROM_WritePage(uint8_t pageAddr, uint8_t* pData, uint8_t len)
 {
+	if (len > PAGE_SIZE)
+	{//Page size must not be exceeded.
+		return;
+	}
 	//optional but ensures the user's input doesn't exceed 127
 	pageAddr = pageAddr % 128; 
 	//extract 3 MSB of EEPROM page address and store in EEPROM slave address
@@ -29,13 +33,17 @@ void EEPROM_WritePage(uint8_t pageAddr, uint8_t* pData)
 	//extract 4 LSB of EEPROM page address and store in EEPROM word address
 	uint8_t wordAddr = ((pageAddr & 0x0F) << 4);
 	//I2C communication involving EEPROM slave and word address
-	I2C_WriteMultiByte(I2C1,deviceAddr ,wordAddr, pData, PAGE_SIZE - 1);
+	I2C_WriteMultiByte(I2C1,deviceAddr ,wordAddr, pData, len);
 	//write cycle time
 	SysTick_DelayMs(5);
 }
 
-void EEPROM_ReadPage(uint8_t pageAddr, uint8_t* receiveBuffer)
+void EEPROM_ReadPage(uint8_t pageAddr, uint8_t* pReceiveBuffer, uint8_t len)
 {
+	if (len > PAGE_SIZE)
+	{//Page size must not be exceeded.
+		return;
+	}
 	//optional but ensures the user's input doesn't exceed 127
 	pageAddr = pageAddr % 128; 
 	//extract 3 MSB of EEPROM page address and store in EEPROM slave address
@@ -43,5 +51,5 @@ void EEPROM_ReadPage(uint8_t pageAddr, uint8_t* receiveBuffer)
 	//extract 4 LSB of EEPROM page address and store in EEPROM word address
 	uint8_t wordAddr = ((pageAddr & 0x0F) << 4);
 	//I2C communication involving EEPROM slave and word address
-	I2C_ReadMultiByte(I2C1,deviceAddr, wordAddr, receiveBuffer, PAGE_SIZE - 1);
+	I2C_ReadMultiByte(I2C1,deviceAddr, wordAddr, pReceiveBuffer, len);
 }
