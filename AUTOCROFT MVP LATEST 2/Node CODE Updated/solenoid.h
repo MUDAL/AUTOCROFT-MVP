@@ -5,7 +5,7 @@
 #define SOLENOID_OFF			false
 
 extern void Solenoid_Init(void);
-extern void Solenoid_Switch(bool state);
-extern bool Solenoid_IsRunning(void);
+extern void Solenoid_Control(bool state);
+extern bool Solenoid_IsOn(void);
 
 #endif //_SOLENOID_H

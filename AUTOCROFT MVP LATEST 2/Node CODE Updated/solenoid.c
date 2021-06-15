@@ -28,7 +28,7 @@ void Solenoid_Init(void)
 	GPIO_OutputWrite(GPIOA, GPIO_PIN7, false);
 }
 
-void Solenoid_Switch(bool state)
+void Solenoid_Control(bool state)
 {
 	/*
 	Description:
@@ -47,7 +47,7 @@ void Solenoid_Switch(bool state)
 	GPIO_OutputWrite(GPIOA, GPIO_PIN7, state);
 }
 
-bool Solenoid_IsRunning(void)
+bool Solenoid_IsOn(void)
 {
 	/*
 	Description:

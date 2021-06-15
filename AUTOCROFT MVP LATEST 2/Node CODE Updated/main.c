@@ -12,7 +12,7 @@
 #include "communication.h"
 
 //Private defines
-#define ASSIGNED_ID				1
+#define ASSIGNED_ID		0
 
 int main(void)
 {
@@ -51,17 +51,17 @@ int main(void)
 			{
 				case NO_WATERING:
 				case IRRIG_METHOD_UNDEFINED:
-					Solenoid_Switch(SOLENOID_OFF);
+					Solenoid_Control(SOLENOID_OFF);
 					break;
 				case LIGHT_WATERING:
 					//convert minimum irrigation time to milliseconds
 					System_TimerInit(&irrigTimer,(nodeRx.minIrrigTime*1000));
-					Solenoid_Switch(SOLENOID_ON);
+					Solenoid_Control(SOLENOID_ON);
 					break;
 				case HEAVY_WATERING:
 					//convert maximum irrigation time to milliseconds
 					System_TimerInit(&irrigTimer,(nodeRx.maxIrrigTime*1000));
-					Solenoid_Switch(SOLENOID_ON);
+					Solenoid_Control(SOLENOID_ON);
 					break;
 			}
 			if (nodeRx.nodeID == ASSIGNED_ID)
@@ -69,11 +69,11 @@ int main(void)
 				HC12_TransmitByte(soilMoisture);
 			}
 		}
-		if (Solenoid_IsRunning())
+		if (Solenoid_IsOn())
 		{
 			if (System_TimerDoneCounting(&irrigTimer))
 			{
-				Solenoid_Switch(SOLENOID_OFF);
+				Solenoid_Control(SOLENOID_OFF);
 			}
 		}
 	}
