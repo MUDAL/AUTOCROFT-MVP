@@ -6,7 +6,7 @@ transfer between master and node.
 */
 
 #define MASTER_TX_DATA_SIZE		13
-#define NO_OF_NODES						101
+#define NO_OF_NODES						100
 
 /**
 @brief Each part of the data to be transmitted is an element
