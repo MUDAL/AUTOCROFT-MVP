@@ -10,7 +10,7 @@ of an array of bytes. e.g. minimum moisture is the first element
 of the array with an index of 0, maximum humidity is the 4th element  
 of the array with an index of 3.
 */
-typedef enum
+enum
 {
 	MIN_MOISTURE = 0,
 	MAX_MOISTURE = 1,
@@ -23,7 +23,7 @@ typedef enum
 	NODE_ID = 8,
 	MIN_IRRIG_TIME = 9, /**Index 9 - 10 for minimum irrigation time*/
 	MAX_IRRIG_TIME = 11 /**Index 11 - 12 for maximum irrigation time*/
-}dataIndex_t;
+};
 
 void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 {
