@@ -30,9 +30,10 @@ typedef enum
 }dataIndex_t;
 
 extern void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex);
-extern void Master_SetNodeID(uint8_t id);
-extern uint8_t Master_GetNodeID(void);
-extern void Master_StoreNodeData(uint8_t id, uint8_t nodeData);
-extern uint8_t Master_GetNodeData(uint8_t id);
+extern void Master_TransmitReceive(uint8_t* pMasterTx,
+																	 uint8_t txLen,
+																	 uint8_t* pMasterRx,
+																	 uint8_t rxLen,
+																	 uint16_t rxTimeoutMs);
 
 #endif //_COMMUNICATION_H

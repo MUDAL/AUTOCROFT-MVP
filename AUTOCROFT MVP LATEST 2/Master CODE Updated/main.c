@@ -29,9 +29,8 @@ int main(void)
 	//Local variables
 	static ButtonDataStructure button;
 	static uint8_t masterToNodeData[MASTER_TX_DATA_SIZE];
+	static uint8_t nodesToMasterData[NO_OF_NODES];
 	//static ds3231_t rtc;
-	uint8_t nodeID = 0; //valid node ID starts from 1
-	uint8_t nodeData = 0; //soil moisture measured by a node
 	
 	//Initializations
 	System_Init();
@@ -44,18 +43,19 @@ int main(void)
 	BME280_Init();
 	Button_Init(&button);
 	Bluetooth_Init();
-	HMI_Init(&button,masterToNodeData);
+	HMI_Init(&button,masterToNodeData,nodesToMasterData);
 	//System_ClearStandbyFlag();
-	
-	//WELCOME MESSAGE
-	LCD_WriteString("*** HELLO ***");
-	System_TimerDelayMs(1000);
 	
 	//STEPS
 	//1.)Initializations
 	//2.)Clear standby flag (after system wakeup)
 	//3.)Read configuration data from EEPROM memory
 	
+	Master_TransmitReceive(masterToNodeData,
+											   MASTER_TX_DATA_SIZE,
+											   nodesToMasterData,
+											   2,//NO_OF_NODES,
+											   100);
 	while(1)
 	{
 		//4.)Request for all node data and store the data... 
@@ -70,12 +70,6 @@ int main(void)
 		//DS3231_GetTime(&rtc);
 		HMI_Execute();
 
-		if (HC12_Rx_BufferFull())
-		{ 
-			nodeData = HC12_ReadByte();
-			nodeID = Master_GetNodeID();
-			Master_StoreNodeData(nodeID,nodeData); //shouldn't be executed if error is detected
-		}
 	}
 }
 

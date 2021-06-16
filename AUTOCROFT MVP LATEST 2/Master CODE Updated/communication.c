@@ -1,8 +1,8 @@
 #include <stdint.h>
+#include <stdbool.h>
+#include "system.h"
+#include "hc12.h"
 #include "communication.h"
-
-static uint8_t nodeID;
-static uint8_t nodeMoistureArr[NO_OF_NODES];
 
 void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex)
 {
@@ -21,30 +21,53 @@ void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataInde
 	}
 }
 
-void Master_SetNodeID(uint8_t id)
-{
-	nodeID = id;
-}
-
-uint8_t Master_GetNodeID(void)
-{
-	return nodeID;
-}
-
 /**
-@brief Stores moisture data received from all nodes in  
-an array.
+@brief Sends data to all nodes, receives and stores  
+their responses.  
+@param pMasterTx:
+@param txLen:
+@param pMasterRx:
+@param rxLen:
+@param rxTimeoutMs:
+@return None
 */
-void Master_StoreNodeData(uint8_t id, uint8_t nodeData)
+void Master_TransmitReceive(uint8_t* pMasterTx,
+														uint8_t txLen,
+														uint8_t* pMasterRx,
+														uint8_t rxLen,
+														uint16_t rxTimeoutMs)
 {
-	nodeMoistureArr[id] = nodeData;
+	uint8_t nodeID = 0;
+	uint8_t state = 0;
+	sysTimer_t masterRxTimer;
+	
+	System_TimerInit(&masterRxTimer, rxTimeoutMs);
+	
+	while(nodeID < rxLen)
+	{
+		switch(state)
+		{
+			case 0:
+				Master_EncodeTxData(pMasterTx, nodeID, NODE_ID);
+				HC12_TransmitBytes(pMasterTx, txLen);//send data to node
+				state = 1;
+				break;
+			case 1:
+				if(System_TimerDoneCounting(&masterRxTimer))
+				{
+					if (HC12_Rx_BufferFull())
+					{
+						pMasterRx[nodeID] = HC12_ReadByte();
+					}
+					else
+					{
+						pMasterRx[nodeID] = 200; //error value
+					}
+					nodeID++;
+					state = 0;
+				}
+				break;
+		}
+	}
 }
 
-/**
-@brief Gets moisture data for a particular node by using the ID of  
-that node.
-*/
-uint8_t Master_GetNodeData(uint8_t id)
-{
-	return nodeMoistureArr[id];
-}

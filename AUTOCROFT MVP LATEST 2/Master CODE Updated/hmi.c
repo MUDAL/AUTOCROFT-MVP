@@ -44,6 +44,7 @@ enum Substates
 //Private globals
 static ButtonDataStructure* ptrButton;
 static uint8_t* ptrMasterToNode;
+static uint8_t* ptrNodeToMaster;
 static uint8_t currentState = STATE_DISPLAY_READINGS;
 static uint8_t currentSubstate = SUBSTATE_NIL;
 
@@ -294,7 +295,7 @@ static void FSM_DisplayBme280Data(uint8_t substate)
 static void FSM_Node(uint8_t substate)
 {
 	static uint16_t nodeID;
-	uint8_t nodeMoisture = Master_GetNodeData(nodeID);
+	uint8_t nodeMoisture = ptrNodeToMaster[nodeID];
 	
 	DisplayNodeData("Node ID: ",
 									"Moisture: ",
@@ -312,9 +313,7 @@ static void FSM_Node(uint8_t substate)
 			
 		case SUBSTATE_SET_NODE_ID:
 			nodeID = Potentiometer_GetPercentPosition();
-			Master_SetNodeID(nodeID);
 			FSM_StateTransition(&ptrButton->enter, STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);
-			Master_EncodeTxData(ptrMasterToNode,nodeID,NODE_ID);
 			break;
 	}	
 }
@@ -482,10 +481,13 @@ static void FSM_IrrigTime(uint8_t substate)
 	}
 }
 
-void HMI_Init(ButtonDataStructure* pButton,uint8_t* pMasterToNode)
+void HMI_Init(ButtonDataStructure* pButton,
+							uint8_t* pMasterToNode,
+							uint8_t* pNodeToMaster)
 {
 	ptrButton = pButton;
 	ptrMasterToNode = pMasterToNode;
+	ptrNodeToMaster = pNodeToMaster;
 }
 
 void HMI_Execute(void)
@@ -513,7 +515,12 @@ void HMI_Execute(void)
 		BME280_GetData(&bme280Data);
 		Master_EncodeTxData(ptrMasterToNode,bme280Data.humidity,HUMIDITY);
 		Master_EncodeTxData(ptrMasterToNode,bme280Data.temperature,TEMPERATURE);
-		HC12_TransmitBytes(ptrMasterToNode, MASTER_TX_DATA_SIZE);
+		//Send data to all nodes and receive their moisture readings
+		Master_TransmitReceive(ptrMasterToNode,
+													 MASTER_TX_DATA_SIZE,
+													 ptrNodeToMaster,
+													 1,//NO_OF_NODES,
+													 100);
 	}
 	
 }
