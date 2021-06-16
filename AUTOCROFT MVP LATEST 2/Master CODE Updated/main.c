@@ -29,7 +29,7 @@ int main(void)
 	//Local variables
 	static ButtonDataStructure button;
 	static uint8_t masterToNodeData[MASTER_TX_DATA_SIZE];
-	static uint8_t nodesToMasterData[NO_OF_NODES];
+	static uint8_t nodeToMasterData[NO_OF_NODES];
 	//static ds3231_t rtc;
 	
 	//Initializations
@@ -43,7 +43,7 @@ int main(void)
 	BME280_Init();
 	Button_Init(&button);
 	Bluetooth_Init();
-	HMI_Init(&button,masterToNodeData,nodesToMasterData);
+	HMI_Init(&button,masterToNodeData,nodeToMasterData);
 	//System_ClearStandbyFlag();
 	
 	//STEPS
@@ -53,7 +53,7 @@ int main(void)
 	
 	Master_TransmitReceive(masterToNodeData,
 											   MASTER_TX_DATA_SIZE,
-											   nodesToMasterData,
+											   nodeToMasterData,
 											   2,//NO_OF_NODES,
 											   100);
 	while(1)
