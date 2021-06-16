@@ -42,6 +42,11 @@ int main(void)
 		{
 			Node_StoreRxData(&nodeRx);
 			soilMoisture = CMS_GetMoisture();
+			if (nodeRx.nodeID == ASSIGNED_ID)
+			{
+				HC12_TransmitByte(soilMoisture);
+			}
+			
 			moistureLevel = Sensor_GetLevel(soilMoisture, nodeRx.minMoist, nodeRx.maxMoist);			
 			humidityLevel = Sensor_GetLevel(nodeRx.humidity, nodeRx.minHum, nodeRx.maxHum);
 			temperatureLevel = Sensor_GetLevel(nodeRx.temperature, nodeRx.minTemp, nodeRx.maxTemp);
@@ -63,10 +68,6 @@ int main(void)
 					System_TimerInit(&irrigTimer,(nodeRx.maxIrrigTime*1000));
 					Solenoid_Control(SOLENOID_ON);
 					break;
-			}
-			if (nodeRx.nodeID == ASSIGNED_ID)
-			{
-				HC12_TransmitByte(soilMoisture);
 			}
 		}
 		if (Solenoid_IsOn())
