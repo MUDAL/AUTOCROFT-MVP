@@ -84,18 +84,15 @@ int main(void)
 			{
 				//1.)get number of bytes in the data received after allocated rx time elapses.
 				uint8_t noOfRxBluetoothBytes = Bluetooth_NumberOfBytesReceived();
-				//2.)send the data to the wifi module.
+				//2.)send the bluetooth rx data to the wifi module.
 				WiFi_TransmitBytes(bluetoothRxBuffer,noOfRxBluetoothBytes);
 				//3.)save bluetooth buffer data to EEPROM
 				/*
 				PLACE CODE HERE
 				*/
-				//4.)clear bluetooth buffer to prevent mixup of old data and new data
-				for(uint8_t j = 0; j < noOfRxBluetoothBytes; j++)
-				{
-					bluetoothRxBuffer[j] = 0;
-				}
-				//5.)Reinitialize bluetooth multibyte reception process
+				//4.)clear 1st element of bluetooth buffer 
+				bluetoothRxBuffer[0] = 0;
+				//5.)reinitialize bluetooth multibyte reception process
 				Bluetooth_RxReInit();
 			}
 		}
