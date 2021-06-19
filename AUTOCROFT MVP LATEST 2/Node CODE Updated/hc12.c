@@ -34,7 +34,7 @@ void HC12_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
 										bufferSize, 
 										DMA_CHANNEL5_MEMORY_INC_MODE |
 										DMA_CHANNEL5_CIRCULAR_BUFFER |
-										DMA_CHANNEL5_ENABLE);
+										DMA_CHANNEL_ENABLE);
 }
 	
 void HC12_TransmitByte(uint8_t data)

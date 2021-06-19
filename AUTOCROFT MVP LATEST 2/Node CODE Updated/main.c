@@ -40,8 +40,8 @@ int main(void)
 		//DS3231_GetTime(&rtc);
 		if (HC12_Rx_BufferFull())
 		{
-			Node_StoreRxData(&nodeRx);
 			soilMoisture = CMS_GetMoisture();
+			Node_StoreRxData(&nodeRx);
 			if (nodeRx.nodeID == ASSIGNED_ID)
 			{
 				HC12_TransmitByte(soilMoisture);
