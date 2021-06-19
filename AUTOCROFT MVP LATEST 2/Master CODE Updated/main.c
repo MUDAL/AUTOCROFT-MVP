@@ -30,6 +30,8 @@ int main(void)
 	static ButtonDataStructure button;
 	static uint8_t masterToNodeData[MASTER_TX_DATA_SIZE];
 	static uint8_t nodeToMasterData[NO_OF_NODES];
+	static uint8_t bluetoothRxBuffer[BLUETOOTH_RX_MAX_LEN];
+	sysTimer_t bluetoothRxTimer;
 	//static ds3231_t rtc;
 	
 	//Initializations
@@ -43,18 +45,25 @@ int main(void)
 	BME280_Init();
 	Button_Init(&button);
 	Bluetooth_Init();
+	Bluetooth_RxBufferInit(bluetoothRxBuffer,BLUETOOTH_RX_MAX_LEN);
+	System_TimerInit(&bluetoothRxTimer,BLUETOOTH_RX_MAX_TIME_MS);
 	HMI_Init(&button,masterToNodeData,nodeToMasterData);
-	//System_ClearStandbyFlag();
+	System_ClearStandbyFlag();
 	
 	//STEPS
+	//0.)Power external modules 
 	//1.)Initializations
 	//2.)Clear standby flag (after system wakeup)
-	//3.)Read configuration data from EEPROM memory
+	//3.)Read configuration data from EEPROM memory....
+	//i.e. settings(min moisture, humidity etc) and WiFi ssid and password.
 	
+	LCD_WriteString("Initializing....");
+	LCD_SetCursor(1,0);
+	LCD_WriteString("Please wait");
 	Master_TransmitReceive(masterToNodeData,
 											   MASTER_TX_DATA_SIZE,
 											   nodeToMasterData,
-											   2,//NO_OF_NODES,
+											   NO_OF_NODES,
 											   100);
 	while(1)
 	{
@@ -68,6 +77,29 @@ int main(void)
 		//8.)Execute Human Machine Interface (significant aspect of the application)
 		
 		//DS3231_GetTime(&rtc);
+		
+		if(bluetoothRxBuffer[0] != 0)
+		{//this indicates first byte of bluetooth data has been received.
+			if(System_TimerDoneCounting(&bluetoothRxTimer))
+			{
+				//1.)get number of bytes in the data received after allocated rx time elapses.
+				uint8_t noOfRxBluetoothBytes = Bluetooth_NumberOfBytesReceived();
+				//2.)send the data to the wifi module.
+				WiFi_TransmitBytes(bluetoothRxBuffer,noOfRxBluetoothBytes);
+				//3.)save bluetooth buffer data to EEPROM
+				/*
+				PLACE CODE HERE
+				*/
+				//4.)clear bluetooth buffer to prevent mixup of old data and new data
+				for(uint8_t j = 0; j < noOfRxBluetoothBytes; j++)
+				{
+					bluetoothRxBuffer[j] = 0;
+				}
+				//5.)Reinitialize bluetooth multibyte reception process
+				Bluetooth_RxReInit();
+			}
+		}
+		
 		HMI_Execute();
 
 	}

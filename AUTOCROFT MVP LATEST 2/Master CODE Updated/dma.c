@@ -72,7 +72,14 @@ the number of bytes left to be received.
 @param dmaChannel: The channel of a particular DMA port e.g. DMA1 channel 5.  
 @return number of bytes left to be received by the Rx buffer of a DMA channel.   
 */
-uint16_t DMA_Rx_CNDTR(DMA_Channel_TypeDef* dmaChannel)
+uint8_t DMA_Rx_CNDTR(DMA_Channel_TypeDef* dmaChannel)
 {
 	return dmaChannel->CNDTR;
+}
+
+void DMA_Rx_ReInit(DMA_Channel_TypeDef* dmaChannel, uint8_t noOfRxBytes)
+{
+	dmaChannel->CCR &= ~DMA_CHANNEL_ENABLE;
+	dmaChannel->CNDTR = noOfRxBytes;
+	dmaChannel->CCR |= DMA_CHANNEL_ENABLE;
 }

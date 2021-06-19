@@ -505,22 +505,23 @@ void HMI_Execute(void)
 	};
 	//Core of the HMI
 	pStateFunction[currentState](currentSubstate);
-	//Replace the code below with Interrupts (soon)
 	//If send button is pressed (# on keypad), send data to the nodes
 	if (Button_Read(&ptrButton->send))
-	{ //Change this to the code that'll run in the ISR attached to '#'
-		//The ISR sets a flag
-		//When the flag is checked, data is transmitted to all nodes
-		//The flag is cleared afterwards
+	{
 		BME280_GetData(&bme280Data);
 		Master_EncodeTxData(ptrMasterToNode,bme280Data.humidity,HUMIDITY);
 		Master_EncodeTxData(ptrMasterToNode,bme280Data.temperature,TEMPERATURE);
+		LCD_Clear();
+		LCD_WriteString("Collecting data");
+		LCD_SetCursor(1,0);
+		LCD_WriteString("Please wait");
 		//Send data to all nodes and receive their moisture readings
 		Master_TransmitReceive(ptrMasterToNode,
 													 MASTER_TX_DATA_SIZE,
 													 ptrNodeToMaster,
-													 1,//NO_OF_NODES,
+													 NO_OF_NODES,
 													 100);
+		LCD_Clear();
 	}
 	
 }

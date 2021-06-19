@@ -69,17 +69,17 @@ void Button_Init(ButtonDataStructure* pButtonDataStructure)
 											BUTTON_FORWARD_PIN,
 											GPIO_PIN9_INPUT_PULLUP_OR_PULLDOWN);
 	
-	Button_Struct_Init(&pButtonDataStructure->down,											
-											PORTB,
-											GPIO_PORT_REG_HIGH,
-											BUTTON_DOWN_PIN,
-											GPIO_PIN10_INPUT_PULLUP_OR_PULLDOWN);
-	
-	Button_Struct_Init(&pButtonDataStructure->enter,											
-											PORTB,
-											GPIO_PORT_REG_HIGH,
-											BUTTON_ENTER_PIN,
-											GPIO_PIN11_INPUT_PULLUP_OR_PULLDOWN);
+//	Button_Struct_Init(&pButtonDataStructure->down,											
+//											PORTB,
+//											GPIO_PORT_REG_HIGH,
+//											BUTTON_DOWN_PIN,
+//											GPIO_PIN10_INPUT_PULLUP_OR_PULLDOWN);
+//	
+//	Button_Struct_Init(&pButtonDataStructure->enter,											
+//											PORTB,
+//											GPIO_PORT_REG_HIGH,
+//											BUTTON_ENTER_PIN,
+//											GPIO_PIN11_INPUT_PULLUP_OR_PULLDOWN);
 }
 
 /**

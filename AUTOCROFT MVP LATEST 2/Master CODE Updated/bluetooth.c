@@ -1,6 +1,7 @@
 #include "stm32f10x.h"                  // Device header
 #include <stdbool.h>
 #include "gpio.h"
+#include "dma.h"
 #include "uart.h"
 #include "bluetooth.h"
 
@@ -22,4 +23,25 @@ void Bluetooth_Init(void)
 						 BAUD_9600,
 						 RX_DMA_ENABLE,
 						 (USART_TX_ENABLE | USART_RX_ENABLE));
+}
+
+void Bluetooth_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
+{
+	//DMA1 channel 3 configuration for USART3 Rx
+	DMA_USART_Rx_Init(DMA1_Channel3,
+										USART3,
+										pBuffer,
+										bufferSize, 
+										DMA_CHANNEL3_MEMORY_INC_MODE |
+										DMA_CHANNEL_ENABLE);
+}
+
+uint8_t Bluetooth_NumberOfBytesReceived(void)
+{
+	return BLUETOOTH_RX_MAX_LEN - DMA_Rx_CNDTR(DMA1_Channel3);
+}
+
+void Bluetooth_RxReInit(void)
+{
+	DMA_Rx_ReInit(DMA1_Channel3, BLUETOOTH_RX_MAX_LEN);
 }
