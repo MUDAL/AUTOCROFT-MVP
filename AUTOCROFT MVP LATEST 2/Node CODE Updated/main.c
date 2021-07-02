@@ -23,7 +23,7 @@ int main(void)
 	sensorLevel_t moistureLevel = LEV_UNDEFINED;
 	sensorLevel_t humidityLevel = LEV_UNDEFINED;
 	sensorLevel_t temperatureLevel = LEV_UNDEFINED;
-	irrigMethod_t wateringMethod = IRRIG_METHOD_UNDEFINED;
+	irrigMethod_t irrigationMethod = IRRIG_METHOD_UNDEFINED;
 	
 	//Initializations
 	System_Init();
@@ -50,20 +50,20 @@ int main(void)
 			moistureLevel = Sensor_GetLevel(soilMoisture, nodeRx.minMoist, nodeRx.maxMoist);			
 			humidityLevel = Sensor_GetLevel(nodeRx.humidity, nodeRx.minHum, nodeRx.maxHum);
 			temperatureLevel = Sensor_GetLevel(nodeRx.temperature, nodeRx.minTemp, nodeRx.maxTemp);
-			wateringMethod = Irrigation_GetMethod(moistureLevel,humidityLevel,temperatureLevel);
+			irrigationMethod = Irrigation_GetMethod(moistureLevel,humidityLevel,temperatureLevel);
 			
-			switch (wateringMethod)
+			switch (irrigationMethod)
 			{
-				case NO_WATERING:
+				case NO_IRRIGATION:
 				case IRRIG_METHOD_UNDEFINED:
 					Solenoid_Control(SOLENOID_OFF);
 					break;
-				case LIGHT_WATERING:
+				case LIGHT_IRRIGATION:
 					//convert minimum irrigation time to milliseconds
 					System_TimerInit(&irrigTimer,(nodeRx.minIrrigTime*1000));
 					Solenoid_Control(SOLENOID_ON);
 					break;
-				case HEAVY_WATERING:
+				case HEAVY_IRRIGATION:
 					//convert maximum irrigation time to milliseconds
 					System_TimerInit(&irrigTimer,(nodeRx.maxIrrigTime*1000));
 					Solenoid_Control(SOLENOID_ON);

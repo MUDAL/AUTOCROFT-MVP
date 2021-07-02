@@ -1,9 +1,8 @@
 #include <stdint.h>
 #include "sensor.h"
 #include "irrigation.h"
-
 /*
-									Cases for irrigation
+									Conditions for irrigation method
 										
 S/N		Moisture		Humidity					Temperature					Irrigation method
 1			Low					Low								Low									Light
@@ -36,25 +35,24 @@ S/N		Moisture		Humidity					Temperature					Irrigation method
 
 */
 
-//Lookup table containing the 27 cases for irrigation
+//Lookup table containing the 27 conditions for type of irrigation
 
-const irrigMethod_t irrigCase[3][3][3] = {
-	
-	{ {LIGHT_WATERING,LIGHT_WATERING,HEAVY_WATERING}, 
-		{LIGHT_WATERING,LIGHT_WATERING,HEAVY_WATERING}, 
-		{NO_WATERING,LIGHT_WATERING,NO_WATERING}
+const irrigMethod_t irrigCondition[3][3][3] = 
+{
+	{ {LIGHT_IRRIGATION,LIGHT_IRRIGATION,HEAVY_IRRIGATION}, 
+		{LIGHT_IRRIGATION,LIGHT_IRRIGATION,HEAVY_IRRIGATION}, 
+		{NO_IRRIGATION,LIGHT_IRRIGATION,NO_IRRIGATION}
 	},
 	
-	{ {NO_WATERING,NO_WATERING,LIGHT_WATERING}, 
-		{NO_WATERING,NO_WATERING,LIGHT_WATERING}, 
-		{NO_WATERING,NO_WATERING,LIGHT_WATERING} 
+	{ {NO_IRRIGATION,NO_IRRIGATION,LIGHT_IRRIGATION}, 
+		{NO_IRRIGATION,NO_IRRIGATION,LIGHT_IRRIGATION}, 
+		{NO_IRRIGATION,NO_IRRIGATION,LIGHT_IRRIGATION} 
 	},
 	
-	{ {NO_WATERING,NO_WATERING,LIGHT_WATERING}, 
-		{NO_WATERING,NO_WATERING,LIGHT_WATERING}, 
-		{NO_WATERING,NO_WATERING,NO_WATERING}
+	{ {NO_IRRIGATION,NO_IRRIGATION,LIGHT_IRRIGATION}, 
+		{NO_IRRIGATION,NO_IRRIGATION,LIGHT_IRRIGATION}, 
+		{NO_IRRIGATION,NO_IRRIGATION,NO_IRRIGATION}
 	}
-	
 }; 
 
 irrigMethod_t Irrigation_GetMethod(sensorLevel_t moistureLev,
@@ -67,6 +65,6 @@ irrigMethod_t Irrigation_GetMethod(sensorLevel_t moistureLev,
 	{//Invalid
 		return IRRIG_METHOD_UNDEFINED;
 	}
-	return irrigCase[moistureLev][humidityLev][temperatureLev];
+	return irrigCondition[moistureLev][humidityLev][temperatureLev];
 }
 

@@ -3,12 +3,10 @@
 
 typedef enum 
 {
-	
-	NO_WATERING = 0,
-	LIGHT_WATERING,
-	HEAVY_WATERING,
+	NO_IRRIGATION = 0,
+	LIGHT_IRRIGATION,
+	HEAVY_IRRIGATION,
 	IRRIG_METHOD_UNDEFINED
-	
 }irrigMethod_t;
 
 extern irrigMethod_t Irrigation_GetMethod(sensorLevel_t moistureLev,
