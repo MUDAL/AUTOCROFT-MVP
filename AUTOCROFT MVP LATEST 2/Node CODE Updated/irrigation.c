@@ -2,8 +2,7 @@
 #include "sensor.h"
 #include "irrigation.h"
 /*
-									Conditions for irrigation method
-										
+									Conditions for irrigation method		
 S/N		Moisture		Humidity					Temperature					Irrigation method
 1			Low					Low								Low									Light
 2			Low					Low								Average							Light
@@ -35,9 +34,9 @@ S/N		Moisture		Humidity					Temperature					Irrigation method
 
 */
 
-//Lookup table containing the 27 conditions for type of irrigation
+//Lookup table containing the 27 conditions for irrigation method
 
-const irrigMethod_t irrigCondition[3][3][3] = 
+const irrigMethod_t irrigMethod[3][3][3] = 
 {
 	{ {LIGHT_IRRIGATION,LIGHT_IRRIGATION,HEAVY_IRRIGATION}, 
 		{LIGHT_IRRIGATION,LIGHT_IRRIGATION,HEAVY_IRRIGATION}, 
@@ -65,6 +64,6 @@ irrigMethod_t Irrigation_GetMethod(sensorLevel_t moistureLev,
 	{//Invalid
 		return IRRIG_METHOD_UNDEFINED;
 	}
-	return irrigCondition[moistureLev][humidityLev][temperatureLev];
+	return irrigMethod[moistureLev][humidityLev][temperatureLev];
 }
 
