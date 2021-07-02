@@ -30,6 +30,7 @@ typedef enum
 }dataIndex_t;
 
 extern void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex);
+//This function blocks other operations until the query of all nodes is complete.
 extern void Master_TransmitReceive(uint8_t* pMasterTx,
 																	 uint8_t txLen,
 																	 uint8_t* pMasterRx,

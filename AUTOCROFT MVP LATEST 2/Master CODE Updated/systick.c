@@ -20,7 +20,8 @@ void SysTick_Init(void)
 	//Systick default clock source = AHB/8 = 1MHz
 	SysTick->LOAD = 1000 - 1; //1ms timebase
 	SysTick->VAL = 0;
-	SysTick->CTRL |= (SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk); //Enable systick interrupt and systick timer
+	//Enable systick interrupt and systick timer
+	SysTick->CTRL |= (SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk); 
 }
 
 uint32_t SysTick_GetTick(void)

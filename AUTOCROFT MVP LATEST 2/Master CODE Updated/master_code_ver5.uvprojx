@@ -406,21 +406,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Bluetooth Application</GroupName>
-          <Files>
-            <File>
-              <FileName>bluetooth.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\bluetooth.c</FilePath>
-            </File>
-            <File>
-              <FileName>bluetooth.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\bluetooth.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Master Node Communication</GroupName>
           <Files>
             <File>
@@ -432,6 +417,21 @@
               <FileName>communication.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\communication.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Bluetooth Application</GroupName>
+          <Files>
+            <File>
+              <FileName>bluetooth.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\bluetooth.c</FilePath>
+            </File>
+            <File>
+              <FileName>bluetooth.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\bluetooth.h</FilePath>
             </File>
           </Files>
         </Group>

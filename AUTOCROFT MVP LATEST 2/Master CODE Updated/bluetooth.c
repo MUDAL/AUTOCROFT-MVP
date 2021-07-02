@@ -3,7 +3,11 @@
 #include "gpio.h"
 #include "dma.h"
 #include "uart.h"
+#include "system.h"
 #include "bluetooth.h"
+
+#define BLUETOOTH_RX_MAX_TIME_MS		100
+static sysTimer_t bluetoothRxTimer;
 
 void Bluetooth_Init(void)
 {
@@ -23,6 +27,8 @@ void Bluetooth_Init(void)
 						 BAUD_9600,
 						 RX_DMA_ENABLE,
 						 (USART_TX_ENABLE | USART_RX_ENABLE));
+	
+	System_TimerInit(&bluetoothRxTimer,BLUETOOTH_RX_MAX_TIME_MS);
 }
 
 void Bluetooth_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
@@ -36,12 +42,35 @@ void Bluetooth_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
 										DMA_CHANNEL_ENABLE);
 }
 
+bool Bluetooth_DataIsReady(uint8_t* pBuffer)
+{
+	bool dataIsReady = false;
+	
+	if(pBuffer[0] != 0)
+	{//this indicates first byte of bluetooth data has been received.
+		if(System_TimerDoneCounting(&bluetoothRxTimer))
+		{//all bytes must have been received after the programmed timeout.
+			dataIsReady = true;
+		}
+	}
+	return dataIsReady;
+}
+
 uint8_t Bluetooth_NumberOfBytesReceived(void)
 {
 	return BLUETOOTH_RX_MAX_LEN - DMA_Rx_CNDTR(DMA1_Channel3);
 }
 
-void Bluetooth_RxReInit(void)
+/**
+@brief Prepares the bluetooth Rx buffer for new data      
+reception from starting address of the buffer.  
+@param
+@param
+@return None
+*/
+void Bluetooth_ClearRxBuffer(uint8_t* pBuffer)
 {
+	pBuffer[0] = 0;
 	DMA_Rx_ReInit(DMA1_Channel3, BLUETOOTH_RX_MAX_LEN);
 }
+
