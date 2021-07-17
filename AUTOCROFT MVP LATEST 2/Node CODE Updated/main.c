@@ -18,7 +18,7 @@ int main(void)
 {
 	static NodeRxDataStructure nodeRx;
 	static sysTimer_t irrigTimer;
-	static sysTimer_t rtcTimer;
+	//static sysTimer_t rtcTimer;
 	//static ds3231_t rtc;
 	uint8_t soilMoisture = 0;
 	sensorLevel_t moistureLevel = LEVEL_UNDEFINED;
@@ -33,7 +33,7 @@ int main(void)
 	HC12_Init();
 	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE);
 	DS3231_Init();
-	System_TimerInit(&rtcTimer,60000); //check time every 60 seconds
+	//System_TimerInit(&rtcTimer,60000); //check time every 60 seconds
 	EEPROM_Init();
 	//System_ClearStandbyFlag();
 
