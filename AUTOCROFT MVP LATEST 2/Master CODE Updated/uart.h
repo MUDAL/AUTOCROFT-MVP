@@ -28,6 +28,5 @@ extern void USART_Init(USART_TypeDef* uartPort, uint32_t baud, uint8_t dmaMode, 
 extern void USART_TransmitByte(USART_TypeDef* uartPort, uint8_t byte);
 extern void USART_TransmitBytes(USART_TypeDef* uartPort, uint8_t* bytes, uint8_t len);
 extern bool USART_RxBufferFull(USART_TypeDef* uartPort);
-extern uint8_t USART_ReadByte(USART_TypeDef* uartPort);
 
 #endif //_UART_H

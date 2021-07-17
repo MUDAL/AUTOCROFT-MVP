@@ -102,15 +102,3 @@ bool USART_RxBufferFull(USART_TypeDef* uartPort)
 	}
 	return false;
 }
-
-/**
-@brief Reads the data contained in a USART's Rx buffer.  
-@param uartPort: pointer to USART_TypeDef struct which contains all registers  
-for the desired USART peripheral.
-@return data received by the USART's receiver. Once the data is read, the Rx buffer  
-becomes empty.  
-*/
-uint8_t USART_ReadByte(USART_TypeDef* uartPort)
-{
-	return uartPort->DR;
-}

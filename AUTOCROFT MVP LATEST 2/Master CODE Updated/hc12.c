@@ -1,6 +1,7 @@
 #include "stm32f10x.h"                  // Device header
 #include <stdbool.h>
 #include "gpio.h"
+#include "dma.h"
 #include "uart.h"
 #include "hc12.h"
 
@@ -17,13 +18,25 @@ void HC12_Init(void)
 								 GPIO_PIN10,
 								 GPIO_PIN10_INPUT_PULLUP_OR_PULLDOWN,
 								 GPIO_PULLUP_ENABLE);
-	//USART1 configuration
+	//Usart configuration
 	USART_Init(USART1,
 						 BAUD_9600,
-						 TX_RX_DMA_DISABLE,
-						 (USART_TX_ENABLE | USART_RX_ENABLE));
+						 RX_DMA_ENABLE,
+						 (USART_TX_ENABLE | USART_RX_ENABLE));						 
 }
-	
+
+void HC12_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
+{
+	//DMA1 channel 5 configuration for USART1 Rx
+	DMA_USART_Rx_Init(DMA1_Channel5,
+										USART1,
+										pBuffer,
+										bufferSize, 
+										DMA_CHANNEL5_MEMORY_INC_MODE |
+										DMA_CHANNEL5_CIRCULAR_BUFFER |
+										DMA_CHANNEL_ENABLE);
+}
+
 void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)
 {
 	/*
@@ -39,11 +52,5 @@ void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)
 
 bool HC12_Rx_BufferFull(void)
 {
-	return USART_RxBufferFull(USART1);
+	return DMA_Rx_BufferFull(DMA1, DMA_CHANNEL5);
 }
-
-uint8_t HC12_ReadByte(void)
-{
-	return USART_ReadByte(USART1);
-}
-

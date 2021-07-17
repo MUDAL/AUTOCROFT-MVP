@@ -5,8 +5,6 @@
 #include "systick.h"
 #include "eeprom24c16.h"
 
-#define PAGE_SIZE	    	16
-
 void EEPROM_Init(void)
 {
 	GPIO_OutputInit(GPIOB,

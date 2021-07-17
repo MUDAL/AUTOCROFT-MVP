@@ -30,6 +30,5 @@ extern void DMA_USART_Rx_Init(DMA_Channel_TypeDef* dmaChannel,
  																														
 extern bool DMA_Rx_BufferFull(DMA_TypeDef* dmaPort, uint8_t dmaChannel);
 extern uint8_t DMA_Rx_CNDTR(DMA_Channel_TypeDef* dmaChannel);
-extern void DMA_Rx_ReInit(DMA_Channel_TypeDef* dmaChannel, uint8_t noOfRxBytes);
 															
 #endif //_DMA_H

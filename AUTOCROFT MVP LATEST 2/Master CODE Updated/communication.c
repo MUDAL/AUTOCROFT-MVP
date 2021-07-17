@@ -26,7 +26,7 @@ void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataInde
 their responses.  
 @param pMasterTx:
 @param txLen:
-@param pMasterRx:
+@param pMasterRxArray:
 @param rxLen:
 @param rxTimeoutMs:
 @return None
@@ -34,40 +34,30 @@ their responses.
 void Master_TransmitReceive(uint8_t* pMasterTx,
 														uint8_t txLen,
 														uint8_t* pMasterRx,
+														uint8_t* pMasterRxArray,
 														uint8_t rxLen,
 														uint16_t rxTimeoutMs)
 {
 	uint8_t nodeID = 0;
-	uint8_t state = 0;
-	sysTimer_t masterRxTimer;
-	
-	System_TimerInit(&masterRxTimer, rxTimeoutMs);
-	
+
 	while(nodeID < rxLen)
 	{
-		switch(state)
+		Master_EncodeTxData(pMasterTx, nodeID, NODE_ID);
+		HC12_TransmitBytes(pMasterTx, txLen);//send data to node
+		System_TimerDelayMs(rxTimeoutMs);
+		
+		if(HC12_Rx_BufferFull())
 		{
-			case 0:
-				Master_EncodeTxData(pMasterTx, nodeID, NODE_ID);
-				HC12_TransmitBytes(pMasterTx, txLen);//send data to node
-				state = 1;
-				break;
-			case 1:
-				if(System_TimerDoneCounting(&masterRxTimer))
-				{
-					if (HC12_Rx_BufferFull())
-					{
-						pMasterRx[nodeID] = HC12_ReadByte();
-					}
-					else
-					{
-						pMasterRx[nodeID] = 200; //error value
-					}
-					nodeID++;
-					state = 0;
-				}
-				break;
+			if(*pMasterRx != IDLE_CHARACTER_ERROR)
+			{
+				pMasterRxArray[nodeID] = *pMasterRx;
+			}	
 		}
+		else
+		{
+			pMasterRxArray[nodeID] = 200; //error value
+		}
+		nodeID++;
 	}
 }
 

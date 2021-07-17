@@ -5,8 +5,15 @@
 transfer between master and node.
 */
 
+/**
+An idle character frame is always sent whenever the the USART  
+transmitter is initialized for the first time. This 8-bit data  
+is unwanted and must be eliminated/ignored once received.  
+*/
+#define IDLE_CHARACTER_ERROR	255
 #define MASTER_TX_DATA_SIZE		13
-#define NO_OF_NODES						100
+#define MASTER_RX_DATA_SIZE		1
+#define NO_OF_NODES						1
 
 /**
 @brief Each part of the data to be transmitted is an element
@@ -34,6 +41,7 @@ extern void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t d
 extern void Master_TransmitReceive(uint8_t* pMasterTx,
 																	 uint8_t txLen,
 																	 uint8_t* pMasterRx,
+																	 uint8_t* pMasterRxArray,
 																	 uint8_t rxLen,
 																	 uint16_t rxTimeoutMs);
 

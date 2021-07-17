@@ -33,6 +33,9 @@ void Bluetooth_Init(void)
 
 void Bluetooth_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
 {
+	//First element of buffer being 0 signifies...
+	//new data is hasn't been received.
+	pBuffer[0] = 0;
 	//DMA1 channel 3 configuration for USART3 Rx
 	DMA_USART_Rx_Init(DMA1_Channel3,
 										USART3,
@@ -59,18 +62,5 @@ bool Bluetooth_DataIsReady(uint8_t* pBuffer)
 uint8_t Bluetooth_NumberOfBytesReceived(void)
 {
 	return BLUETOOTH_RX_MAX_LEN - DMA_Rx_CNDTR(DMA1_Channel3);
-}
-
-/**
-@brief Prepares the bluetooth Rx buffer for new data      
-reception from starting address of the buffer.  
-@param
-@param
-@return None
-*/
-void Bluetooth_ClearRxBuffer(uint8_t* pBuffer)
-{
-	pBuffer[0] = 0;
-	DMA_Rx_ReInit(DMA1_Channel3, BLUETOOTH_RX_MAX_LEN);
 }
 

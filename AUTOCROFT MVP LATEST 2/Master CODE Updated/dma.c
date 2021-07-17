@@ -40,7 +40,7 @@ void DMA_USART_Rx_Init(DMA_Channel_TypeDef* dmaChannel,
 											 uint32_t dmaConfig)
 {
 	volatile uint32_t* pUart_DR = (uint32_t*)&uartPort->DR;
-	
+	dmaChannel->CCR &= ~dmaConfig;
 	dmaChannel->CPAR = (uint32_t)pUart_DR;
 	dmaChannel->CMAR = (uint32_t)uartRxBuffer;
 	dmaChannel->CNDTR = bufferSize;
@@ -75,11 +75,4 @@ the number of bytes left to be received.
 uint8_t DMA_Rx_CNDTR(DMA_Channel_TypeDef* dmaChannel)
 {
 	return dmaChannel->CNDTR;
-}
-
-void DMA_Rx_ReInit(DMA_Channel_TypeDef* dmaChannel, uint8_t noOfRxBytes)
-{
-	dmaChannel->CCR &= ~DMA_CHANNEL_ENABLE;
-	dmaChannel->CNDTR = noOfRxBytes;
-	dmaChannel->CCR |= DMA_CHANNEL_ENABLE;
 }
