@@ -40,7 +40,7 @@ void DMA_USART_Rx_Init(DMA_Channel_TypeDef* dmaChannel,
 											 uint32_t dmaConfig)
 {
 	volatile uint32_t* pUart_DR = (uint32_t*)&uartPort->DR;
-	
+	dmaChannel->CCR &= ~dmaConfig;
 	dmaChannel->CPAR = (uint32_t)pUart_DR;
 	dmaChannel->CMAR = (uint32_t)uartRxBuffer;
 	dmaChannel->CNDTR = bufferSize;

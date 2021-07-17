@@ -27,7 +27,7 @@ sensorLevel_t Sensor_GetLevel(uint8_t currentReading,
 	}
 	else
 	{
-		lev = LEV_UNDEFINED;
+		lev = LEVEL_UNDEFINED;
 	}
 	return lev;
 }

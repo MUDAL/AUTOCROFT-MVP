@@ -58,9 +58,9 @@ irrigMethod_t Irrigation_GetMethod(sensorLevel_t moistureLev,
 																	 sensorLevel_t humidityLev,
 																	 sensorLevel_t temperatureLev)
 {
-	if ( (moistureLev == LEV_UNDEFINED) ||
-		   (humidityLev == LEV_UNDEFINED) ||
-			 (temperatureLev == LEV_UNDEFINED) )
+	if ( (moistureLev == LEVEL_UNDEFINED) ||
+		   (humidityLev == LEVEL_UNDEFINED) ||
+			 (temperatureLev == LEVEL_UNDEFINED) )
 	{//Invalid
 		return IRRIG_METHOD_UNDEFINED;
 	}

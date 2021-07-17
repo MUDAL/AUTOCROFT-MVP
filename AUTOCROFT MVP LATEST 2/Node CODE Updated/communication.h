@@ -5,6 +5,12 @@
 transfer between master and node.
 */
 
+/**
+An idle character frame is always sent whenever the the USART  
+transmitter is initialized for the first time. This 8-bit data  
+is unwanted and must be eliminated/ignored once received.  
+*/
+#define IDLE_CHARACTER_ERROR		255
 #define NODE_RX_DATA_SIZE				13
 
 typedef struct

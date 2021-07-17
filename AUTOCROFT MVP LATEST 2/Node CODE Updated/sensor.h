@@ -6,7 +6,7 @@ typedef enum
 	LOW = 0,
 	AVERAGE,
 	HIGH,
-	LEV_UNDEFINED
+	LEVEL_UNDEFINED
 }sensorLevel_t;
 
 extern sensorLevel_t Sensor_GetLevel(uint8_t currentReading,

@@ -1,6 +1,8 @@
 #ifndef _EEPROM_H
 #define _EEPROM_H
 
+#define PAGE_SIZE	    	16
+
 enum EEPROMPageAddress
 {
 	PAGE1 = 0x00,
