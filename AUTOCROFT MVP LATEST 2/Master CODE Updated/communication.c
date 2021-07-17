@@ -53,10 +53,6 @@ void Master_TransmitReceive(uint8_t* pMasterTx,
 				pMasterRxArray[nodeID] = *pMasterRx;
 			}	
 		}
-		else
-		{
-			pMasterRxArray[nodeID] = 200; //error value
-		}
 		nodeID++;
 	}
 }
