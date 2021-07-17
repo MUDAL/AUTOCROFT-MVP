@@ -34,7 +34,7 @@ void Bluetooth_Init(void)
 void Bluetooth_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
 {
 	//First element of buffer being 0 signifies...
-	//new data is hasn't been received.
+	//new data hasn't been received.
 	pBuffer[0] = 0;
 	//DMA1 channel 3 configuration for USART3 Rx
 	DMA_USART_Rx_Init(DMA1_Channel3,
