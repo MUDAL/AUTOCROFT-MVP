@@ -14,6 +14,28 @@
 //Private defines
 #define ASSIGNED_ID		0
 
+static void EEPROM_StoreData(uint8_t* pBuffer, uint8_t len, uint8_t initialPage)
+{	
+	uint8_t i = 0;
+	uint8_t page = initialPage;
+	//number of pages to allocate for storing contents of pBuffer
+	uint8_t numberOfPages = len / PAGE_SIZE; 
+	//remaining bytes of pBuffer (which is less than a page) to be stored
+	uint8_t numberOfBytesLeft = len % PAGE_SIZE; 
+	
+	//A page stores 16 bytes.
+	//If data > 16 bytes, the data is split into blocks of 16 bytes...
+	//with each block stored in a page. The storage of blocks in pages....
+	//is sequential.
+	for(i = 0; i < numberOfPages; i++)
+	{
+		EEPROM_WritePage(page+i,&pBuffer[PAGE_SIZE*i],PAGE_SIZE);
+	}
+	EEPROM_WritePage(page+i,&pBuffer[PAGE_SIZE*i],numberOfBytesLeft);	
+}
+
+//static void EEPROM_ReadData(void);
+
 int main(void)
 {
 	static NodeRxDataStructure nodeRx;
@@ -36,7 +58,20 @@ int main(void)
 	//System_TimerInit(&rtcTimer,60000); //check time every 60 seconds
 	EEPROM_Init();
 	//System_ClearStandbyFlag();
-
+	
+	//EEPROM TESTING
+	static uint8_t buffer[96] = {49,77,21,46,94,33,12,31,10,9,8,7,6,5,4,23,2,19,100,179};
+	
+	static uint8_t rcvBuffer1[16];
+	static uint8_t rcvBuffer2[16];
+	
+	EEPROM_StoreData(buffer, 20 , PAGE1);
+	
+	//======== ENCLOSE IN A FUNCTION ====================
+	EEPROM_ReadPage(PAGE1, rcvBuffer1, PAGE_SIZE);
+	EEPROM_ReadPage(PAGE2, rcvBuffer2, 4);
+	//===================================================
+	
 	while(1)
 	{
 		/*
@@ -48,6 +83,7 @@ int main(void)
 		{
 			soilMoisture = CMS_GetMoisture();
 			Node_StoreRxData(&nodeRx);
+			
 			if(nodeRx.nodeID == ASSIGNED_ID)
 			{
 				HC12_TransmitByte(soilMoisture);
@@ -99,7 +135,7 @@ int main(void)
 //		if(System_TimerDoneCounting(&rtcTimer))
 //		{
 //			DS3231_GetTime(&rtc);
-//			if(rtc.minutes == 20)
+//			if(rtc.minutes >= 20)
 //			{
 //				//1.)store configuration data in EEPROM
 //				//2.)put system to sleep
