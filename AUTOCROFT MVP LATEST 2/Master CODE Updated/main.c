@@ -83,7 +83,7 @@ int main(void)
 //		if(System_TimerDoneCounting(&rtcTimer))
 //		{
 //			DS3231_GetTime(&rtc);
-//			if(rtc.minutes == 20)
+//			if(rtc.minutes >= 20)
 //			{
 //				//1.)store configuration data in EEPROM
 //				//2.)put system to sleep

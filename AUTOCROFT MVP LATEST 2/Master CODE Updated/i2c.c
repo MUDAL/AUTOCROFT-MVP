@@ -301,15 +301,24 @@ void I2C_ReadMultiByte(I2C_TypeDef* i2cPort,
 	
 	*/
 	
-	if (length < 3)
+	if (length == 0)
 	{//Invalid input
 		return;
+	}
+	
+	else if (length == 1)
+	{
+		I2C_ReadByte(i2cPort,slaveAddr,regAddr,pData);
+	}
+	
+	else if (length == 2)
+	{
+		I2C_Read2Bytes(i2cPort,slaveAddr,regAddr,pData);
 	}
 	
 	else
 	{
 		volatile uint32_t read_I2C_SR2;
-		
 		while ((i2cPort->SR2 & I2C_SR2_BUSY) == I2C_SR2_BUSY); //wait for I2C busy bit to be cleared
 		i2cPort->CR1 |= I2C_CR1_START; //Generate start condition
 		while((i2cPort->SR1 & I2C_SR1_SB) != I2C_SR1_SB); //wait for start bit to be set
