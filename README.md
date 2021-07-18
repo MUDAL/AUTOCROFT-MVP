@@ -6,15 +6,12 @@ This codebase is an improved Master-Node Architecture based on one master and se
 The base nodes collect data and forward them to the master.  
 The master processes data from multiple base nodes and sends to the cloud.    
 
-#Observations 
-1. Keil debugger interferes with peripheral registers.    
-2. LCD consumes considerable power.  
-3. Faulty HC12 modules performed better when closer to each other.  
+# Current version  
+Version 1.0
 
-#Design Plans / Improvements  
-1. Replacing buttons and potentiometer with keypad for improved longevity.  
-2. Separate design based on WiFi and bluetooth (no user interface on the device).  
-3. Use of IPEX/SMA antenna for HC12 modules.  
+# Design Plans / Improvements for next version (Version 1.1) 
+1. MOSFET driver using LM358N: The MOSFET will be used to power external hardware down in order to improve power consumption.  
+2. Replace voltage regulators with buck converters where necessary.  
 
   
 
