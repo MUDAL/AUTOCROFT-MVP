@@ -14,28 +14,6 @@
 //Private defines
 #define ASSIGNED_ID		0
 
-static void EEPROM_StoreData(uint8_t* pBuffer, uint8_t len, uint8_t initialPage)
-{	
-	uint8_t i = 0;
-	uint8_t page = initialPage;
-	//number of pages to allocate for storing contents of pBuffer
-	uint8_t numberOfPages = len / PAGE_SIZE; 
-	//remaining bytes of pBuffer (which is less than a page) to be stored
-	uint8_t numberOfBytesLeft = len % PAGE_SIZE; 
-	
-	//A page stores 16 bytes.
-	//If data > 16 bytes, the data is split into blocks of 16 bytes...
-	//with each block stored in a page. The storage of blocks in pages....
-	//is sequential.
-	for(i = 0; i < numberOfPages; i++)
-	{
-		EEPROM_WritePage(page+i,&pBuffer[PAGE_SIZE*i],PAGE_SIZE);
-	}
-	EEPROM_WritePage(page+i,&pBuffer[PAGE_SIZE*i],numberOfBytesLeft);	
-}
-
-//static void EEPROM_ReadData(void);
-
 int main(void)
 {
 	static NodeRxDataStructure nodeRx;
