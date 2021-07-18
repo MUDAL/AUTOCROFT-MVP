@@ -59,6 +59,11 @@ int main(void)
 	//i.e. settings(min moisture, humidity etc) and WiFi ssid and password.
 	//4.)Request for all node data and wait for data to be received from... 
 	//all nodes.
+	LCD_WriteString("AUTOCROFT");
+	LCD_SetCursor(1,0);
+	LCD_WriteString("FW: VER 1.0");
+	System_TimerDelayMs(800);
+	LCD_Clear();
 	LCD_WriteString("Initializing....");
 	LCD_SetCursor(1,0);
 	LCD_WriteString("Please wait");
@@ -67,7 +72,7 @@ int main(void)
 												 &nodeToMasterData,
 											   nodeToMasterDataArray,
 											   NO_OF_NODES,
-											   200);
+											   150);
 	while(1)
 	{
 		/*
