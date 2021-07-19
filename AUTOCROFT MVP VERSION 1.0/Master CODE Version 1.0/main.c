@@ -7,7 +7,6 @@
 #include "hc12.h"
 #include "lcd.h"
 #include "ds3231.h"
-#include "potentiometer.h"
 #include "button.h"
 #include "communication.h"
 #include "wifi.h"

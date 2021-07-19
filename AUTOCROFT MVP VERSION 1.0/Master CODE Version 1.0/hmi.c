@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include "conversions.h" 
 #include "button.h"
-#include "potentiometer.h"
 #include "lcd.h"
 #include "bme280.h"
 #include "hc12.h"
@@ -313,7 +312,7 @@ static void FSM_Node(uint8_t substate)
 			break;
 			
 		case SUBSTATE_SET_NODE_ID:
-			nodeID = Potentiometer_GetPercentPosition();
+			//nodeID = Potentiometer_GetPercentPosition();
 			//FSM_StateTransition(&ptrButton->enter, STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);
 			break;
 	}	
@@ -347,13 +346,13 @@ static void FSM_Moisture(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			minMoist = Potentiometer_GetPercentPosition();
+			//minMoist = Potentiometer_GetPercentPosition();
 			//FSM_StateTransition(&ptrButton->enter, STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
 			Master_EncodeTxData(ptrMasterToNode, minMoist, MIN_MOISTURE);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			maxMoist = Potentiometer_GetPercentPosition();
+			//maxMoist = Potentiometer_GetPercentPosition();
 			//FSM_StateTransition(&ptrButton->enter, STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MAX);
 			Master_EncodeTxData(ptrMasterToNode, maxMoist, MAX_MOISTURE);
 			break;
@@ -388,13 +387,13 @@ static void FSM_Humidity(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			minHum = Potentiometer_GetPercentPosition();
+			//minHum = Potentiometer_GetPercentPosition();
 			//FSM_StateTransition(&ptrButton->enter, STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
 			Master_EncodeTxData(ptrMasterToNode, minHum, MIN_HUMIDITY);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			maxHum = Potentiometer_GetPercentPosition();
+			//maxHum = Potentiometer_GetPercentPosition();
 			//FSM_StateTransition(&ptrButton->enter, STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MAX);
 			Master_EncodeTxData(ptrMasterToNode, maxHum, MAX_HUMIDITY);
 			break;
@@ -430,13 +429,13 @@ static void FSM_Temperature(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			minTemp = Potentiometer_GetPercentPosition();
+			//minTemp = Potentiometer_GetPercentPosition();
 			//FSM_StateTransition(&ptrButton->enter, STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
 			Master_EncodeTxData(ptrMasterToNode, minTemp, MIN_TEMPERATURE);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			maxTemp = Potentiometer_GetPercentPosition();
+			//maxTemp = Potentiometer_GetPercentPosition();
 			//FSM_StateTransition(&ptrButton->enter, STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MAX);	
 			Master_EncodeTxData(ptrMasterToNode, maxTemp, MAX_TEMPERATURE);
 			break;
@@ -469,13 +468,13 @@ static void FSM_IrrigTime(uint8_t substate)
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			minIrrigTime = Potentiometer_GetRawPosition();
+			//minIrrigTime = Potentiometer_GetRawPosition();
 			//FSM_StateTransition(&ptrButton->enter, STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MIN);	
 			Master_EncodeTxData(ptrMasterToNode, minIrrigTime, MIN_IRRIG_TIME);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			maxIrrigTime = Potentiometer_GetRawPosition();
+			//maxIrrigTime = Potentiometer_GetRawPosition();
 			//FSM_StateTransition(&ptrButton->enter, STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MAX);	
 			Master_EncodeTxData(ptrMasterToNode, maxIrrigTime, MAX_IRRIG_TIME);
 			break;
