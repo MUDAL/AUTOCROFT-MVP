@@ -7,7 +7,7 @@ void GPIO_Reset(void)
 	/*
 	Description:
 	Resets specific bits in the GPIO registers prior to input or output mode
-	configuration. PA13,PA14,PA15,PB2,PB3 and PB4 are left in their reset states.
+	configuration. PA0,PA13,PA14,PA15,PB2,PB3 and PB4 are left in their reset states.
 	
 	Parameters:
 	None
@@ -16,7 +16,7 @@ void GPIO_Reset(void)
 	None
 	
 	*/
-	GPIOA->CRL &= ~0xCCCCCCCC;
+	GPIOA->CRL &= ~0xCCCCCCC0;
 	GPIOA->CRH &= ~0x000CCCCC;
 	GPIOB->CRL &= ~0xCCC000CC;
 	GPIOB->CRH &= ~0xCCCCCCCC;
