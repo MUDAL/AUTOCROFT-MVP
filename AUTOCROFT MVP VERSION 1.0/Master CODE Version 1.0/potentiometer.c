@@ -21,15 +21,6 @@ void Potentiometer_Init(void)
 	None
 	
 	*/
-	
-	//Analog mode configuration for PB0
-	GPIO_InputInit(GPIOB,
-								 GPIO_PORT_REG_LOW,
-								 GPIO_PIN0,
-								 GPIO_ANALOG_MODE,
-								 false);
-	
-	
 	ADC_SingleConv_Init(ADC1,
 											ADC_CHANNEL8,
 											ADC_CH8_MAX_SAMPLE_TIME); 

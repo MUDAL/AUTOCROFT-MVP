@@ -23,14 +23,6 @@ void CMS_Init(void)
 	None
 	
 	*/
-	
-	//Analog mode configuration for PA5
-	GPIO_InputInit(GPIOA,
-								 GPIO_PORT_REG_LOW,
-								 GPIO_PIN5,
-								 GPIO_ANALOG_MODE,
-								 false);
-	
 	ADC_SingleConv_Init(ADC1,
 											ADC_CHANNEL5,
 											ADC_CH5_MAX_SAMPLE_TIME); 

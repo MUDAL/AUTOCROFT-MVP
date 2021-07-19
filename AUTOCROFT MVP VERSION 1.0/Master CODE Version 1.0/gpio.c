@@ -56,8 +56,6 @@ void GPIO_InputInit(GPIO_TypeDef* gpioPort,
 	
 	4.) config: If this parameter is passed with GPIO_PINx_INPUT_PULLUP_OR_PULLDOWN, the 
 	GPIOx_CRL or GPIOx_CRH register sets pin x to an input mode with pull-up or pull-down.
-	If this parameter is passed with 'GPIO_ANALOG_MODE', the GPIOx_CRL or GPIOx_CRH register
-	sets pin x to analog mode
 	
 	5.) pullupEn: If this parameter is set 'true', bit x of the GPIO_ODR register is set high
 	to enable internal pull-up resistor provided the config parameter is passed with

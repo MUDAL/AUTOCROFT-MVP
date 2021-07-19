@@ -8,7 +8,6 @@ enum PortRegLevel
 };
 
 #define GPIO_PULLUP_ENABLE										true
-#define GPIO_ANALOG_MODE											0x00
 #define GPIO_GEN_PUR_OUTPUT_PUSH_PULL					0x00
 
 #define GPIO_PIN0															0
