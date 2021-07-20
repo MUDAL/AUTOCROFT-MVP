@@ -122,10 +122,10 @@ int main(void)
 				HC12_TransmitByte(soilMoisture);
 			}
 		}
-		//IRRIGATION CONTROL
-		ExecuteIrrigationMethod(&nodeRx,&irrigTimer);
 		//ERROR DETECTION AND CORRECTION OF DATA FROM MASTER
 		Node_RxErrorHandler(&nodeRx);
+		//IRRIGATION CONTROL
+		ExecuteIrrigationMethod(&nodeRx,&irrigTimer);
 		/*
 		RTC AND SLEEP
 		*/
