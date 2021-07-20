@@ -51,10 +51,8 @@ The most common type of error encountered during wireless communication between
 master and node is the IDLE_CHARACTER_ERROR. Its due to the nature of the UART.  
 This function detects this unwanted character and eliminates it immediately before  
 it corrupts the actual data.
-
 @param pNodeRx: pointer to the data structure containing data received from the master  
 by the node.  
-
 @return None.  
 */
 void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx)

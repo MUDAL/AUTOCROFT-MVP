@@ -35,7 +35,15 @@ static void CopyData(uint8_t* target, uint8_t* source, uint8_t len)
 	}
 }
 
-static void ExecuteIrrigationMethod(NodeRxDataStructure* pNodeRx, sysTimer_t* pIrrigTimer)
+/**
+@brief Performs irrigation (if required) based on current soil moisture, environmental temperature  
+and humidity data received from the master.  
+@param pNodeRx: pointer to the data structure containing data received from the master  
+by the node.  
+@param pIrrigTimer: pointer to software timer that determines the irrigation duration.  
+@return None.  
+*/
+static void TriggerIrrigation(NodeRxDataStructure* pNodeRx, sysTimer_t* pIrrigTimer)
 {
 	static bool irrigationStarted;
 	sensorLevel_t moistureLevel = LEVEL_UNDEFINED;
@@ -125,7 +133,7 @@ int main(void)
 		//ERROR DETECTION AND CORRECTION OF DATA FROM MASTER
 		Node_RxErrorHandler(&nodeRx);
 		//IRRIGATION CONTROL
-		ExecuteIrrigationMethod(&nodeRx,&irrigTimer);
+		TriggerIrrigation(&nodeRx,&irrigTimer);
 		/*
 		RTC AND SLEEP
 		*/

@@ -40,6 +40,15 @@ static void CopyData(uint8_t* target, uint8_t* source, uint8_t len)
 
 int main(void)
 {
+	//STEPS
+	//0.)Power external modules 
+	//1.)Initializations
+	//2.)Clear standby flag (after system wakeup)
+	//3.)Read configuration data from EEPROM memory....
+	//i.e. settings(min moisture, humidity etc) and WiFi ssid and password.
+	//4.)Request for all node data and wait for data to be received from... 
+	//all nodes.
+	
 	//Local variables
 	static ButtonDataStructure button;
 	static uint8_t nodeToMasterData;
@@ -77,15 +86,7 @@ int main(void)
 						&nodeToMasterData,
 						nodeToMasterDataArray);
 	//System_ClearStandbyFlag();
-	
-	//STEPS
-	//0.)Power external modules 
-	//1.)Initializations
-	//2.)Clear standby flag (after system wakeup)
-	//3.)Read configuration data from EEPROM memory....
-	//i.e. settings(min moisture, humidity etc) and WiFi ssid and password.
-	//4.)Request for all node data and wait for data to be received from... 
-	//all nodes.
+
 	LCD_WriteString("AUTOCROFT");
 	LCD_SetCursor(1,0);
 	LCD_WriteString("FW: VER 1.0");
@@ -107,24 +108,6 @@ int main(void)
 		*/
 		
 		HMI_Execute();
-		
-		/*
-		RTC AND SLEEP
-		*/
-		
-//		if(System_TimerDoneCounting(&rtcTimer))
-//		{
-//			DS3231_GetTime(&rtc);
-//			if(rtc.minutes >= 20)
-//			{
-//				//1.)store configuration data in EEPROM
-					//2.)store data from nodes in EEPROM
-//				//3.)put system to sleep
-					//EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
-//				//System_GoToStandbyMode();
-//			}
-//		}
-		
 		/*
 		BLUETOOTH AND WIFI
 		*/
@@ -141,6 +124,24 @@ int main(void)
 //			//EEPROM_StoreData(&bluetoothRxBytes,1,PAGE10);
 //			Bluetooth_RxBufferInit(bluetoothRxBuffer,BLUETOOTH_RX_MAX_LEN);
 //		}
+		
+		/*
+		RTC AND SLEEP
+		*/
+
+//		if(System_TimerDoneCounting(&rtcTimer))
+//		{
+//			DS3231_GetTime(&rtc);
+//			if(rtc.minutes >= 20)
+//			{
+//				//1.)store configuration data in EEPROM
+					//2.)store data from nodes in EEPROM
+//				//3.)put system to sleep
+					//EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
+//				//System_GoToStandbyMode();
+//			}
+//		}
+		
 	}
 }
 
