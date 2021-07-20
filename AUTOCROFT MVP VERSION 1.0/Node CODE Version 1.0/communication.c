@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "conversions.h"
+#include "hc12.h"
 #include "communication.h"
 
 /**
@@ -25,7 +26,7 @@ enum
 	MAX_IRRIG_TIME = 11 /**Index 11 - 12 for maximum irrigation time*/
 };
 
-void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
+void Node_StoreData(NodeRxDataStructure* pNodeRx)
 {
 	pNodeRx->minMoist = pNodeRx->data[MIN_MOISTURE];
 	pNodeRx->maxMoist = pNodeRx->data[MAX_MOISTURE];
@@ -44,3 +45,23 @@ void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 	pNodeRx->maxIrrigTime = (pNodeRx->data[MAX_IRRIG_TIME] << 8) | pNodeRx->data[MAX_IRRIG_TIME + 1];
 }
 
+/**
+@brief Error detection and correction handler.  
+The most common type of error encountered during wireless communication between  
+master and node is the IDLE_CHARACTER_ERROR. Its due to the nature of the UART.  
+This function detects this unwanted character and eliminates it immediately before  
+it corrupts the actual data.
+
+@param pNodeRx: pointer to the data structure containing data received from the master  
+by the node.  
+
+@return None.  
+*/
+void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx)
+{
+	if(pNodeRx->data[0] == IDLE_CHARACTER_ERROR)
+	{
+		pNodeRx->data[0] = 0;
+		HC12_RxBufferInit(pNodeRx->data, NODE_RX_DATA_SIZE);
+	}			
+}

@@ -29,6 +29,7 @@ typedef struct
 	uint16_t maxIrrigTime;
 }NodeRxDataStructure;
 
-extern void Node_StoreRxData(NodeRxDataStructure* pNodeRx);
+extern void Node_StoreData(NodeRxDataStructure* pNodeRx);
+extern void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx);
 
 #endif //_COMMUNICATION_H

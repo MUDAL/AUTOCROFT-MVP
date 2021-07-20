@@ -19,7 +19,6 @@
 EEPROM MEMORY ALLOCATION
 * PAGE 1 to PAGE 6: Bluetooth data
 * PAGE 10: Number of bytes received from bluetooth module
-* PAGE 70-76: Moisture data from all nodes
 * PAGE 128: Master-to-node data
 */
 
@@ -122,7 +121,6 @@ int main(void)
 					//2.)store data from nodes in EEPROM
 //				//3.)put system to sleep
 					//EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
-					//EEPROM_StoreData(nodeToMasterDataArray,NO_OF_NODES,PAGE70);
 //				//System_GoToStandbyMode();
 //			}
 //		}
