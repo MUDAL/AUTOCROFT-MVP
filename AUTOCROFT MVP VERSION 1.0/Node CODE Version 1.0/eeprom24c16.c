@@ -71,3 +71,21 @@ void EEPROM_StoreData(uint8_t* pData, uint8_t len, uint8_t initialPage)
 	}
 	EEPROM_WritePage(page+i,&pData[PAGE_SIZE*i],numberOfBytesLeft);	
 }
+
+void EEPROM_GetData(uint8_t* pData, uint8_t len, uint8_t initialPage)
+{
+	uint8_t i = 0;
+	uint8_t page = initialPage;
+	//number of completely filled pages EEPROM pages to read 
+	uint8_t numberOfPages = len / PAGE_SIZE; 
+	//unfilled EEPROM page
+	uint8_t numberOfBytesLeft = len % PAGE_SIZE; 
+	
+	//Reading from the EEPROM sequentially from all filled pages...
+	//to the unfilled page(if any).
+	for(i = 0; i < numberOfPages; i++)
+	{
+		EEPROM_ReadPage(page+i,&pData[PAGE_SIZE*i],PAGE_SIZE);
+	}
+	EEPROM_ReadPage(page+i,&pData[PAGE_SIZE*i],numberOfBytesLeft);	
+}

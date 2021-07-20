@@ -11,12 +11,34 @@
 #include "hc12.h"
 #include "communication.h"
 
+/**
+EEPROM MEMORY ALLOCATION
+* PAGE 1: Configuration data from master controller
+*/
+
 //Private defines
 #define ASSIGNED_ID		0
+
+/**
+@brief Copies data from source buffer to target buffer. The buffer is an array  
+of 8-bit integers.  
+@param target: target buffer (recipient of data)  
+@param source: source buffer (source of data)  
+@param len: number of bytes in the buffers. The buffers must be of same length.  
+@return None
+*/
+static void CopyData(uint8_t* target, uint8_t* source, uint8_t len)
+{
+	for(uint8_t i = 0; i < len; i++)
+	{
+		target[i] = source[i];
+	}
+}
 
 int main(void)
 {
 	static NodeRxDataStructure nodeRx;
+	static uint8_t prevMasterToNodeData[NODE_RX_DATA_SIZE];
 	static sysTimer_t irrigTimer;
 	//static sysTimer_t rtcTimer;
 	//static ds3231_t rtc;
@@ -35,21 +57,12 @@ int main(void)
 	DS3231_Init();
 	//System_TimerInit(&rtcTimer,60000); //check time every 60 seconds
 	EEPROM_Init();
+	static uint8_t arr[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+	EEPROM_StoreData(arr,PAGE_SIZE,PAGE1);
+	EEPROM_GetData(prevMasterToNodeData,NODE_RX_DATA_SIZE,PAGE1);
+	CopyData(nodeRx.data,prevMasterToNodeData,NODE_RX_DATA_SIZE);
 	//System_ClearStandbyFlag();
-	
-	//EEPROM TESTING
-	static uint8_t buffer[96] = {49,77,21,46,94,33,12,31,10,9,8,7,6,5,4,23,2,19,100,179};
-	
-	static uint8_t rcvBuffer1[16];
-	static uint8_t rcvBuffer2[16];
-	
-	EEPROM_StoreData(buffer, 20 , PAGE1);
-	
-	//======== ENCLOSE IN A FUNCTION ====================
-	EEPROM_ReadPage(PAGE1, rcvBuffer1, PAGE_SIZE);
-	EEPROM_ReadPage(PAGE2, rcvBuffer2, 4);
-	//===================================================
-	
+		
 	while(1)
 	{
 		/*
@@ -115,8 +128,9 @@ int main(void)
 //			DS3231_GetTime(&rtc);
 //			if(rtc.minutes >= 20)
 //			{
-//				//1.)store configuration data in EEPROM
+//				//1.)store configuration data from master in EEPROM
 //				//2.)put system to sleep
+					//EEPROM_StoreData(nodeRx.data,NODE_RX_DATA_SIZE,PAGE1);
 //				//System_GoToStandbyMode();
 //			}
 //		}

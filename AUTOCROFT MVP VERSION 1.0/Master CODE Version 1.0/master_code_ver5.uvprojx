@@ -489,6 +489,16 @@
               <FilePath>.\lcd.h</FilePath>
             </File>
             <File>
+              <FileName>potentiometer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\potentiometer.c</FilePath>
+            </File>
+            <File>
+              <FileName>potentiometer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\potentiometer.h</FilePath>
+            </File>
+            <File>
               <FileName>system.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\system.c</FilePath>
