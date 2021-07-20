@@ -37,6 +37,7 @@ static void CopyData(uint8_t* target, uint8_t* source, uint8_t len)
 
 static void ExecuteIrrigationMethod(NodeRxDataStructure* pNodeRx, sysTimer_t* pIrrigTimer)
 {
+	static bool irrigationStarted;
 	sensorLevel_t moistureLevel = LEVEL_UNDEFINED;
 	sensorLevel_t humidityLevel = LEVEL_UNDEFINED;
 	sensorLevel_t temperatureLevel = LEVEL_UNDEFINED;
@@ -55,14 +56,22 @@ static void ExecuteIrrigationMethod(NodeRxDataStructure* pNodeRx, sysTimer_t* pI
 			Solenoid_Control(SOLENOID_OFF);
 			break;
 		case LIGHT_IRRIGATION:
-			//convert minimum irrigation time to milliseconds
-			System_TimerInit(pIrrigTimer,(pNodeRx->minIrrigTime*1000));
-			Solenoid_Control(SOLENOID_ON);
+			if(!irrigationStarted)
+			{
+				//convert minimum irrigation time to milliseconds
+				System_TimerInit(pIrrigTimer,(pNodeRx->minIrrigTime*1000));
+				Solenoid_Control(SOLENOID_ON);
+				irrigationStarted = true;
+			}
 			break;
 		case HEAVY_IRRIGATION:
-			//convert maximum irrigation time to milliseconds
-			System_TimerInit(pIrrigTimer,(pNodeRx->maxIrrigTime*1000));
-			Solenoid_Control(SOLENOID_ON);
+			if(!irrigationStarted)
+			{
+				//convert maximum irrigation time to milliseconds
+				System_TimerInit(pIrrigTimer,(pNodeRx->maxIrrigTime*1000));
+				Solenoid_Control(SOLENOID_ON);
+				irrigationStarted = true;
+			}
 			break;
 	}
 	if(Solenoid_IsOn())
@@ -70,6 +79,7 @@ static void ExecuteIrrigationMethod(NodeRxDataStructure* pNodeRx, sysTimer_t* pI
 		if(System_TimerDoneCounting(pIrrigTimer))
 		{
 			Solenoid_Control(SOLENOID_OFF);
+			irrigationStarted = false;
 		}
 	}
 }
