@@ -37,7 +37,7 @@ static void activateColumn(int column){
 	case COLUMN1:
 		//clear PB1 and set PB5,8,9
 		GPIO_Output_Clear_Reg(GPIOB, 1<<GPIO_PIN1);
-		GPIO_Output_Reg_Write(GPIOB, ((1<<GPIO_PIN5) | (GPIO_PIN8) | (GPIO_PIN9)) );
+		GPIO_Output_Reg_Write(GPIOB, ((1<<GPIO_PIN5) | (1<<GPIO_PIN8) | (1<<GPIO_PIN9)) );
 		break;
 	case COLUMN2:
 		//clear PB5 and set PB1,8,9
