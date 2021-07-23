@@ -4,7 +4,7 @@
 #include "communication.h"
 #include "display.h"
 
-static void RefreshDisplay(uint8_t row)
+static void RefreshRow(uint8_t row)
 {
 	LCD_SetCursor(row,0);
 	//Delete line (i.e. all columns for the selected row).  
@@ -37,7 +37,7 @@ void Display_Bme280Data(char* firstRowHeading,
 	//top
 	if(prevRow1Data != row1Data)
 	{
-		RefreshDisplay(0);
+		RefreshRow(0);
 		prevRow1Data = row1Data;
 	}
 	LCD_SetCursor(0,0);
@@ -49,7 +49,7 @@ void Display_Bme280Data(char* firstRowHeading,
 	//bottom
 	if(prevRow2Data != row2Data)
 	{
-		RefreshDisplay(1);
+		RefreshRow(1);
 		prevRow2Data = row2Data;
 	}
 	LCD_SetCursor(1,0);
@@ -74,7 +74,7 @@ void Display_NodeData(char* firstRowHeading,
 	
 	if(prevRow2Data != row2Data)
 	{
-		RefreshDisplay(1);
+		RefreshRow(1);
 		prevRow2Data = row2Data;
 	}
 	
@@ -108,7 +108,7 @@ void Display_NodeData(char* firstRowHeading,
 		case SUBSTATE_SET_NODE_ID:
 			if(prevRow1Data != row1Data)
 			{
-				RefreshDisplay(0);
+				RefreshRow(0);
 				prevRow1Data = row1Data;
 			}
 			//top
@@ -196,7 +196,7 @@ void Display_Threshold(uint16_t minValue,
 			//top
 			if(prevMinValue != minValue)
 			{
-				RefreshDisplay(0);
+				RefreshRow(0);
 				prevMinValue = minValue;
 			}
 			LCD_SetCursor(0,0);
@@ -224,7 +224,7 @@ void Display_Threshold(uint16_t minValue,
 			//bottom
 			if(prevMaxValue != maxValue)
 			{
-				RefreshDisplay(1);
+				RefreshRow(1);
 				prevMaxValue = maxValue;
 			}
 			LCD_SetCursor(1,0);
