@@ -112,7 +112,7 @@ char Keypad_GetChar(void)
 			*/
 			if(!GPIO_InputRead(GPIOA,keypadRowPin[j]))
 			{
-				SysTick_DelayMs(10);
+				SysTick_DelayMs(30);
 				keypadChar = keypad[i][j];
 			}
 		}
