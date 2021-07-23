@@ -5,10 +5,9 @@
 #include "bme280.h"
 #include "eeprom24c16.h"
 #include "hc12.h"
+#include "keypad.h"
 #include "lcd.h"
 #include "ds3231.h"
-#include "potentiometer.h"
-#include "button.h"
 #include "communication.h"
 #include "wifi.h"
 #include "bluetooth.h"
@@ -50,7 +49,6 @@ int main(void)
 	//all nodes.
 	
 	//Local variables
-	static ButtonDataStructure button;
 	static uint8_t nodeToMasterData;
 	static uint8_t masterToNodeData[MASTER_TX_DATA_SIZE];
 	static uint8_t bluetoothRxBuffer[BLUETOOTH_RX_MAX_LEN];
@@ -63,6 +61,7 @@ int main(void)
 	
 	//Initializations
 	System_Init();
+	Keypad_Init();
 	LCD_Init();
 	HC12_Init();
 	HC12_RxBufferInit(&nodeToMasterData,MASTER_RX_DATA_SIZE);
@@ -75,18 +74,15 @@ int main(void)
 	//EEPROM_GetData(prevBluetoothBuffer,prevNoOfBluetoothBytes,PAGE1);
 	WiFi_Init();
 	BME280_Init();
-	Button_Init(&button);
 	//Bluetooth_Init();
 	//Bluetooth_RxBufferInit(bluetoothRxBuffer,BLUETOOTH_RX_MAX_LEN);
 	//Load data from EEPROM memory
 	CopyData(masterToNodeData,prevMasterToNodeData,MASTER_TX_DATA_SIZE);
 	CopyData(bluetoothRxBuffer,prevBluetoothBuffer,BLUETOOTH_RX_MAX_LEN);
-	HMI_Init(&button,
-						masterToNodeData,
-						&nodeToMasterData,
-						nodeToMasterDataArray);
+	HMI_Init(masterToNodeData,
+					 &nodeToMasterData,
+					 nodeToMasterDataArray);
 	//System_ClearStandbyFlag();
-
 	LCD_WriteString("AUTOCROFT");
 	LCD_SetCursor(1,0);
 	LCD_WriteString("FW: VER 1.0");

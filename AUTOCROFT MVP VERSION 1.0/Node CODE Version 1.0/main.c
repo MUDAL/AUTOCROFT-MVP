@@ -16,9 +16,6 @@ EEPROM MEMORY ALLOCATION
 * PAGE 1: Configuration data from master controller
 */
 
-//Private defines
-#define ASSIGNED_ID		0
-
 /**
 @brief Copies data from source buffer to target buffer. The buffer is an array  
 of 8-bit integers.  
@@ -112,7 +109,7 @@ int main(void)
 	EEPROM_Init();
 	EEPROM_GetData(prevMasterToNodeData,NODE_RX_DATA_SIZE,PAGE1);
 	CopyData(nodeRx.data,prevMasterToNodeData,NODE_RX_DATA_SIZE);
-	Node_StoreData(&nodeRx);
+	Node_StoreRxData(&nodeRx);
 	//System_ClearStandbyFlag();
 		
 	while(1)
@@ -124,11 +121,8 @@ int main(void)
 		if(HC12_Rx_BufferFull())
 		{
 			soilMoisture = CMS_GetMoisture();
-			Node_StoreData(&nodeRx);
-			if(nodeRx.nodeID == ASSIGNED_ID)
-			{
-				HC12_TransmitByte(soilMoisture);
-			}
+			Node_StoreRxData(&nodeRx);
+			Node_TransmitData(&nodeRx,soilMoisture);
 		}
 		//ERROR DETECTION AND CORRECTION OF DATA FROM MASTER
 		Node_RxErrorHandler(&nodeRx);

@@ -13,10 +13,10 @@ enum PortRegLevel
 #define GPIO_PIN0															0
 #define GPIO_PIN0_INPUT_FLOATING							GPIO_CRL_CNF0_0
 #define GPIO_PIN0_INPUT_PULLUP_OR_PULLDOWN		GPIO_CRL_CNF0_1
-#define GPIO_PIN0_OUTPUT_MODE_2MHZ						GPIO_CRL_MODE0_1
 
 #define GPIO_PIN1															1
 #define GPIO_PIN1_OUTPUT_MODE_2MHZ						GPIO_CRL_MODE1_1
+#define GPIO_PIN1_INPUT_PULLUP_OR_PULLDOWN		GPIO_CRL_CNF1_1
 
 #define GPIO_PIN2_OUTPUT_MODE_2MHZ						GPIO_CRL_MODE2_1
 #define GPIO_PIN2_ALT_FUNC_PUSH_PULL					GPIO_CRL_CNF2_1
@@ -26,6 +26,8 @@ enum PortRegLevel
 
 #define GPIO_PIN4															4
 #define GPIO_PIN4_OUTPUT_MODE_2MHZ						GPIO_CRL_MODE4_1
+#define GPIO_PIN4_INPUT_PULLUP_OR_PULLDOWN		GPIO_CRL_CNF4_1
+
 
 #define GPIO_PIN5					  									5
 #define GPIO_PIN5_OUTPUT_MODE_2MHZ						GPIO_CRL_MODE5_1
@@ -42,8 +44,11 @@ enum PortRegLevel
 #define GPIO_PIN7_OUTPUT_MODE_2MHZ						GPIO_CRL_MODE7_1
 #define GPIO_PIN7_ALT_FUNC_PUSH_PULL					GPIO_CRL_CNF7_1
 
+#define GPIO_PIN8															8
 #define GPIO_PIN8_INPUT_PULLUP_OR_PULLDOWN		GPIO_CRH_CNF8_1
+#define GPIO_PIN8_OUTPUT_MODE_2MHZ						GPIO_CRH_MODE8_1
 
+#define GPIO_PIN9															9
 #define GPIO_PIN9_OUTPUT_MODE_2MHZ						GPIO_CRH_MODE9_1
 #define GPIO_PIN9_INPUT_PULLUP_OR_PULLDOWN		GPIO_CRH_CNF9_1
 #define GPIO_PIN9_ALT_FUNC_PUSH_PULL					GPIO_CRH_CNF9_1
@@ -80,6 +85,13 @@ extern void GPIO_InputInit(GPIO_TypeDef* gpioPort,
 													 uint8_t gpioPin,
 													 uint32_t config,  
 													 bool pullupEn);
+
+//Initializes GPIO pins to the input mode of choice
+extern void GPIO_InputInitReg(GPIO_TypeDef* gpioPort, 
+															uint8_t portLevel,  
+															uint8_t gpioPin,
+															uint32_t config,  
+															bool pullupEn);
 
 //Initializes the GPIO to the output mode of choice
 extern void GPIO_OutputInit(GPIO_TypeDef* gpioPort,
