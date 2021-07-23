@@ -1,9 +1,9 @@
 #include "stm32f10x.h"                  // Device header
-#include "keypad.h"
 #include <stdbool.h>
-#include "systick.h"
 #include "conversions.h"
+#include "systick.h"
 #include "gpio.h"
+#include "keypad.h"
 
 #define NUMBER_OF_COLUMNS   4
 #define NUMBER_OF_ROWS			4
