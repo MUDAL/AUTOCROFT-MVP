@@ -69,7 +69,7 @@ static void ActivateColumn(uint8_t column)
 
 static void Keypad_StoreKeyPress(char key, char* keyBuffer, uint8_t len)
 {
-	for(int i = 0; i<len-1 ;i++)
+	for(uint8_t i = 0; i<len-1 ;i++)
 	{
 		keyBuffer[i] = keyBuffer[i+1];
 	}
