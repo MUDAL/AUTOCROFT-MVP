@@ -11,6 +11,9 @@
 #define LCD_D6														GPIO_PIN14
 #define LCD_D7														GPIO_PIN15
 
+#define LCD_DATA_MODE												  true
+#define LCD_CMD_MODE												  false
+
 #define CMD_FUNCTION_SET_8BIT									0x03 
 #define CMD_FUNCTION_SET_4BIT									0x02 
 #define CMD_FUNCTION_SET_2LINE_5X8_DOT				0x28 
@@ -31,20 +34,13 @@ low nibble.
 /*Two-dimensional array to map column and row
 combinations to 16x2 LCD DDRAM addresses. (see HD44780 datasheet)
 */
-const uint8_t ddramAddr[2][16] = {{0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F},
-																	{0x40,0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A,0x4B,0x4C,0x4D,0x4E,0x4F}};
+const uint8_t ddramAddr[2][16] = {{0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,
+																	 0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F},
+																	{0x40,0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,
+																	 0x49,0x4A,0x4B,0x4C,0x4D,0x4E,0x4F}};
 
 static void LCD_Write(bool regSelect, char byte)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
-	
 	uint8_t lowNibble = byte << 4;
 	
 	//Select instruction register or data register 
@@ -91,14 +87,6 @@ static void LCD_Write(bool regSelect, char byte)
 
 void LCD_Init(void)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
 	//PA11 and PA12 as output
 	GPIO_OutputInit(GPIOA,
 									GPIO_PORT_REG_HIGH,
@@ -116,31 +104,23 @@ void LCD_Init(void)
 	
 	//Initialization sequence (according to HD44780 datasheet)
 	SysTick_DelayMs(16); //Power-on delay (must be greater than 15ms for 4.5v and 40ms for 2.7v)
-	LCD_Write(false,CMD_FUNCTION_SET_8BIT);
+	LCD_Write(LCD_CMD_MODE,CMD_FUNCTION_SET_8BIT);
 	SysTick_DelayMs(5); //wait for more than 4.1ms
-	LCD_Write(false,CMD_FUNCTION_SET_8BIT);
+	LCD_Write(LCD_CMD_MODE,CMD_FUNCTION_SET_8BIT);
 	SysTick_DelayMs(1); //wait for more than 100us
 	
 	//Select all initialization commands for 4 bit operation
-	LCD_Write(false,CMD_FUNCTION_SET_4BIT);
-	LCD_Write(false,CMD_FUNCTION_SET_2LINE_5X8_DOT); 
-	LCD_Write(false,CMD_CLEAR_DISPLAY);
-	LCD_Write(false,CMD_DISPLAY_ON_CURSOR_OFF); 
-	LCD_Write(false,CMD_ENTRY_MODE_INCREMENT_CURSOR); 
+	LCD_Write(LCD_CMD_MODE,CMD_FUNCTION_SET_4BIT);
+	LCD_Write(LCD_CMD_MODE,CMD_FUNCTION_SET_2LINE_5X8_DOT); 
+	LCD_Write(LCD_CMD_MODE,CMD_CLEAR_DISPLAY);
+	LCD_Write(LCD_CMD_MODE,CMD_DISPLAY_ON_CURSOR_OFF); 
+	LCD_Write(LCD_CMD_MODE,CMD_ENTRY_MODE_INCREMENT_CURSOR); 
 }
 
 void LCD_WriteByte(char data)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
 	//Select data register and send data
-	LCD_Write(true,data);
+	LCD_Write(LCD_DATA_MODE,data);
 	
 }
 
@@ -165,34 +145,17 @@ void LCD_WriteString(char* pData)
 
 void LCD_Clear(void)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
-	
 	//Select instruction register then clear the screen
-	LCD_Write(false, CMD_CLEAR_DISPLAY);
+	LCD_Write(LCD_CMD_MODE, CMD_CLEAR_DISPLAY);
 }
 
 void LCD_SetCursor(uint8_t row, uint8_t column)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
-	
 	if ((row > 1) || (column > 16))
 	{
+		//Invalid
 		return;
 	}
 	//Select instruction register then set cursor position
-	LCD_Write(false, ((1<<7) | ddramAddr[row][column]) );
+	LCD_Write(LCD_CMD_MODE, ((1<<7) | ddramAddr[row][column]));
 }
