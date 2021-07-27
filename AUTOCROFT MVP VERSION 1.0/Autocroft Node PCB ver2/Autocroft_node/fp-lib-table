@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name BATT)(type KiCad)(uri ${KIPRJMOD}/BATT.pretty)(options "")(descr ""))
+  (lib (name BLUEPILL)(type KiCad)(uri ${KIPRJMOD}/BLUEPILL.pretty)(options "")(descr ""))
+)
