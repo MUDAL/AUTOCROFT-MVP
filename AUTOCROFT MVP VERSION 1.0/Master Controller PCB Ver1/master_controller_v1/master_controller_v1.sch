@@ -25,14 +25,14 @@ F 3 "~" H 3100 5050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:Conn_01x04_Female J4
+L Connector:Conn_01x05_Female J4
 U 1 1 60F46A13
-P 3300 3900
-F 0 "J4" H 3328 3876 50  0000 L CNN
-F 1 "HC12" H 3328 3785 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical" H 3300 3900 50  0001 C CNN
-F 3 "~" H 3300 3900 50  0001 C CNN
-	1    3300 3900
+P 3300 4100
+F 0 "J4" H 3328 4076 50  0000 L CNN
+F 1 "HC12" H 3328 3985 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical" H 3300 4100 50  0001 C CNN
+F 3 "~" H 3300 4100 50  0001 C CNN
+	1    3300 4100
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -221,31 +221,21 @@ Wire Wire Line
 	1750 3950 1250 3950
 Wire Wire Line
 	1250 3950 1250 4000
-Text GLabel 2950 3800 0    50   Input ~ 0
+Text GLabel 2950 3900 0    50   Input ~ 0
 VCC_3V3
-Text GLabel 3000 4000 0    50   Input ~ 0
+Text GLabel 3000 4100 0    50   Input ~ 0
 PA9
 $Comp
 L power:GND #PWR0105
 U 1 1 60F8B3C4
-P 2650 3950
-F 0 "#PWR0105" H 2650 3700 50  0001 C CNN
-F 1 "GND" H 2655 3777 50  0000 C CNN
-F 2 "" H 2650 3950 50  0001 C CNN
-F 3 "" H 2650 3950 50  0001 C CNN
-	1    2650 3950
+P 2650 4050
+F 0 "#PWR0105" H 2650 3800 50  0001 C CNN
+F 1 "GND" H 2655 3877 50  0000 C CNN
+F 2 "" H 2650 4050 50  0001 C CNN
+F 3 "" H 2650 4050 50  0001 C CNN
+	1    2650 4050
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2950 3800 3100 3800
-Wire Wire Line
-	2650 3950 2650 3900
-Wire Wire Line
-	2650 3900 3100 3900
-Wire Wire Line
-	3000 4000 3100 4000
-Wire Wire Line
-	3000 4100 3100 4100
 $Comp
 L Device:C C1
 U 1 1 60F8D56D
@@ -600,7 +590,7 @@ F 3 "https://www.onsemi.com/pub/Collateral/CAT24C128-D.PDF" H 5300 4350 50  0001
 	1    5300 4350
 	1    0    0    -1  
 $EndComp
-Text GLabel 3000 4100 0    50   Input ~ 0
+Text GLabel 3000 4200 0    50   Input ~ 0
 PA10
 NoConn ~ 4900 4250
 NoConn ~ 4900 4350
@@ -659,7 +649,6 @@ NoConn ~ 8400 3450
 NoConn ~ 8400 3350
 NoConn ~ 8400 3250
 NoConn ~ 8400 2450
-NoConn ~ 8400 2350
 NoConn ~ 7900 2050
 NoConn ~ 7900 2550
 $Comp
@@ -784,4 +773,22 @@ Wire Wire Line
 Connection ~ 1200 4800
 Wire Wire Line
 	1200 4800 1550 4800
+Text GLabel 8500 2350 2    50   Input ~ 0
+PB0
+Wire Wire Line
+	8500 2350 8400 2350
+Text GLabel 3000 4300 0    50   Input ~ 0
+PB0
+Wire Wire Line
+	2950 3900 3100 3900
+Wire Wire Line
+	2650 4050 2650 4000
+Wire Wire Line
+	2650 4000 3100 4000
+Wire Wire Line
+	3000 4100 3100 4100
+Wire Wire Line
+	3000 4200 3100 4200
+Wire Wire Line
+	3000 4300 3100 4300
 $EndSCHEMATC
