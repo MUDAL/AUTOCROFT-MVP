@@ -80,6 +80,30 @@ void GPIO_InputInit(GPIO_TypeDef* gpioPort,
 	}
 }
 
+/**
+@brief Configures multiple GPIO pins to input mode.  
+*/
+void GPIO_InputInitReg(GPIO_TypeDef* gpioPort, 
+										   uint8_t portLevel, 
+											 uint8_t gpioPins,
+											 uint32_t config,  
+											 bool pullupEn)						 
+{
+	volatile uint32_t* pGpioConfigReg = &gpioPort->CRL;
+	
+	if (portLevel == GPIO_PORT_REG_HIGH)
+	{
+		pGpioConfigReg = &gpioPort->CRH;
+	}
+	
+	*pGpioConfigReg |= config;
+	
+	if (pullupEn)
+	{
+		gpioPort->ODR |= (gpioPins);
+	}
+}
+
 void GPIO_OutputInit(GPIO_TypeDef* gpioPort,
 										 uint8_t portLevel,
 										 uint32_t mode,

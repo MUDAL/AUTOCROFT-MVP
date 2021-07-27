@@ -406,6 +406,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Display Application</GroupName>
+          <Files>
+            <File>
+              <FileName>display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\display.c</FilePath>
+            </File>
+            <File>
+              <FileName>display.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\display.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Master Node Communication</GroupName>
           <Files>
             <File>
@@ -449,16 +464,6 @@
               <FilePath>.\bme280.h</FilePath>
             </File>
             <File>
-              <FileName>button.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\button.c</FilePath>
-            </File>
-            <File>
-              <FileName>button.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\button.h</FilePath>
-            </File>
-            <File>
               <FileName>eeprom24c16.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\eeprom24c16.c</FilePath>
@@ -489,16 +494,6 @@
               <FilePath>.\lcd.h</FilePath>
             </File>
             <File>
-              <FileName>potentiometer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\potentiometer.c</FilePath>
-            </File>
-            <File>
-              <FileName>potentiometer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\potentiometer.h</FilePath>
-            </File>
-            <File>
               <FileName>system.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\system.c</FilePath>
@@ -527,6 +522,16 @@
               <FileName>wifi.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\wifi.h</FilePath>
+            </File>
+            <File>
+              <FileName>keypad.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\keypad.c</FilePath>
+            </File>
+            <File>
+              <FileName>keypad.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\keypad.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -12,6 +12,7 @@ is unwanted and must be eliminated/ignored once received.
 */
 #define IDLE_CHARACTER_ERROR		255
 #define NODE_RX_DATA_SIZE				13
+#define BASE_NODE_ID						0
 
 typedef struct
 {
@@ -29,7 +30,8 @@ typedef struct
 	uint16_t maxIrrigTime;
 }NodeRxDataStructure;
 
-extern void Node_StoreData(NodeRxDataStructure* pNodeRx);
+extern void Node_StoreRxData(NodeRxDataStructure* pNodeRx);
 extern void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx);
+extern void Node_TransmitData(NodeRxDataStructure* pNodeRx, uint8_t moisture);
 
 #endif //_COMMUNICATION_H

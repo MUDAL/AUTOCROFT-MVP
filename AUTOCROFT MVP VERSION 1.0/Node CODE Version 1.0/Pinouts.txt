@@ -4,6 +4,7 @@
 4.) Solenoid valve control (GPIO output: PA7)
 5.) RTC module (I2C1: PB6, PB7)
 6.) RTC INT pin (WKUP: PA0)
+7.) HC12 SET pin (PB0)
 
 Pins to reserve:
 PA13,PA14,PA15,PB2,PB3,PB4

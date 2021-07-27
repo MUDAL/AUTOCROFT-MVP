@@ -26,7 +26,7 @@ enum
 	MAX_IRRIG_TIME = 11 /**Index 11 - 12 for maximum irrigation time*/
 };
 
-void Node_StoreData(NodeRxDataStructure* pNodeRx)
+void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 {
 	pNodeRx->minMoist = pNodeRx->data[MIN_MOISTURE];
 	pNodeRx->maxMoist = pNodeRx->data[MAX_MOISTURE];
@@ -62,4 +62,20 @@ void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx)
 		pNodeRx->data[0] = 0;
 		HC12_RxBufferInit(pNodeRx->data, NODE_RX_DATA_SIZE);
 	}			
+}
+
+/**
+@brief Transmits moisture data to the master if the node ID received  
+matches the assigned node ID (unique to each node).  
+@param pNodeRx: pointer to the data structure containing data received from the master  
+by the node.  
+@param moisture: moisture data to be sent to the master once the node IDs match.  
+@return None  
+*/
+void Node_TransmitData(NodeRxDataStructure* pNodeRx, uint8_t moisture)
+{
+	if(pNodeRx->nodeID == BASE_NODE_ID)
+	{
+		HC12_TransmitByte(moisture);
+	}	
 }
