@@ -25,12 +25,12 @@ F 3 "~" H 9200 1800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:Conn_01x04_Female J3
+L Connector:Conn_01x05_Female J3
 U 1 1 60F94592
 P 2800 3450
 F 0 "J3" H 2828 3426 50  0000 L CNN
 F 1 "HC-12" H 2200 3050 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical" H 2800 3450 50  0001 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x05_P2.54mm_Vertical" H 2800 3450 50  0001 C CNN
 F 3 "~" H 2800 3450 50  0001 C CNN
 	1    2800 3450
 	1    0    0    -1  
@@ -184,7 +184,6 @@ Text GLabel 9650 1700 2    50   Input ~ 0
 PA7
 Wire Wire Line
 	9650 1700 9500 1700
-NoConn ~ 9500 1600
 NoConn ~ 9500 1500
 NoConn ~ 9500 1400
 NoConn ~ 9500 1300
@@ -415,58 +414,36 @@ Wire Wire Line
 	3100 2500 2900 2500
 Wire Wire Line
 	3100 2400 2900 2400
-Text GLabel 2450 3350 0    50   Input ~ 0
+Text GLabel 2450 3250 0    50   Input ~ 0
 VCC_3.3V
 Wire Wire Line
-	2600 3350 2550 3350
-$Comp
-L power:GND #PWR01
-U 1 1 60FC6D16
-P 2000 3450
-F 0 "#PWR01" H 2000 3200 50  0001 C CNN
-F 1 "GND" H 2005 3277 50  0000 C CNN
-F 2 "" H 2000 3450 50  0001 C CNN
-F 3 "" H 2000 3450 50  0001 C CNN
-	1    2000 3450
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2600 3450 2150 3450
-Text GLabel 2450 3550 0    50   Input ~ 0
+	2600 3250 2550 3250
+Text GLabel 2450 3450 0    50   Input ~ 0
 PA9
 Wire Wire Line
-	2450 3550 2600 3550
-Text GLabel 2450 3650 0    50   Input ~ 0
+	2450 3450 2600 3450
+Text GLabel 2450 3550 0    50   Input ~ 0
 PA10
 Wire Wire Line
-	2450 3650 2600 3650
+	2450 3550 2600 3550
 $Comp
 L Device:C C1
 U 1 1 60FCB6CE
-P 1700 3400
-F 0 "C1" H 1750 3500 50  0000 L CNN
-F 1 "100uF" H 1700 3300 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm" H 1738 3250 50  0001 C CNN
-F 3 "~" H 1700 3400 50  0001 C CNN
-	1    1700 3400
+P 1700 3300
+F 0 "C1" H 1750 3400 50  0000 L CNN
+F 1 "100uF" H 1700 3200 50  0000 L CNN
+F 2 "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm" H 1738 3150 50  0001 C CNN
+F 3 "~" H 1700 3300 50  0001 C CNN
+	1    1700 3300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1700 3250 2550 3250
+	1700 3150 2550 3150
 Wire Wire Line
-	2550 3250 2550 3350
-Connection ~ 2550 3350
+	2550 3150 2550 3250
+Connection ~ 2550 3250
 Wire Wire Line
-	2550 3350 2450 3350
-Wire Wire Line
-	1700 3550 1700 3700
-Wire Wire Line
-	1700 3700 2150 3700
-Wire Wire Line
-	2150 3700 2150 3450
-Connection ~ 2150 3450
-Wire Wire Line
-	2150 3450 2000 3450
+	2550 3250 2450 3250
 Wire Wire Line
 	5750 5350 5750 5200
 $Comp
@@ -628,7 +605,7 @@ U 3 1 6108173A
 P 5100 4100
 F 0 "U2" H 5058 4146 50  0000 L CNN
 F 1 "LM358" H 5058 4055 50  0000 L CNN
-F 2 "" H 5100 4100 50  0001 C CNN
+F 2 "Package_DIP:DIP-8_W7.62mm_Socket" H 5100 4100 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/lm2904-n.pdf" H 5100 4100 50  0001 C CNN
 	3    5100 4100
 	1    0    0    -1  
@@ -650,4 +627,32 @@ F 3 "" H 5000 4500 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5000 4500 5000 4400
+$Comp
+L power:GND #PWR0103
+U 1 1 61028245
+P 2000 3650
+F 0 "#PWR0103" H 2000 3400 50  0001 C CNN
+F 1 "GND" H 2005 3477 50  0000 C CNN
+F 2 "" H 2000 3650 50  0001 C CNN
+F 3 "" H 2000 3650 50  0001 C CNN
+	1    2000 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2600 3350 2000 3350
+Wire Wire Line
+	2000 3350 2000 3650
+Wire Wire Line
+	1700 3450 1700 3650
+Wire Wire Line
+	1700 3650 2000 3650
+Connection ~ 2000 3650
+Text GLabel 2450 3650 0    50   Input ~ 0
+PB0
+Wire Wire Line
+	2450 3650 2600 3650
+Text GLabel 9650 1600 2    50   Input ~ 0
+PB0
+Wire Wire Line
+	9650 1600 9500 1600
 $EndSCHEMATC
