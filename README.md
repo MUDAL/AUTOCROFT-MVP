@@ -16,6 +16,9 @@ Some **keypad** functionalities:
 
 # Current version  
 Version 1.0  
+Each node will be assigned a subchannel of the 433MHz 
+communication system. The master will switch from channel to channel in order to send and receive 
+data from the nodes.
 
 # Design Plans for next version (Version 1.1)  
 1. MOSFET driver using LM358N: The MOSFET will be used to power external hardware down in order to improve power consumption.  
