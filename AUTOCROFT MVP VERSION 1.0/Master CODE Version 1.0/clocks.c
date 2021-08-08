@@ -22,11 +22,10 @@ void Clocks_Init(void)
 	RCC->CR &= ~RCC_CR_HSEON; //disable external oscillator
 	//enable clock for DMA1
 	RCC->AHBENR |= RCC_AHBENR_DMA1EN;
-	//enable clock access for GPIOA, GPIOB, USART1, ADC1
+	//enable clock access for GPIOA, GPIOB, USART1
 	RCC->APB2ENR |= (RCC_APB2ENR_IOPAEN 	| 
 									 RCC_APB2ENR_IOPBEN 	| 
-									 RCC_APB2ENR_USART1EN | 
-									 RCC_APB2ENR_ADC1EN);
+									 RCC_APB2ENR_USART1EN);
 	//enable clock for I2C1, PWR, USART2, USART3
 	RCC->APB1ENR |= (RCC_APB1ENR_I2C1EN   | 
 									 RCC_APB1ENR_PWREN    |
