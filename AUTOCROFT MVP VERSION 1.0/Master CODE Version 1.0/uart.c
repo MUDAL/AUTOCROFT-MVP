@@ -102,3 +102,18 @@ bool USART_RxBufferFull(USART_TypeDef* uartPort)
 	}
 	return false;
 }
+
+/**
+@brief Indicates if a USART's data register contains data or not.  
+@param uartPort: pointer to USART_TypeDef struct which contains all registers  
+for the desired USART peripheral.  
+@return true if an IDLE line is detected during data reception.  
+*/
+bool USART_RxIdleLineDetected(USART_TypeDef* uartPort)
+{
+	if((uartPort->SR & USART_SR_IDLE) == USART_SR_IDLE)
+	{
+		return true;
+	}
+	return false;
+}

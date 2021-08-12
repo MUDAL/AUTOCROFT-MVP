@@ -6,9 +6,6 @@
 #include "system.h"
 #include "bluetooth.h"
 
-#define BLUETOOTH_RX_MAX_TIME_MS		100
-static sysTimer_t bluetoothRxTimer;
-
 void Bluetooth_Init(void)
 {
 	//GPIO configuration for USART3 Tx
@@ -27,15 +24,10 @@ void Bluetooth_Init(void)
 						 BAUD_9600,
 						 RX_DMA_ENABLE,
 						 (USART_TX_ENABLE | USART_RX_ENABLE));
-	
-	System_TimerInit(&bluetoothRxTimer,BLUETOOTH_RX_MAX_TIME_MS);
 }
 
 void Bluetooth_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
 {
-	//First element of buffer being 0 signifies...
-	//new data hasn't been received.
-	pBuffer[0] = 0;
 	//DMA1 channel 3 configuration for USART3 Rx
 	DMA_USART_Rx_Init(DMA1_Channel3,
 										USART3,
@@ -45,18 +37,19 @@ void Bluetooth_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
 										DMA_CHANNEL_ENABLE);
 }
 
-bool Bluetooth_DataIsReady(uint8_t* pBuffer)
+uint8_t Bluetooth_RxStatus(void)
 {
-	bool dataIsReady = false;
+	uint8_t rxStatus = NO_DATA_RECEIVED;
 	
-	if(pBuffer[0] != 0)
-	{//this indicates first byte of bluetooth data has been received.
-		if(System_TimerDoneCounting(&bluetoothRxTimer))
-		{//all bytes must have been received after the programmed timeout.
-			dataIsReady = true;
-		}
+	if(DMA_Rx_BufferFull(DMA1,DMA_CHANNEL3))
+	{
+		rxStatus = COMPLETE_RX_DATA;
 	}
-	return dataIsReady;
+	if(USART_RxIdleLineDetected(USART3))
+	{
+		rxStatus = INCOMPLETE_RX_DATA;
+	}
+	return rxStatus;
 }
 
 uint8_t Bluetooth_NumberOfBytesReceived(void)

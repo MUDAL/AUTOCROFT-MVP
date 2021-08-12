@@ -21,22 +21,6 @@ EEPROM MEMORY ALLOCATION
 * PAGE 128: Master-to-node data
 */
 
-/**
-@brief Copies data from source buffer to target buffer. The buffer is an array  
-of 8-bit integers.  
-@param target: target buffer (recipient of data)  
-@param source: source buffer (source of data)  
-@param len: number of bytes in the buffers. The buffers must be of same length.  
-@return None
-*/
-static void CopyData(uint8_t* target, uint8_t* source, uint8_t len)
-{
-	for(uint8_t i = 0; i < len; i++)
-	{
-		target[i] = source[i];
-	}
-}
-
 int main(void)
 {
 	//STEPS
@@ -51,16 +35,17 @@ int main(void)
 	//Local variables
 	static uint8_t nodeToMasterData;
 	static uint8_t masterToNodeData[MASTER_TX_DATA_SIZE];
-	static uint8_t bluetoothRxBuffer[BLUETOOTH_RX_MAX_LEN];
 	static uint8_t nodeToMasterDataArray[NO_OF_NODES];
-	static uint8_t prevMasterToNodeData[MASTER_TX_DATA_SIZE];
-	static uint8_t prevBluetoothBuffer[BLUETOOTH_RX_MAX_LEN];
-	static uint8_t prevNoOfBluetoothBytes;
 	static sysTimer_t rtcTimer;
 	static ds3231_t rtc;
+	static bluetooth_t bluetooth;
 	
 	//Initializations
 	System_Init();
+	EEPROM_Init();
+	EEPROM_GetData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
+	EEPROM_GetData(&bluetooth.noOfRxBytes,1,PAGE10);
+	EEPROM_GetData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
 	Keypad_Init();
 	LCD_Init();
 	HC12_Init();
@@ -68,17 +53,10 @@ int main(void)
 	DS3231_Init();
 	DS3231_SetAlarm2(0);
 	System_TimerInit(&rtcTimer,60000); //60 seconds periodic software timer
-	EEPROM_Init();
-	EEPROM_GetData(prevMasterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
-	EEPROM_GetData(&prevNoOfBluetoothBytes,1,PAGE10);
-	EEPROM_GetData(prevBluetoothBuffer,prevNoOfBluetoothBytes,PAGE1);
 	WiFi_Init();
 	BME280_Init();
 	Bluetooth_Init();
-	Bluetooth_RxBufferInit(bluetoothRxBuffer,BLUETOOTH_RX_MAX_LEN);
-	//Load data from EEPROM memory
-	CopyData(masterToNodeData,prevMasterToNodeData,MASTER_TX_DATA_SIZE);
-	CopyData(bluetoothRxBuffer,prevBluetoothBuffer,BLUETOOTH_RX_MAX_LEN);
+	Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
 	HMI_Init(masterToNodeData,
 					 &nodeToMasterData,
 					 nodeToMasterDataArray);
@@ -102,29 +80,32 @@ int main(void)
 		/*
 		HMI
 		*/
-		
 		HMI_Execute();
 		/*
 		BLUETOOTH AND WIFI
 		*/
-		
-		if(Bluetooth_DataIsReady(bluetoothRxBuffer))
+		bluetooth.rxStatus = Bluetooth_RxStatus();
+		switch(bluetooth.rxStatus)
 		{
-			//1.)get number of bytes in the data received after allocated rx time elapses.
-			//2.)send the bluetooth rx data to the wifi module.
-			//3.)store bluetooth rx data in the EEPROM
-			//4.)reinitialize bluetooth rx buffer for another data reception.
-			uint8_t bluetoothRxBytes = Bluetooth_NumberOfBytesReceived();
-			WiFi_TransmitBytes(bluetoothRxBuffer,bluetoothRxBytes);
-			EEPROM_StoreData(bluetoothRxBuffer,bluetoothRxBytes,PAGE1);
-			EEPROM_StoreData(&bluetoothRxBytes,1,PAGE10);
-			Bluetooth_RxBufferInit(bluetoothRxBuffer,BLUETOOTH_RX_MAX_LEN);
+			case NO_DATA_RECEIVED:
+				break;
+			case COMPLETE_RX_DATA:
+				bluetooth.noOfRxBytes = BLUETOOTH_RX_MAX_LEN;
+				WiFi_TransmitBytes(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
+				EEPROM_StoreData(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN,PAGE1);
+				EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
+				break;
+			case INCOMPLETE_RX_DATA:
+				bluetooth.noOfRxBytes = Bluetooth_NumberOfBytesReceived();
+			  WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
+			  EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
+			  EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
+			  Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
+				break;
 		}
-		
 		/*
 		RTC AND SLEEP
 		*/
-
 		if(System_TimerDoneCounting(&rtcTimer))
 		{
 			DS3231_GetTime(&rtc);
@@ -137,7 +118,6 @@ int main(void)
 				System_GoToStandbyMode();
 			}
 		}
-		
 	}
 }
 

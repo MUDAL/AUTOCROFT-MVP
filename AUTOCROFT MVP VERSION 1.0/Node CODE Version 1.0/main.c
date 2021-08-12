@@ -16,27 +16,10 @@ EEPROM MEMORY ALLOCATION
 * PAGE 1: Configuration data from master controller
 */
 
-/**
-@brief Copies data from source buffer to target buffer. The buffer is an array  
-of 8-bit integers.  
-@param target: target buffer (recipient of data)  
-@param source: source buffer (source of data)  
-@param len: number of bytes in the buffers. The buffers must be of same length.  
-@return None
-*/
-static void CopyData(uint8_t* target, uint8_t* source, uint8_t len)
-{
-	for(uint8_t i = 0; i < len; i++)
-	{
-		target[i] = source[i];
-	}
-}
-
 int main(void)
 {
 	//Local variables
 	static NodeRxDataStructure nodeRx;
-	static uint8_t prevMasterToNodeData[NODE_RX_DATA_SIZE];
 	static sysTimer_t irrigTimer;
 	static sysTimer_t rtcTimer;
 	static ds3231_t rtc;
@@ -48,6 +31,8 @@ int main(void)
 
 	//Initializations
 	System_Init();
+	EEPROM_Init();
+	EEPROM_GetData(nodeRx.data,NODE_RX_DATA_SIZE,PAGE1);
 	CMS_Init();
 	Solenoid_Init();
 	HC12_Init();
@@ -55,9 +40,6 @@ int main(void)
 	DS3231_Init();
 	DS3231_SetAlarm2(0);
 	System_TimerInit(&rtcTimer,60000); //60 seconds periodic software timer.
-	EEPROM_Init();
-	EEPROM_GetData(prevMasterToNodeData,NODE_RX_DATA_SIZE,PAGE1);
-	CopyData(nodeRx.data,prevMasterToNodeData,NODE_RX_DATA_SIZE);
 	Node_StoreRxData(&nodeRx);
 	System_ClearStandbyFlag();
 		
