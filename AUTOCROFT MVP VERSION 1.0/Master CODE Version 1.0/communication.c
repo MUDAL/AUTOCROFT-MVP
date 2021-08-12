@@ -9,7 +9,7 @@
 AT Command lookup table for selecting a channel of the HC12 module in  
 order to communicate with a particular node.
 */
-uint8_t AT_Cmd[NO_OF_NODES][AT_CMD_LEN] = {
+static uint8_t AT_Cmd[NO_OF_NODES][AT_CMD_LEN] = {
 	"AT+C001\r\n",
 	"AT+C002\r\n",
 	"AT+C003\r\n",
