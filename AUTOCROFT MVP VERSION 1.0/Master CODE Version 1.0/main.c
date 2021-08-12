@@ -73,8 +73,7 @@ int main(void)
 											   MASTER_TX_DATA_SIZE,
 												 &nodeToMasterData,
 											   nodeToMasterDataArray,
-											   NO_OF_NODES,
-											   150);
+											   NO_OF_NODES);
 	while(1)
 	{
 		/*

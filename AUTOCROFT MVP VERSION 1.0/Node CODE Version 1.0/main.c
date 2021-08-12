@@ -29,6 +29,10 @@ int main(void)
 	sensorLevel_t temperatureLevel = LEVEL_UNDEFINED;
 	irrigMethod_t irrigationMethod = IRRIG_METHOD_UNDEFINED;
 
+	node_t node = {.id = BASE_NODE_ID, 
+								 .atCmd = "AT+C001\r\n", 
+								 .atCmdLen = BASE_NODE_AT_CMD_LEN};
+
 	//Initializations
 	System_Init();
 	EEPROM_Init();
@@ -36,6 +40,13 @@ int main(void)
 	CMS_Init();
 	Solenoid_Init();
 	HC12_Init();
+	//Channel setting
+	HC12_SetPinControl(false);
+	System_TimerDelayMs(40);
+	HC12_TransmitBytes(node.atCmd, BASE_NODE_AT_CMD_LEN);
+	HC12_SetPinControl(true);
+	System_TimerDelayMs(80);
+		
 	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE);
 	DS3231_Init();
 	DS3231_SetAlarm2(0);

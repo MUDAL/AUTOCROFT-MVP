@@ -13,7 +13,7 @@ is unwanted and must be eliminated/ignored once received.
 #define IDLE_CHARACTER_ERROR	255
 #define MASTER_TX_DATA_SIZE		13
 #define MASTER_RX_DATA_SIZE		1
-#define NO_OF_NODES						1
+#define NO_OF_NODES						30
 
 /**
 @brief Each part of the data to be transmitted is an element
@@ -42,7 +42,6 @@ extern void Master_TransmitReceive(uint8_t* pMasterTx,
 																	 uint8_t txLen,
 																	 uint8_t* pMasterRx,
 																	 uint8_t* pMasterRxArray,
-																	 uint8_t rxLen,
-																	 uint16_t rxTimeoutMs);
+																	 uint8_t rxLen);
 
 #endif //_COMMUNICATION_H
