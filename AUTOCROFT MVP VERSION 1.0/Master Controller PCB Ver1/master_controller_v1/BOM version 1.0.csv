@@ -1,0 +1,18 @@
+"Id";"Designator";"Package";"Quantity";"Designation";"Supplier and ref";
+1;"J5";"PinSocket_1x04_P2.54mm_Vertical";1;"HC06";;;
+2;" , ";"MountingHole_2.5mm";2;"MountingHole_2.5mm";;;
+3;"BT1,BT2";"BATT";2;"2 Li-ion (7.4V)";;;
+4;"J6";"BLUEPILL";1;"STM32 Bluepill";;;
+5;"C1,C2";"CP_Radial_D10.0mm_P5.00mm";2;"100uF";;;
+6;"DS1";"PinHeader_1x16_P2.54mm_Vertical";1;"LCD1602";;;
+7;"J1";"PinSocket_1x05_P2.54mm_Vertical";1;"DS3231";;;
+8;"J2";"PinSocket_1x04_P2.54mm_Vertical";1;"BME280";;;
+9;"J3";"PinSocket_2x04_P2.54mm_Vertical";1;"ESP8266";;;
+10;"J7";"PinHeader_1x08_P2.54mm_Vertical";1;"Keypad";;;
+11;"R1";"R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal";1;"1k";;;
+12;"U1";"TO-220-3_Vertical";1;"LM1117-3.3";;;
+13;"U2";"TO-220-3_Vertical";1;"LM7805_TO220";;;
+14;"U3";"DIP-8_W7.62mm_Socket";1;"EEPROM";;;
+15;"R2";"R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal";1;"10k";;;
+16;"C3";"C_Disc_D3.0mm_W2.0mm_P2.50mm";1;"100nF";;;
+17;"J4";"PinSocket_1x05_P2.54mm_Vertical";1;"HC12";;;
