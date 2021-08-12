@@ -75,4 +75,4 @@ the number of bytes left to be received.
 uint8_t DMA_Rx_CNDTR(DMA_Channel_TypeDef* dmaChannel)
 {
 	return dmaChannel->CNDTR;
-}
+} 
