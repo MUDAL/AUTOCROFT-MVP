@@ -90,8 +90,8 @@ int main(void)
 				break;
 			case COMPLETE_RX_DATA:
 				bluetooth.noOfRxBytes = BLUETOOTH_RX_MAX_LEN;
-				WiFi_TransmitBytes(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
-				EEPROM_StoreData(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN,PAGE1);
+				WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
+				EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
 				EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
 				break;
 			case INCOMPLETE_RX_DATA:
