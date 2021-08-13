@@ -50,7 +50,8 @@ int main(void)
 	HC12_Init();
 	HC12_RxBufferInit(&nodeToMasterData,MASTER_RX_DATA_SIZE);
 	DS3231_Init();
-	DS3231_SetAlarm2(0);
+	DS3231_24HourFormat(); 
+	DS3231_SetAlarm2(0);//Alarm to wake the system up every time the system is at 0 minutes. e.g. 9:00, 11:00
 	System_TimerInit(&rtcTimer,60000); //60 seconds periodic software timer
 	WiFi_Init();
 	BME280_Init();

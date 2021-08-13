@@ -22,8 +22,10 @@ enum
 	HUMIDITY = 6,
 	TEMPERATURE = 7,
 	NODE_ID = 8,
-	MIN_IRRIG_TIME = 9, /**Index 9 - 10 for minimum irrigation time*/
-	MAX_IRRIG_TIME = 11 /**Index 11 - 12 for maximum irrigation time*/
+	RTC_TIME_HOUR = 9,
+	RTC_TIME_MINUTE = 10,
+	MIN_IRRIG_TIME = 11, /**Index 11 - 12 for minimum irrigation time*/
+	MAX_IRRIG_TIME = 13 /**Index 13 - 14 for maximum irrigation time*/
 };
 
 void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
@@ -40,6 +42,8 @@ void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 	pNodeRx->maxTemp = pNodeRx->data[MAX_TEMPERATURE];
 	
 	pNodeRx->nodeID = pNodeRx->data[NODE_ID];
+	pNodeRx->rtcHour = pNodeRx->data[RTC_TIME_HOUR];
+	pNodeRx->rtcMinute = pNodeRx->data[RTC_TIME_MINUTE];
 	
 	pNodeRx->minIrrigTime = (pNodeRx->data[MIN_IRRIG_TIME] << 8) | pNodeRx->data[MIN_IRRIG_TIME + 1];
 	pNodeRx->maxIrrigTime = (pNodeRx->data[MAX_IRRIG_TIME] << 8) | pNodeRx->data[MAX_IRRIG_TIME + 1];

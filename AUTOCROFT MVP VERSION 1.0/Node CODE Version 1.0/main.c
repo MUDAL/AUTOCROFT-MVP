@@ -49,7 +49,8 @@ int main(void)
 		
 	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE);
 	DS3231_Init();
-	DS3231_SetAlarm2(0);
+	DS3231_24HourFormat(); 							 
+	DS3231_SetAlarm2(0);//Alarm to wake the system up every time the system is at 0 minutes. e.g. 9:00, 11:00
 	System_TimerInit(&rtcTimer,60000); //60 seconds periodic software timer.
 	Node_StoreRxData(&nodeRx);
 	System_ClearStandbyFlag();
@@ -64,6 +65,7 @@ int main(void)
 		{
 			soilMoisture = CMS_GetMoisture();
 			Node_StoreRxData(&nodeRx);
+			DS3231_SetTime(nodeRx.rtcHour,nodeRx.rtcMinute);
 			Node_TransmitData(&nodeRx,soilMoisture);
 			
 			moistureLevel = Sensor_GetLevel(soilMoisture, nodeRx.minMoist, nodeRx.maxMoist);			

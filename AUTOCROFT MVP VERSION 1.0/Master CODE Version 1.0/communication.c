@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "system.h"
 #include "hc12.h"
+#include "ds3231.h"
 #include "communication.h"
 
 #define AT_CMD_LEN		9
@@ -75,6 +76,7 @@ void Master_TransmitReceive(uint8_t* pMasterTx,
 														uint8_t noOfNodes)
 {
 	uint8_t nodeID = 0;
+	ds3231_t rtc;
 
 	while(nodeID < noOfNodes)
 	{
@@ -87,8 +89,11 @@ void Master_TransmitReceive(uint8_t* pMasterTx,
 		System_TimerDelayMs(80);
 		
 		//Communication with node whose channel matches that of the master.  
-		Master_EncodeTxData(pMasterTx, nodeID, NODE_ID);
-		HC12_TransmitBytes(pMasterTx, txLen);//send data to node
+		DS3231_GetTime(&rtc);
+		Master_EncodeTxData(pMasterTx,rtc.hours,RTC_TIME_HOUR);
+		Master_EncodeTxData(pMasterTx,rtc.minutes,RTC_TIME_MINUTE);
+		Master_EncodeTxData(pMasterTx,nodeID,NODE_ID);
+		HC12_TransmitBytes(pMasterTx,txLen);//send data to node
 		
 		while(!HC12_Rx_BufferFull())
 		{//wait for node to send its data

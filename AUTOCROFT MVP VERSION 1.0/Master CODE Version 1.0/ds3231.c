@@ -72,7 +72,7 @@ static uint8_t HexToBCD(uint8_t hex)
 		hex -= 10;
 		multipleOfTen++;
 	}
-	bcd = ( (multipleOfTen<<4) | hex );
+	bcd = ((multipleOfTen<<4) | hex);
 	return bcd;
 }
 
@@ -107,13 +107,13 @@ void DS3231_GetTime(ds3231_t* pTime)
 	
 	I2C_ReadMultiByte(I2C1,DS3231_ADDR,SEC_REG_ADDR,timeBCD,3);
 	
-	if ( (timeBCD[2] & (1<<6)) == (1<<6) )
+	if ((timeBCD[2] & (1<<6)) == (1<<6))
 	{
 		/*
 		1.)read AM/PM status of 12 hour clock
 		2.)if 12 hour format is the current clock format, 
 		read only bits 4-0 of ds3231 hour register*/
-		periodOfDay = ( (timeBCD[2] & (1<<5)) >> 5 );
+		periodOfDay = ((timeBCD[2] & (1<<5)) >> 5);
 		timeBCD[2] = (timeBCD[2] & 0x1F);
 	}
 	else
@@ -144,7 +144,7 @@ void DS3231_SetTime(uint8_t hour, uint8_t min)
 	/* 0xE0 preserves settings of the ds3231 hour register
 	so that a write to the register doesn't clear the hour configurations.
 	*/
-	timeBCD[2] = ( timeBCD[2] | (prevHoursBCD & 0xE0) );
+	timeBCD[2] = (timeBCD[2] | (prevHoursBCD & 0xE0));
 	
 	I2C_WriteMultiByte(I2C1,DS3231_ADDR,SEC_REG_ADDR,timeBCD,3);
 }
@@ -156,7 +156,7 @@ void DS3231_12HourFormat(uint8_t periodOfDay)
 	I2C_ReadByte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, &hoursBCD);
 	if (periodOfDay == DS3231_PERIOD_PM)
 	{
-		hoursBCD |= ( (1<<6) | (1<<5) );
+		hoursBCD |= ((1<<6) | (1<<5));
 	}
 	else
 	{
@@ -171,7 +171,7 @@ void DS3231_24HourFormat(void)
 	uint8_t hoursBCD;
 	
 	I2C_ReadByte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, &hoursBCD);
-	hoursBCD &= ~( (1<<6) | (1<<5) );
+	hoursBCD &= ~((1<<6) | (1<<5));
 	I2C_WriteByte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, hoursBCD);
 }
 
@@ -192,7 +192,7 @@ void DS3231_SetAlarm2(uint8_t min)
 	*/
 
 	uint8_t alarm2RegArrBCD[3]; //alarm2 min,hour,day/date
-	uint8_t ctrlRegBCD = ( (1<<2)|(1<<1) ); //set INTCN and A2IE bits
+	uint8_t ctrlRegBCD = ((1<<2)|(1<<1)); //set INTCN and A2IE bits
 	
 	alarm2RegArrBCD[0] = (HexToBCD(min) & 0x7F); //convert 'min' to BCD and clear A2M2
 	alarm2RegArrBCD[1] = (1<<7); //set A2M3
