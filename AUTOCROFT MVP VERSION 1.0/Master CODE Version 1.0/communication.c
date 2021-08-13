@@ -65,18 +65,18 @@ their responses.
 @param pMasterTx:
 @param txLen:
 @param pMasterRxArray:
-@param rxLen:
+@param noOfNodes:
 @return None
 */
 void Master_TransmitReceive(uint8_t* pMasterTx,
 														uint8_t txLen,
 														uint8_t* pMasterRx,
 														uint8_t* pMasterRxArray,
-														uint8_t rxLen)
+														uint8_t noOfNodes)
 {
 	uint8_t nodeID = 0;
 
-	while(nodeID < rxLen)
+	while(nodeID < noOfNodes)
 	{
 		//The master changes its own channel to match that of the node it wants..  
 		//to communicate with.
