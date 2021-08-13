@@ -1,4 +1,5 @@
 #include "stm32f10x.h"                  // Device header
+#include "systick.h"
 #include "adc.h"
 
 void ADC_SingleConv_Init(ADC_TypeDef* adcPort,
@@ -23,6 +24,8 @@ void ADC_SingleConv_Init(ADC_TypeDef* adcPort,
 	}
 	//turn ADC on, enable continuous mode
 	adcPort->CR2 |= ADC_CR2_ADON | ADC_CR2_CONT; 
+	//stabilization delay
+	SysTick_DelayMs(1);
 	//turn ADC on again
 	adcPort->CR2 |= ADC_CR2_ADON;
 	//enable ADC calibration
