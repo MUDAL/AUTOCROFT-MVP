@@ -13,7 +13,6 @@
 #include "bluetooth.h"
 #include "hmi.h"
 
-
 /**
 EEPROM MEMORY ALLOCATION
 * PAGE 1 to PAGE 6: Bluetooth data
@@ -57,9 +56,7 @@ int main(void)
 	BME280_Init();
 	Bluetooth_Init();
 	Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
-	HMI_Init(masterToNodeData,
-					 &nodeToMasterData,
-					 nodeToMasterDataArray);
+	HMI_Init(masterToNodeData,&nodeToMasterData,nodeToMasterDataArray);
 	System_ClearStandbyFlag();
 	LCD_WriteString("AUTOCROFT");
 	LCD_SetCursor(1,0);
