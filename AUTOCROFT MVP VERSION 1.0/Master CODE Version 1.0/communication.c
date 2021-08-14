@@ -107,6 +107,7 @@ void Master_TransmitReceive(uint8_t* pMasterTx,
 			}	
 			nodeID++;
 		}
+		i++;
 	}
 }
 
