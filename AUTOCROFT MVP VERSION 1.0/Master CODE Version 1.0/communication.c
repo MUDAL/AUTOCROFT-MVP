@@ -100,13 +100,11 @@ void Master_TransmitReceive(uint8_t* pMasterTx,
 			Master_EncodeTxData(pMasterTx,nodeID,NODE_ID);
 			HC12_TransmitBytes(pMasterTx,txLen);//send data to node
 			
-			while(!HC12_Rx_BufferFull())
-			{//wait for node to send its data
-				if(*pMasterRx != IDLE_CHARACTER_ERROR)
-				{
-					pMasterRxArray[nodeID] = *pMasterRx;
-				}	
-			}
+			while(!HC12_Rx_BufferFull()){};//wait for node to send its data
+			if(*pMasterRx != IDLE_CHARACTER_ERROR)
+			{
+				pMasterRxArray[nodeID] = *pMasterRx;
+			}	
 			nodeID++;
 		}
 	}
