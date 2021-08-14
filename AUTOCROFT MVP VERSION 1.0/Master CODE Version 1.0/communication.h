@@ -44,6 +44,7 @@ extern void Master_TransmitReceive(uint8_t* pMasterTx,
 																	 uint8_t txLen,
 																	 uint8_t* pMasterRx,
 																	 uint8_t* pMasterRxArray,
-																	 uint8_t noOfNodes);
+																	 uint8_t noOfNodes,
+																	 uint8_t noOfTimes);
 
 #endif //_COMMUNICATION_H

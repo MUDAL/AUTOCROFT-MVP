@@ -65,9 +65,10 @@ void EEPROM_StoreData(uint8_t* pData, uint8_t len, uint8_t initialPage)
 	//If data > 16 bytes, the data is split into blocks of 16 bytes...
 	//with each block stored in a page. The storage of blocks in pages....
 	//is sequential.
-	for(i = 0; i < numberOfPages; i++)
+	while(i < numberOfPages)
 	{
 		EEPROM_WritePage(page+i,&pData[PAGE_SIZE*i],PAGE_SIZE);
+		i++;
 	}
 	EEPROM_WritePage(page+i,&pData[PAGE_SIZE*i],numberOfBytesLeft);	
 }
@@ -83,9 +84,10 @@ void EEPROM_GetData(uint8_t* pData, uint8_t len, uint8_t initialPage)
 	
 	//Reading from the EEPROM sequentially from all filled pages...
 	//to the unfilled page(if any).
-	for(i = 0; i < numberOfPages; i++)
+	while(i < numberOfPages)
 	{
 		EEPROM_ReadPage(page+i,&pData[PAGE_SIZE*i],PAGE_SIZE);
+		i++;
 	}
 	EEPROM_ReadPage(page+i,&pData[PAGE_SIZE*i],numberOfBytesLeft);	
 }

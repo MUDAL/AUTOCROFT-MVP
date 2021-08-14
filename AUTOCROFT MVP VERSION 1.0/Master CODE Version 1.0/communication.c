@@ -63,46 +63,52 @@ void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataInde
 /**
 @brief Sends data to all nodes, receives and stores  
 their responses.  
-@param pMasterTx:
-@param txLen:
-@param pMasterRxArray:
-@param noOfNodes:
+@param pMasterTx: pointer to master-to-node data
+@param txLen: number of bytes of data the master transmits to the nodes
+@param pMasterRxArray: array containing data received from all nodes
+@param noOfNodes: number of nodes the master communicates with
+@param noOfTimes: number of times the master communicates with each node
 @return None
 */
 void Master_TransmitReceive(uint8_t* pMasterTx,
 														uint8_t txLen,
 														uint8_t* pMasterRx,
 														uint8_t* pMasterRxArray,
-														uint8_t noOfNodes)
+														uint8_t noOfNodes,
+														uint8_t noOfTimes)
 {
-	uint8_t nodeID = 0;
+	uint8_t i = 0;
 	ds3231_t rtc;
 
-	while(nodeID < noOfNodes)
+	while(i < noOfTimes)
 	{
-		//The master changes its own channel to match that of the node it wants..  
-		//to communicate with.
-		HC12_SetPinControl(false);
-	  System_TimerDelayMs(40);
-		HC12_TransmitBytes(AT_Cmd[nodeID], AT_CMD_LEN);
-		HC12_SetPinControl(true);
-		System_TimerDelayMs(80);
-		
-		//Communication with node whose channel matches that of the master.  
-		DS3231_GetTime(&rtc);
-		Master_EncodeTxData(pMasterTx,rtc.hours,RTC_TIME_HOUR);
-		Master_EncodeTxData(pMasterTx,rtc.minutes,RTC_TIME_MINUTE);
-		Master_EncodeTxData(pMasterTx,nodeID,NODE_ID);
-		HC12_TransmitBytes(pMasterTx,txLen);//send data to node
-		
-		while(!HC12_Rx_BufferFull())
-		{//wait for node to send its data
-			if(*pMasterRx != IDLE_CHARACTER_ERROR)
-			{
-				pMasterRxArray[nodeID] = *pMasterRx;
-			}	
+		uint8_t nodeID = 0;
+		while(nodeID < noOfNodes)
+		{
+			//The master changes its own channel to match that of the node it wants..  
+			//to communicate with.
+			HC12_SetPinControl(false);
+			System_TimerDelayMs(40);
+			HC12_TransmitBytes(AT_Cmd[nodeID], AT_CMD_LEN);
+			HC12_SetPinControl(true);
+			System_TimerDelayMs(80);
+			
+			//Communication with node whose channel matches that of the master.  
+			DS3231_GetTime(&rtc);
+			Master_EncodeTxData(pMasterTx,rtc.hours,RTC_TIME_HOUR);
+			Master_EncodeTxData(pMasterTx,rtc.minutes,RTC_TIME_MINUTE);
+			Master_EncodeTxData(pMasterTx,nodeID,NODE_ID);
+			HC12_TransmitBytes(pMasterTx,txLen);//send data to node
+			
+			while(!HC12_Rx_BufferFull())
+			{//wait for node to send its data
+				if(*pMasterRx != IDLE_CHARACTER_ERROR)
+				{
+					pMasterRxArray[nodeID] = *pMasterRx;
+				}	
+			}
+			nodeID++;
 		}
-		nodeID++;
 	}
 }
 
