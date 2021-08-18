@@ -60,7 +60,7 @@ by the node.
 void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx)
 {
 	bool hc12DataIncomplete = HC12_IncompleteRxData();
-	if((pNodeRx->data[0] == IDLE_CHARACTER)||hc12DataIncomplete)
+	if((pNodeRx->data[0] == IDLE_CHARACTER) || hc12DataIncomplete)
 	{
 		HC12_RxBufferInit(pNodeRx->data, NODE_RX_DATA_SIZE);
 	}			
