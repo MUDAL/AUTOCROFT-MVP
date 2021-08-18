@@ -62,11 +62,11 @@ int main(void)
 		-RECEPTION AND STORAGE OF CONFIGURATION DATA FROM MASTER
 		-TRANSMISSION OF MOISTURE DATA TO MASTER
 		*/
-		if(HC12_Rx_BufferFull())
+		if(HC12_RxBufferFull())
 		{
 			soilMoisture = CMS_GetMoisture();
 			Node_StoreRxData(&nodeRx);
-			DS3231_SetTime(nodeRx.rtcHour,nodeRx.rtcMinute);
+			DS3231_SetMinutes(nodeRx.rtcMinute);
 			Node_TransmitData(&nodeRx,soilMoisture);
 			
 			moistureLevel = Sensor_GetLevel(soilMoisture, nodeRx.minMoist, nodeRx.maxMoist);			

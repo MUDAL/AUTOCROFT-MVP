@@ -10,8 +10,8 @@ An idle character frame is always sent whenever the the USART
 transmitter is initialized for the first time. This 8-bit data  
 is unwanted and must be eliminated/ignored once received.  
 */
-#define IDLE_CHARACTER_ERROR				255
-#define NODE_RX_DATA_SIZE						15
+#define IDLE_CHARACTER							255
+#define NODE_RX_DATA_SIZE						14
 #define BASE_NODE_ID								0
 #define BASE_NODE_AT_CMD_LEN				9
 
@@ -34,7 +34,6 @@ typedef struct
 	uint8_t humidity;
 	uint8_t temperature;
 	uint8_t nodeID;
-	uint8_t rtcHour;
 	uint8_t rtcMinute;
 	uint16_t minIrrigTime;
 	uint16_t maxIrrigTime;

@@ -27,5 +27,6 @@ enum UartDma
 extern void USART_Init(USART_TypeDef* uartPort, uint32_t baud, uint8_t dmaMode, uint8_t uartMode);
 extern void USART_TransmitByte(USART_TypeDef* uartPort, uint8_t byte);
 extern void USART_TransmitBytes(USART_TypeDef* uartPort, uint8_t* bytes, uint8_t len);
+extern bool USART_RxIdleLineDetected(USART_TypeDef* uartPort);
 
 #endif //_UART_H

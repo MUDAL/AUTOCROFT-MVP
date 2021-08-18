@@ -95,13 +95,12 @@ void Master_TransmitReceive(uint8_t* pMasterTx,
 			
 			//Communication with node whose channel matches that of the master.  
 			DS3231_GetTime(&rtc);
-			Master_EncodeTxData(pMasterTx,rtc.hours,RTC_TIME_HOUR);
 			Master_EncodeTxData(pMasterTx,rtc.minutes,RTC_TIME_MINUTE);
 			Master_EncodeTxData(pMasterTx,nodeID,NODE_ID);
 			HC12_TransmitBytes(pMasterTx,txLen);//send data to node
 			
-			while(!HC12_Rx_BufferFull()){};//wait for node to send its data
-			if(*pMasterRx != IDLE_CHARACTER_ERROR)
+			while(!HC12_RxBufferFull()){};//wait for node to send its data
+			if(*pMasterRx != IDLE_CHARACTER)
 			{
 				pMasterRxArray[nodeID] = *pMasterRx;
 			}	

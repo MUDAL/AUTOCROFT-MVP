@@ -49,7 +49,7 @@ void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)
 	USART_TransmitBytes(USART1,bytes,len);
 }
 
-bool HC12_Rx_BufferFull(void)
+bool HC12_RxBufferFull(void)
 {
 	return DMA_Rx_BufferFull(DMA1, DMA_CHANNEL5);
 }

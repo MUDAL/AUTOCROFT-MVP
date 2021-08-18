@@ -54,7 +54,7 @@ void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)
 	USART_TransmitBytes(USART1,bytes,len);
 }
 
-bool HC12_Rx_BufferFull(void)
+bool HC12_RxBufferFull(void)
 {
 	return DMA_Rx_BufferFull(DMA1, DMA_CHANNEL5);
 }
@@ -66,4 +66,13 @@ releases it from command mode.
 void HC12_SetPinControl(bool pinState)
 {
 	GPIO_OutputWrite(GPIOB,GPIO_PIN0,pinState);
+}
+
+bool HC12_IncompleteRxData(void)
+{
+	if(USART_RxIdleLineDetected(USART1))
+	{
+		return true;
+	}
+	return false;
 }

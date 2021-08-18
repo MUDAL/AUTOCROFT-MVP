@@ -22,10 +22,9 @@ enum
 	HUMIDITY = 6,
 	TEMPERATURE = 7,
 	NODE_ID = 8,
-	RTC_TIME_HOUR = 9,
-	RTC_TIME_MINUTE = 10,
-	MIN_IRRIG_TIME = 11, /**Index 11 - 12 for minimum irrigation time*/
-	MAX_IRRIG_TIME = 13 /**Index 13 - 14 for maximum irrigation time*/
+	RTC_TIME_MINUTE = 9,
+	MIN_IRRIG_TIME = 10, /**Index 10 - 11 for minimum irrigation time*/
+	MAX_IRRIG_TIME = 12 /**Index 12 - 13 for maximum irrigation time*/
 };
 
 void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
@@ -42,7 +41,6 @@ void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 	pNodeRx->maxTemp = pNodeRx->data[MAX_TEMPERATURE];
 	
 	pNodeRx->nodeID = pNodeRx->data[NODE_ID];
-	pNodeRx->rtcHour = pNodeRx->data[RTC_TIME_HOUR];
 	pNodeRx->rtcMinute = pNodeRx->data[RTC_TIME_MINUTE];
 	
 	pNodeRx->minIrrigTime = (pNodeRx->data[MIN_IRRIG_TIME] << 8) | pNodeRx->data[MIN_IRRIG_TIME + 1];
@@ -50,7 +48,7 @@ void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 }
 
 /**
-@brief Error detection and correction handler.  
+@brief Error detector and corrector.  
 The most common type of error encountered during wireless communication between  
 master and node is the IDLE_CHARACTER_ERROR. Its due to the nature of the UART.  
 This function detects this unwanted character and eliminates it immediately before  
@@ -61,9 +59,9 @@ by the node.
 */
 void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx)
 {
-	if(pNodeRx->data[0] == IDLE_CHARACTER_ERROR)
+	bool hc12DataIncomplete = HC12_IncompleteRxData();
+	if((pNodeRx->data[0] == IDLE_CHARACTER)||hc12DataIncomplete)
 	{
-		pNodeRx->data[0] = 0;
 		HC12_RxBufferInit(pNodeRx->data, NODE_RX_DATA_SIZE);
 	}			
 }
