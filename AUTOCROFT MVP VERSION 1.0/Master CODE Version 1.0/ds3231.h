@@ -18,6 +18,7 @@ typedef struct
 
 extern void DS3231_Init(void);
 extern void DS3231_GetTime(ds3231_t* pTime);
+extern void DS3231_SetMinutes(uint8_t min);
 extern void DS3231_SetTime(uint8_t hour, uint8_t min);
 extern void DS3231_12HourFormat(uint8_t periodOfDay);
 extern void DS3231_24HourFormat(void);

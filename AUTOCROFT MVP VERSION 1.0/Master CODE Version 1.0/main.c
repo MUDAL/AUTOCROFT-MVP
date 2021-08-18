@@ -51,6 +51,7 @@ int main(void)
 	HC12_RxBufferInit(&nodeToMasterData,MASTER_RX_DATA_SIZE);
 	DS3231_Init();
 	DS3231_24HourFormat(); 
+	DS3231_SetMinutes(0); //Set minutes to 0 by default
 	DS3231_SetAlarm2(0);//Alarm to wake the system up every time the system is at 0 minutes. e.g. 9:00, 11:00
 	System_TimerInit(&rtcTimer,60000); //60 seconds periodic software timer
 	WiFi_Init();
@@ -107,7 +108,7 @@ int main(void)
 		if(System_TimerDoneCounting(&rtcTimer))
 		{
 			DS3231_GetTime(&rtc);
-			if(rtc.minutes >= 20)
+			if(rtc.minutes >= 25)
 			{
 				//1.)store configuration data in EEPROM
 				//2.)store data from nodes in EEPROM

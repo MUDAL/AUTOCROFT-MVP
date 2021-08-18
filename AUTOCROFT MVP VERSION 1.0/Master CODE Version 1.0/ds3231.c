@@ -46,24 +46,21 @@ static uint8_t BCDToHex(uint8_t bcd)
 	return hex;
 }
 
+/**
+@brief Converts Hexadecimal to BCD  
+
+@param hex: this parameter is passed with a value to be
+converted to BCD. The argument doesn't necessarily need
+to be hexadecimal. It can be binary, decimal etc. If its
+any number system other than hexadecimal, the compiler
+would be able to interprete the number system as hexadecimal
+and the algorithm would still behave the same.  
+
+@return BCD equivalent of the argument passed to 'hex'  
+
+*/
 static uint8_t HexToBCD(uint8_t hex)
 {
-	/*
-	Description:
-	Converts Hexadecimal to BCD.
-	
-	Parameters:
-	1.) hex: this parameter is passed with a value to be
-	converted to BCD. The argument doesn't necessarily need
-	to be hexadecimal. It can be binary, decimal etc. If its
-	any number system other than hexadecimal, the compiler
-	would be able to interprete the number system as hexadecimal
-	and the algorithm would still behave the same.
-	
-	Return:
-	1.) BCD equivalent of the argument passed to 'hex'.
-	
-	*/
 	uint8_t bcd;
 	uint8_t multipleOfTen = 0;
 	
@@ -76,18 +73,15 @@ static uint8_t HexToBCD(uint8_t hex)
 	return bcd;
 }
 
+/**
+@brief Initializes the DS3231 RTC module  
+
+@param None  
+
+@return None  
+*/
 void DS3231_Init(void)
 {
-	/*
-	Description:
-	Initializes the DS3231 RTC module.
-	
-	Parameters:
-	None
-	
-	Return:
-	None
-	*/
 	GPIO_OutputInit(GPIOB,
 									GPIO_PORT_REG_LOW,
 								 (GPIO_PIN6_OUTPUT_MODE_2MHZ | GPIO_PIN7_OUTPUT_MODE_2MHZ),
@@ -132,21 +126,27 @@ void DS3231_GetTime(ds3231_t* pTime)
 	pTime->period = periodOfDay;
 }
 
+void DS3231_SetMinutes(uint8_t min)
+{
+	uint8_t minuteBCD;
+	
+	minuteBCD = HexToBCD(min);
+	I2C_WriteByte(I2C1,DS3231_ADDR,MIN_REG_ADDR,minuteBCD);
+}
+
 void DS3231_SetTime(uint8_t hour, uint8_t min)
 {
 	uint8_t prevHoursBCD;
-	uint8_t timeBCD[3] = {0,0,0}; //sec,min,hour
+	uint8_t timeBCD[2] = {0,0}; //min,hour
 	
-	timeBCD[1] = HexToBCD(min);
-	timeBCD[2] = HexToBCD(hour);
-	
+	timeBCD[0] = HexToBCD(min);
+	timeBCD[1] = HexToBCD(hour);
 	I2C_ReadByte(I2C1, DS3231_ADDR, HOUR_REG_ADDR, &prevHoursBCD);
 	/* 0xE0 preserves settings of the ds3231 hour register
 	so that a write to the register doesn't clear the hour configurations.
 	*/
-	timeBCD[2] = (timeBCD[2] | (prevHoursBCD & 0xE0));
-	
-	I2C_WriteMultiByte(I2C1,DS3231_ADDR,SEC_REG_ADDR,timeBCD,3);
+	timeBCD[1] = (timeBCD[1] | (prevHoursBCD & 0xE0));
+	I2C_WriteMultiByte(I2C1,DS3231_ADDR,MIN_REG_ADDR,timeBCD,2);
 }
 
 void DS3231_12HourFormat(uint8_t periodOfDay)
@@ -203,22 +203,19 @@ void DS3231_SetAlarm2(uint8_t min)
 	
 }
 
+/**
+@brief Detects whether an alarm (due to the matching of 
+minutes between the alarm2 minutes register and RTC minutes register)   
+is/was triggered.   
+
+@param None  
+
+@return true: if the alarm is/was triggered  
+				false: if the specified alarm hasn't been triggered  
+
+*/
 bool DS3231_GetAlarm2_Status(void)
 {
-	/*
-	Description:
-	Detects whether an alarm (due to the matching of minutes between
-	the alarm2 minutes register and RTC minutes register) 
-	is/was triggered. 
-	
-	Parameters:
-	None
-	
-	Return:
-	1.) true: if the alarm is/was triggered.
-	2.) false: if the specified alarm hasn't been triggered.
-	
-	*/
 	bool alarm2Flag = false;
 	uint8_t statusRegBCD;
 	
@@ -228,20 +225,16 @@ bool DS3231_GetAlarm2_Status(void)
 	return alarm2Flag;
 }
 
+/**
+@brief Clears alarm2 flag bit   
+(required if the alarm is expected to be periodic). (See DS3231 datasheet)  
+
+@param None
+
+@param None
+*/
 void DS3231_ResetAlarm2(void)
 {
-	/*
-	Description:
-	Clears alarm2 flag bit (required if the alarm is expected to be
-	periodic). (See DS3231 datasheet)
-	
-	Parameters:
-	None
-	
-	Return:
-	None
-	
-	*/
 	uint8_t statusRegBCD;
 	
 	I2C_ReadByte(I2C1,DS3231_ADDR,STATUS_REG_ADDR,&statusRegBCD);
