@@ -4,6 +4,7 @@
 #include "conversions.h"
 #include "hc12.h"
 #include "communication.h"
+#include "stm32f10x.h"                  // Device header
 
 /**
 @brief Each part of the data to be received is an element
@@ -22,8 +23,9 @@ enum
 	HUMIDITY = 6,
 	TEMPERATURE = 7,
 	NODE_ID = 8,
-	MIN_IRRIG_TIME = 9, /**Index 9 - 10 for minimum irrigation time*/
-	MAX_IRRIG_TIME = 11 /**Index 11 - 12 for maximum irrigation time*/
+	RTC_TIME_MINUTE = 9,
+	MIN_IRRIG_TIME = 10, /**Index 10 - 11 for minimum irrigation time*/
+	MAX_IRRIG_TIME = 12 /**Index 12 - 13 for maximum irrigation time*/
 };
 
 void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
@@ -40,42 +42,8 @@ void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 	pNodeRx->maxTemp = pNodeRx->data[MAX_TEMPERATURE];
 	
 	pNodeRx->nodeID = pNodeRx->data[NODE_ID];
+	pNodeRx->rtcMinute = pNodeRx->data[RTC_TIME_MINUTE];
 	
 	pNodeRx->minIrrigTime = (pNodeRx->data[MIN_IRRIG_TIME] << 8) | pNodeRx->data[MIN_IRRIG_TIME + 1];
 	pNodeRx->maxIrrigTime = (pNodeRx->data[MAX_IRRIG_TIME] << 8) | pNodeRx->data[MAX_IRRIG_TIME + 1];
-}
-
-/**
-@brief Error detection and correction handler.  
-The most common type of error encountered during wireless communication between  
-master and node is the IDLE_CHARACTER_ERROR. Its due to the nature of the UART.  
-This function detects this unwanted character and eliminates it immediately before  
-it corrupts the actual data.
-@param pNodeRx: pointer to the data structure containing data received from the master  
-by the node.  
-@return None.  
-*/
-void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx)
-{
-	if(pNodeRx->data[0] == IDLE_CHARACTER_ERROR)
-	{
-		pNodeRx->data[0] = 0;
-		HC12_RxBufferInit(pNodeRx->data, NODE_RX_DATA_SIZE);
-	}			
-}
-
-/**
-@brief Transmits moisture data to the master if the node ID received  
-matches the assigned node ID (unique to each node).  
-@param pNodeRx: pointer to the data structure containing data received from the master  
-by the node.  
-@param moisture: moisture data to be sent to the master once the node IDs match.  
-@return None  
-*/
-void Node_TransmitData(NodeRxDataStructure* pNodeRx, uint8_t moisture)
-{
-	if(pNodeRx->nodeID == BASE_NODE_ID)
-	{
-		HC12_TransmitByte(moisture);
-	}	
 }

@@ -91,13 +91,13 @@ void Display_NodeData(char* firstRowHeading,
 			//bottom
 			if(row1Data > (NO_OF_NODES - 1))
 			{
-				LCD_SetCursor(1,3);
+				LCD_SetCursor(1,2);
 				LCD_WriteString(secondRowHeading);
 				LCD_WriteString("NA");
 			}
 			else
 			{
-				LCD_SetCursor(1,3);
+				LCD_SetCursor(1,2);
 				LCD_WriteString(secondRowHeading);
 				Conv_IntegerToString(row2Data,strData2);
 				LCD_WriteString(strData2);
@@ -121,13 +121,13 @@ void Display_NodeData(char* firstRowHeading,
 			//bottom
 			if(row1Data > (NO_OF_NODES - 1))
 			{
-				LCD_SetCursor(1,3);
+				LCD_SetCursor(1,2);
 				LCD_WriteString(secondRowHeading);
 				LCD_WriteString("NA");
 			}
 			else
 			{
-				LCD_SetCursor(1,3);
+				LCD_SetCursor(1,2);
 				LCD_WriteString(secondRowHeading);
 				Conv_IntegerToString(row2Data,strData2);
 				LCD_WriteString(strData2);

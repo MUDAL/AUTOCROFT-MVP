@@ -18,6 +18,13 @@ void HC12_Init(void)
 								 GPIO_PIN10,
 								 GPIO_PIN10_INPUT_PULLUP_OR_PULLDOWN,
 								 GPIO_PULLUP_ENABLE);	
+	//GPIO configuration for 'SET' pin of HC12
+	GPIO_OutputInit(GPIOB,
+									GPIO_PORT_REG_LOW,
+									GPIO_PIN0_OUTPUT_MODE_2MHZ,
+									GPIO_PIN0_GEN_PUR_OPEN_DRAIN);
+	//Leave SET pin at a high state
+	GPIO_OutputWrite(GPIOB,GPIO_PIN0,true);
 	//USART1 configuration	
 	USART_Init(USART1,
 						 BAUD_9600,
@@ -44,18 +51,33 @@ void HC12_TransmitByte(uint8_t data)
 
 void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
 	USART_TransmitBytes(USART1,bytes,len);
 }
 
-bool HC12_Rx_BufferFull(void)
+bool HC12_RxBufferFull(void)
 {
 	return DMA_Rx_BufferFull(DMA1, DMA_CHANNEL5);
+}
+
+/**
+@brief the SET pin either puts the HC12 module into command mode or  
+releases it from command mode.  
+*/
+void HC12_SetPinControl(bool pinState)
+{
+	GPIO_OutputWrite(GPIOB,GPIO_PIN0,pinState);
+}
+
+uint8_t HC12_NumberOfBytes(void)
+{
+	return DMA_Rx_CNDTR(DMA1_Channel5);
+}
+
+bool HC12_IncompleteRxData(void)
+{
+	if(USART_RxIdleLineDetected(USART1))
+	{
+		return true;
+	}
+	return false;
 }

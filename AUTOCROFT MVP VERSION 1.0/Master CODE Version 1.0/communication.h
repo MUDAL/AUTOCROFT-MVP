@@ -10,10 +10,10 @@ An idle character frame is always sent whenever the the USART
 transmitter is initialized for the first time. This 8-bit data  
 is unwanted and must be eliminated/ignored once received.  
 */
-#define IDLE_CHARACTER_ERROR	255
-#define MASTER_TX_DATA_SIZE		13
+#define IDLE_CHARACTER				255
+#define MASTER_TX_DATA_SIZE		14
 #define MASTER_RX_DATA_SIZE		1
-#define NO_OF_NODES						1
+#define NO_OF_NODES						5
 
 /**
 @brief Each part of the data to be transmitted is an element
@@ -32,8 +32,9 @@ typedef enum
 	HUMIDITY = 6,
 	TEMPERATURE = 7,
 	NODE_ID = 8,
-	MIN_IRRIG_TIME = 9, /**Index 9 - 10 for minimum irrigation time*/
-	MAX_IRRIG_TIME = 11 /**Index 11 - 12 for maximum irrigation time*/
+	RTC_TIME_MINUTE = 9,
+	MIN_IRRIG_TIME = 10, /**Index 10 - 11 for minimum irrigation time*/
+	MAX_IRRIG_TIME = 12 /**Index 12 - 13 for maximum irrigation time*/
 }dataIndex_t;
 
 extern void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex);
@@ -42,7 +43,6 @@ extern void Master_TransmitReceive(uint8_t* pMasterTx,
 																	 uint8_t txLen,
 																	 uint8_t* pMasterRx,
 																	 uint8_t* pMasterRxArray,
-																	 uint8_t rxLen,
-																	 uint16_t rxTimeoutMs);
+																	 uint8_t noOfNodes);
 
 #endif //_COMMUNICATION_H

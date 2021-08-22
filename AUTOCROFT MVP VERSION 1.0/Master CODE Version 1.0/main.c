@@ -13,7 +13,6 @@
 #include "bluetooth.h"
 #include "hmi.h"
 
-
 /**
 EEPROM MEMORY ALLOCATION
 * PAGE 1 to PAGE 6: Bluetooth data
@@ -42,24 +41,24 @@ int main(void)
 	
 	//Initializations
 	System_Init();
-	EEPROM_Init();
-	EEPROM_GetData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
-	EEPROM_GetData(&bluetooth.noOfRxBytes,1,PAGE10);
-	EEPROM_GetData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
+	//EEPROM_Init();
+	//EEPROM_GetData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
+	//EEPROM_GetData(&bluetooth.noOfRxBytes,1,PAGE10);
+	//EEPROM_GetData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
 	Keypad_Init();
 	LCD_Init();
 	HC12_Init();
 	HC12_RxBufferInit(&nodeToMasterData,MASTER_RX_DATA_SIZE);
 	DS3231_Init();
-	DS3231_SetAlarm2(0);
+	DS3231_24HourFormat(); 
+	DS3231_SetMinutes(0); //Set minutes to 0 by default
+	DS3231_SetAlarm2(0);//Alarm to wake the system up every time the system is at 0 minutes. e.g. 9:00, 11:00
 	System_TimerInit(&rtcTimer,60000); //60 seconds periodic software timer
 	WiFi_Init();
 	BME280_Init();
 	Bluetooth_Init();
 	Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
-	HMI_Init(masterToNodeData,
-					 &nodeToMasterData,
-					 nodeToMasterDataArray);
+	HMI_Init(masterToNodeData,&nodeToMasterData,nodeToMasterDataArray);
 	System_ClearStandbyFlag();
 	LCD_WriteString("AUTOCROFT");
 	LCD_SetCursor(1,0);
@@ -69,12 +68,12 @@ int main(void)
 	LCD_WriteString("Initializing....");
 	LCD_SetCursor(1,0);
 	LCD_WriteString("Please wait");
+	
 	Master_TransmitReceive(masterToNodeData,
 											   MASTER_TX_DATA_SIZE,
 												 &nodeToMasterData,
 											   nodeToMasterDataArray,
-											   NO_OF_NODES,
-											   150);
+											   NO_OF_NODES);
 	while(1)
 	{
 		/*
@@ -84,40 +83,40 @@ int main(void)
 		/*
 		BLUETOOTH AND WIFI
 		*/
-		bluetooth.rxStatus = Bluetooth_RxStatus();
-		switch(bluetooth.rxStatus)
-		{
-			case NO_DATA_RECEIVED:
-				break;
-			case COMPLETE_RX_DATA:
-				bluetooth.noOfRxBytes = BLUETOOTH_RX_MAX_LEN;
-				WiFi_TransmitBytes(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
-				EEPROM_StoreData(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN,PAGE1);
-				EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
-				break;
-			case INCOMPLETE_RX_DATA:
-				bluetooth.noOfRxBytes = Bluetooth_NumberOfBytesReceived();
-			  WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
-			  EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
-			  EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
-			  Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
-				break;
-		}
+//		bluetooth.rxStatus = Bluetooth_RxStatus();
+//		switch(bluetooth.rxStatus)
+//		{
+//			case NO_DATA_RECEIVED:
+//				break;
+//			case COMPLETE_RX_DATA:
+//				bluetooth.noOfRxBytes = BLUETOOTH_RX_MAX_LEN;
+//				WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
+//				//EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
+//				//EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
+//				break;
+//			case INCOMPLETE_RX_DATA:
+//				bluetooth.noOfRxBytes = Bluetooth_NumberOfBytesReceived();
+//			  WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
+//			  //EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
+//			  //EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
+//			  Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
+//				break;
+//		}
 		/*
 		RTC AND SLEEP
 		*/
-		if(System_TimerDoneCounting(&rtcTimer))
-		{
-			DS3231_GetTime(&rtc);
-			if(rtc.minutes >= 20)
-			{
-				//1.)store configuration data in EEPROM
-				//2.)store data from nodes in EEPROM
-				//3.)put system to sleep
-				EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
-				System_GoToStandbyMode();
-			}
-		}
+//		if(System_TimerDoneCounting(&rtcTimer))
+//		{
+//			DS3231_GetTime(&rtc);
+//			if(rtc.minutes >= 25)
+//			{
+//				//1.)store configuration data in EEPROM
+//				//2.)store data from nodes in EEPROM
+//				//3.)put system to sleep
+//				//EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
+//				System_GoToStandbyMode();
+//			}
+//		}
 	}
 }
 

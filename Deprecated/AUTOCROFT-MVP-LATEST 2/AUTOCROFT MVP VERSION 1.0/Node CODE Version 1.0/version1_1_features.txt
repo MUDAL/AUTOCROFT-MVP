@@ -1,0 +1,3 @@
+Features to add to next design
+1.)MOSFET driver using LM358N Opamp: To power external modules and peripherals down for optimized power consumption.  
+2.)Buck converter in place of voltage regulators. 

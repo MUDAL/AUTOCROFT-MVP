@@ -1,4 +1,5 @@
 #include "stm32f10x.h"                  // Device header
+#include <stdbool.h>
 #include "uart.h"
 
 /**
@@ -26,7 +27,6 @@ void USART_Init(USART_TypeDef* uartPort,
 								uint8_t uartMode)
 {
 	uartPort->CR1 |= USART_CR1_UE;
-	uartPort->CR1 &= ~uartMode;
 	switch (dmaMode)
 	{
 		case TX_RX_DMA_DISABLE:
@@ -85,4 +85,20 @@ void USART_TransmitBytes(USART_TypeDef* uartPort, uint8_t* bytes, uint8_t len)
 		uartPort->DR = bytes[i];
 		i++;
 	}
+	while((uartPort->SR & USART_SR_TC) != USART_SR_TC);
+}
+
+/**
+@brief Indicates if a USART's data register contains data or not.  
+@param uartPort: pointer to USART_TypeDef struct which contains all registers  
+for the desired USART peripheral.  
+@return true if an IDLE line is detected during data reception.  
+*/
+bool USART_RxIdleLineDetected(USART_TypeDef* uartPort)
+{
+	if((uartPort->SR & USART_SR_IDLE) == USART_SR_IDLE)
+	{
+		return true;
+	}
+	return false;
 }
