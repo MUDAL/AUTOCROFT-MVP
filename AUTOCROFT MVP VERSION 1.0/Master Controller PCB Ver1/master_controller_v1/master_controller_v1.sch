@@ -69,14 +69,14 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm1117.pdf" H 3600 1200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Display_Character:WC1602A DS1
+L Connector:Conn_01x16_Male DS1
 U 1 1 60F5D3AB
-P 4050 5650
-F 0 "DS1" H 4300 4800 50  0000 C CNN
-F 1 "LCD1602" H 4300 4900 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x16_P2.54mm_Vertical" H 4050 4750 50  0001 C CIN
-F 3 "http://www.wincomlcd.com/pdf/WC1602A-SFYLYHTC06.pdf" H 4750 5650 50  0001 C CNN
-	1    4050 5650
+P 4750 6050
+F 0 "DS1" H 4850 5000 50  0000 C CNN
+F 1 "LCD1602" H 4850 5150 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x16_P2.54mm_Vertical" H 4750 5150 50  0001 C CIN
+F 3 "http://www.wincomlcd.com/pdf/WC1602A-SFYLYHTC06.pdf" H 5450 6050 50  0001 C CNN
+	1    4750 6050
 	-1   0    0    1   
 $EndComp
 $Comp
@@ -303,90 +303,48 @@ Text GLabel 1600 6000 0    50   Input ~ 0
 VCC_3V3
 Text GLabel 1700 6300 0    50   Input ~ 0
 PA3
-NoConn ~ 4450 5750
-NoConn ~ 4450 5650
-NoConn ~ 4450 5550
-NoConn ~ 4450 5450
-Text GLabel 4200 4700 2    50   Input ~ 0
+NoConn ~ 4550 6150
+NoConn ~ 4550 6050
+NoConn ~ 4550 5950
+NoConn ~ 4550 5850
+Text GLabel 4550 6750 0    50   Input ~ 0
 VCC_5V
-Wire Wire Line
-	4050 4850 4050 4700
-Wire Wire Line
-	4050 4700 4200 4700
 $Comp
 L power:GND #PWR02
 U 1 1 60FA7780
-P 4050 6700
-F 0 "#PWR02" H 4050 6450 50  0001 C CNN
-F 1 "GND" H 4055 6527 50  0000 C CNN
-F 2 "" H 4050 6700 50  0001 C CNN
-F 3 "" H 4050 6700 50  0001 C CNN
-	1    4050 6700
+P 3700 6700
+F 0 "#PWR02" H 3700 6450 50  0001 C CNN
+F 1 "GND" H 3705 6527 50  0000 C CNN
+F 2 "" H 3700 6700 50  0001 C CNN
+F 3 "" H 3700 6700 50  0001 C CNN
+	1    3700 6700
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R R1
 U 1 1 60FA8D29
-P 3550 6400
-F 0 "R1" H 3620 6446 50  0000 L CNN
-F 1 "1k" H 3620 6355 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 3480 6400 50  0001 C CNN
-F 3 "~" H 3550 6400 50  0001 C CNN
-	1    3550 6400
-	1    0    0    -1  
+P 4250 6550
+F 0 "R1" V 4150 6350 50  0000 L CNN
+F 1 "1k" V 4150 6500 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 4180 6550 50  0001 C CNN
+F 3 "~" H 4250 6550 50  0001 C CNN
+	1    4250 6550
+	0    1    1    0   
 $EndComp
-Wire Wire Line
-	4050 6450 4050 6600
-Wire Wire Line
-	3550 6550 3550 6600
-Wire Wire Line
-	3550 6600 4050 6600
-Connection ~ 4050 6600
-Wire Wire Line
-	4050 6600 4050 6700
-Wire Wire Line
-	3550 6250 3650 6250
-Wire Wire Line
-	3650 5850 3150 5850
-Wire Wire Line
-	3150 5850 3150 6600
-Wire Wire Line
-	3150 6600 3550 6600
-Connection ~ 3550 6600
-Text GLabel 3550 5950 0    50   Input ~ 0
+Text GLabel 4550 5350 0    50   Input ~ 0
 VCC_5V
-Wire Wire Line
-	3550 5950 3650 5950
-Text GLabel 4500 6050 2    50   Input ~ 0
+Text GLabel 4550 6450 0    50   Input ~ 0
 PA11
-Wire Wire Line
-	4450 6150 4800 6150
-Wire Wire Line
-	4800 6150 4800 6600
-Wire Wire Line
-	4800 6600 4050 6600
-Text GLabel 4500 6250 2    50   Input ~ 0
+Text GLabel 4550 6250 0    50   Input ~ 0
 PA12
-Wire Wire Line
-	4450 6250 4500 6250
-Wire Wire Line
-	4500 6050 4450 6050
-Text GLabel 4500 5350 2    50   Input ~ 0
+Text GLabel 4550 5750 0    50   Input ~ 0
 PB12
-Text GLabel 4500 5250 2    50   Input ~ 0
+Text GLabel 4550 5650 0    50   Input ~ 0
 PB13
-Text GLabel 4500 5150 2    50   Input ~ 0
+Text GLabel 4550 5550 0    50   Input ~ 0
 PB14
-Text GLabel 4500 5050 2    50   Input ~ 0
+Text GLabel 4550 5450 0    50   Input ~ 0
 PB15
-Wire Wire Line
-	4450 5050 4500 5050
-Wire Wire Line
-	4450 5150 4500 5150
-Wire Wire Line
-	4450 5250 4500 5250
-Wire Wire Line
-	4450 5350 4500 5350
 Wire Notes Line
 	4500 7800 4600 7800
 Text Notes 7850 4050 0    100  ~ 0
@@ -791,4 +749,25 @@ Wire Wire Line
 	3000 4200 3100 4200
 Wire Wire Line
 	3000 4300 3100 4300
+Wire Wire Line
+	4400 6550 4550 6550
+Wire Wire Line
+	4550 5250 3700 5250
+Wire Wire Line
+	4550 6350 3700 6350
+Wire Wire Line
+	3700 5250 3700 6350
+Connection ~ 3700 6350
+Wire Wire Line
+	3700 6350 3700 6550
+Wire Wire Line
+	4100 6550 3700 6550
+Connection ~ 3700 6550
+Wire Wire Line
+	4550 6650 3700 6650
+Wire Wire Line
+	3700 6550 3700 6650
+Connection ~ 3700 6650
+Wire Wire Line
+	3700 6650 3700 6700
 $EndSCHEMATC
