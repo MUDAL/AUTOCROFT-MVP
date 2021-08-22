@@ -4,6 +4,7 @@
 #include "conversions.h"
 #include "hc12.h"
 #include "communication.h"
+#include "stm32f10x.h"                  // Device header
 
 /**
 @brief Each part of the data to be received is an element
@@ -45,39 +46,4 @@ void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 	
 	pNodeRx->minIrrigTime = (pNodeRx->data[MIN_IRRIG_TIME] << 8) | pNodeRx->data[MIN_IRRIG_TIME + 1];
 	pNodeRx->maxIrrigTime = (pNodeRx->data[MAX_IRRIG_TIME] << 8) | pNodeRx->data[MAX_IRRIG_TIME + 1];
-}
-
-/**
-@brief Error detector and corrector.  
-The most common type of error encountered during wireless communication between  
-master and node is the IDLE_CHARACTER_ERROR. Its due to the nature of the UART.  
-This function detects this unwanted character and eliminates it immediately before  
-it corrupts the actual data.
-@param pNodeRx: pointer to the data structure containing data received from the master  
-by the node.  
-@return None.  
-*/
-void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx)
-{
-	bool hc12DataIncomplete = HC12_IncompleteRxData();
-	if((pNodeRx->data[0] == IDLE_CHARACTER) || hc12DataIncomplete)
-	{
-		HC12_RxBufferInit(pNodeRx->data, NODE_RX_DATA_SIZE);
-	}			
-}
-
-/**
-@brief Transmits moisture data to the master if the node ID received  
-matches the assigned node ID (unique to each node).  
-@param pNodeRx: pointer to the data structure containing data received from the master  
-by the node.  
-@param moisture: moisture data to be sent to the master once the node IDs match.  
-@return None  
-*/
-void Node_TransmitData(NodeRxDataStructure* pNodeRx, uint8_t moisture)
-{
-	if(pNodeRx->nodeID == BASE_NODE_ID)
-	{
-		HC12_TransmitByte(moisture);
-	}	
 }

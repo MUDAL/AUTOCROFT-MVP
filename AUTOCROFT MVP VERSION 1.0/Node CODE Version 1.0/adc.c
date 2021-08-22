@@ -2,9 +2,9 @@
 #include "systick.h"
 #include "adc.h"
 
-void ADC_SingleConv_Init(ADC_TypeDef* adcPort,
-												 uint8_t channel,
-												 uint32_t sampleTimeReg)
+void ADC_Init(ADC_TypeDef* adcPort,
+							uint8_t channel,
+							uint32_t sampleTimeReg)
 {
 	//channel selected as 1st conversion in sequence
 	adcPort->SQR3 = channel; 
@@ -22,8 +22,12 @@ void ADC_SingleConv_Init(ADC_TypeDef* adcPort,
 		//Invalid input
 		return;
 	}
-	//turn ADC on, enable continuous mode
-	adcPort->CR2 |= ADC_CR2_ADON | ADC_CR2_CONT; 
+}
+
+uint16_t ADC_Read(ADC_TypeDef* adcPort)
+{
+	adcPort->CR2 &= ~ADC_CR2_CONT;
+	adcPort->CR2 |= ADC_CR2_ADON; 
 	//stabilization delay
 	SysTick_DelayMs(1);
 	//turn ADC on again
@@ -32,13 +36,9 @@ void ADC_SingleConv_Init(ADC_TypeDef* adcPort,
 	adcPort->CR2 |= ADC_CR2_CAL;
 	//wait for calibration to be complete
 	while((adcPort->CR2 & ADC_CR2_CAL) == ADC_CR2_CAL);
-}
-
-uint16_t ADC_Read(ADC_TypeDef* adcPort)
-{
-	uint16_t data;
 	//wait till end of conversion
 	while((adcPort->SR & ADC_SR_EOC) != ADC_SR_EOC);
-	data = adcPort->DR;
-	return data;
+	volatile uint16_t adcData = adcPort->DR;
+	adcPort->CR2 &= ~ADC_CR2_ADON;
+	return adcData;
 }	

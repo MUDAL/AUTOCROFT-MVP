@@ -27,7 +27,6 @@ void USART_Init(USART_TypeDef* uartPort,
 								uint8_t uartMode)
 {
 	uartPort->CR1 |= USART_CR1_UE;
-	uartPort->CR1 &= ~uartMode;
 	switch (dmaMode)
 	{
 		case TX_RX_DMA_DISABLE:
@@ -86,6 +85,7 @@ void USART_TransmitBytes(USART_TypeDef* uartPort, uint8_t* bytes, uint8_t len)
 		uartPort->DR = bytes[i];
 		i++;
 	}
+	while((uartPort->SR & USART_SR_TC) != USART_SR_TC);
 }
 
 /**

@@ -16,31 +16,6 @@ static uint8_t AT_Cmd[NO_OF_NODES][AT_CMD_LEN] = {
 	"AT+C003\r\n",
 	"AT+C004\r\n",
 	"AT+C005\r\n",
-	"AT+C006\r\n",
-	"AT+C007\r\n",
-	"AT+C008\r\n",
-	"AT+C009\r\n",
-	"AT+C010\r\n",
-	"AT+C011\r\n",
-	"AT+C012\r\n",
-	"AT+C013\r\n",
-	"AT+C014\r\n",
-	"AT+C015\r\n",
-	"AT+C016\r\n",
-	"AT+C017\r\n",
-	"AT+C018\r\n",
-	"AT+C019\r\n",
-	"AT+C020\r\n",
-	"AT+C021\r\n",
-	"AT+C022\r\n",
-	"AT+C023\r\n",
-	"AT+C024\r\n",
-	"AT+C025\r\n",
-	"AT+C026\r\n",
-	"AT+C027\r\n",
-	"AT+C028\r\n",
-	"AT+C029\r\n",
-	"AT+C030\r\n",
 };
 
 void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex)
@@ -67,46 +42,35 @@ their responses.
 @param txLen: number of bytes of data the master transmits to the nodes
 @param pMasterRxArray: array containing data received from all nodes
 @param noOfNodes: number of nodes the master communicates with
-@param noOfTimes: number of times the master communicates with each node
 @return None
 */
 void Master_TransmitReceive(uint8_t* pMasterTx,
 														uint8_t txLen,
 														uint8_t* pMasterRx,
 														uint8_t* pMasterRxArray,
-														uint8_t noOfNodes,
-														uint8_t noOfTimes)
+														uint8_t noOfNodes)
 {
-	uint8_t i = 0;
+	uint8_t nodeID = 0;
 	ds3231_t rtc;
-
-	while(i < noOfTimes)
+	
+	while(nodeID < noOfNodes)
 	{
-		uint8_t nodeID = 0;
-		while(nodeID < noOfNodes)
+		HC12_SetPinControl(false);
+		System_TimerDelayMs(40);
+		HC12_TransmitBytes(AT_Cmd[nodeID], AT_CMD_LEN);
+		HC12_SetPinControl(true);
+		System_TimerDelayMs(80);
+		
+		DS3231_GetTime(&rtc);
+		Master_EncodeTxData(pMasterTx,rtc.minutes,RTC_TIME_MINUTE);
+		Master_EncodeTxData(pMasterTx, nodeID, NODE_ID);
+		HC12_TransmitBytes(pMasterTx, txLen);//send data to node
+		System_TimerDelayMs(100); //wait for feedback from node
+		if(*pMasterRx != IDLE_CHARACTER)
 		{
-			//The master changes its own channel to match that of the node it wants..  
-			//to communicate with.
-			HC12_SetPinControl(false);
-			System_TimerDelayMs(40);
-			HC12_TransmitBytes(AT_Cmd[nodeID], AT_CMD_LEN);
-			HC12_SetPinControl(true);
-			System_TimerDelayMs(80);
-			
-			//Communication with node whose channel matches that of the master.  
-			DS3231_GetTime(&rtc);
-			Master_EncodeTxData(pMasterTx,rtc.minutes,RTC_TIME_MINUTE);
-			Master_EncodeTxData(pMasterTx,nodeID,NODE_ID);
-			HC12_TransmitBytes(pMasterTx,txLen);//send data to node
-			
-			while(!HC12_RxBufferFull()){};//wait for node to send its data
-			if(*pMasterRx != IDLE_CHARACTER)
-			{
-				pMasterRxArray[nodeID] = *pMasterRx;
-			}	
-			nodeID++;
+			pMasterRxArray[nodeID] = *pMasterRx;
 		}
-		i++;
+		nodeID++;
 	}
 }
 

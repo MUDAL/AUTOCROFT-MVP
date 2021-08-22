@@ -29,7 +29,7 @@ void HC12_Init(void)
 	USART_Init(USART1,
 						 BAUD_9600,
 						 RX_DMA_ENABLE,
-						 (USART_TX_ENABLE | USART_RX_ENABLE));						 
+						 (USART_TX_ENABLE | USART_RX_ENABLE));
 }
 
 void HC12_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
@@ -42,6 +42,11 @@ void HC12_RxBufferInit(uint8_t* pBuffer, uint8_t bufferSize)
 										DMA_CHANNEL5_MEMORY_INC_MODE |
 										DMA_CHANNEL5_CIRCULAR_BUFFER |
 										DMA_CHANNEL_ENABLE);
+}
+
+void HC12_TransmitByte(uint8_t data)
+{
+	USART_TransmitByte(USART1,data);
 }
 
 void HC12_TransmitBytes(uint8_t* bytes, uint8_t len)

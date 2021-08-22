@@ -40,7 +40,5 @@ typedef struct
 }NodeRxDataStructure;
 
 extern void Node_StoreRxData(NodeRxDataStructure* pNodeRx);
-extern void Node_RxErrorHandler(NodeRxDataStructure* pNodeRx);
-extern void Node_TransmitData(NodeRxDataStructure* pNodeRx, uint8_t moisture);
 
 #endif //_COMMUNICATION_H

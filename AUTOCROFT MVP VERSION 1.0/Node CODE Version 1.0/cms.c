@@ -23,9 +23,9 @@ void CMS_Init(void)
 	None
 	
 	*/
-	ADC_SingleConv_Init(ADC1,
-											ADC_CHANNEL5,
-											ADC_CH5_MAX_SAMPLE_TIME); 
+	ADC_Init(ADC1,
+					 ADC_CHANNEL5,
+					 ADC_CH5_MAX_SAMPLE_TIME); 
 }
 
 uint8_t CMS_GetMoisture(void)

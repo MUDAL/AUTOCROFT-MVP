@@ -370,9 +370,7 @@ void HMI_Execute(void)
 													 MASTER_TX_DATA_SIZE,
 													 ptrNodeToMaster,
 													 ptrNodeToMasterArray,
-													 NO_OF_NODES,
-													 1);
+													 NO_OF_NODES);
 		LCD_Clear();
 	}
-	
 }

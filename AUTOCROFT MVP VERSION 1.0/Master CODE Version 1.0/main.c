@@ -41,10 +41,10 @@ int main(void)
 	
 	//Initializations
 	System_Init();
-	EEPROM_Init();
-	EEPROM_GetData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
-	EEPROM_GetData(&bluetooth.noOfRxBytes,1,PAGE10);
-	EEPROM_GetData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
+	//EEPROM_Init();
+	//EEPROM_GetData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
+	//EEPROM_GetData(&bluetooth.noOfRxBytes,1,PAGE10);
+	//EEPROM_GetData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
 	Keypad_Init();
 	LCD_Init();
 	HC12_Init();
@@ -68,12 +68,12 @@ int main(void)
 	LCD_WriteString("Initializing....");
 	LCD_SetCursor(1,0);
 	LCD_WriteString("Please wait");
+	
 	Master_TransmitReceive(masterToNodeData,
 											   MASTER_TX_DATA_SIZE,
 												 &nodeToMasterData,
 											   nodeToMasterDataArray,
-											   NO_OF_NODES,
-												 2);
+											   NO_OF_NODES);
 	while(1)
 	{
 		/*
@@ -83,40 +83,40 @@ int main(void)
 		/*
 		BLUETOOTH AND WIFI
 		*/
-		bluetooth.rxStatus = Bluetooth_RxStatus();
-		switch(bluetooth.rxStatus)
-		{
-			case NO_DATA_RECEIVED:
-				break;
-			case COMPLETE_RX_DATA:
-				bluetooth.noOfRxBytes = BLUETOOTH_RX_MAX_LEN;
-				WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
-				EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
-				EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
-				break;
-			case INCOMPLETE_RX_DATA:
-				bluetooth.noOfRxBytes = Bluetooth_NumberOfBytesReceived();
-			  WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
-			  EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
-			  EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
-			  Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
-				break;
-		}
+//		bluetooth.rxStatus = Bluetooth_RxStatus();
+//		switch(bluetooth.rxStatus)
+//		{
+//			case NO_DATA_RECEIVED:
+//				break;
+//			case COMPLETE_RX_DATA:
+//				bluetooth.noOfRxBytes = BLUETOOTH_RX_MAX_LEN;
+//				WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
+//				//EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
+//				//EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
+//				break;
+//			case INCOMPLETE_RX_DATA:
+//				bluetooth.noOfRxBytes = Bluetooth_NumberOfBytesReceived();
+//			  WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
+//			  //EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
+//			  //EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
+//			  Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
+//				break;
+//		}
 		/*
 		RTC AND SLEEP
 		*/
-		if(System_TimerDoneCounting(&rtcTimer))
-		{
-			DS3231_GetTime(&rtc);
-			if(rtc.minutes >= 25)
-			{
-				//1.)store configuration data in EEPROM
-				//2.)store data from nodes in EEPROM
-				//3.)put system to sleep
-				EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
-				System_GoToStandbyMode();
-			}
-		}
+//		if(System_TimerDoneCounting(&rtcTimer))
+//		{
+//			DS3231_GetTime(&rtc);
+//			if(rtc.minutes >= 25)
+//			{
+//				//1.)store configuration data in EEPROM
+//				//2.)store data from nodes in EEPROM
+//				//3.)put system to sleep
+//				//EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
+//				System_GoToStandbyMode();
+//			}
+//		}
 	}
 }
 
