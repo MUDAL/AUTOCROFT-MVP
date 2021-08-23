@@ -24,14 +24,15 @@ int main(void)
 	static sysTimer_t rtcTimer;
 	static ds3231_t rtc;
 	static uint8_t soilMoisture;
+	//Node parameters
+	const uint8_t nodeID = 0;
+	const uint8_t nodeATcmdLength = 9;
+	uint8_t nodeATcommand[nodeATcmdLength] = "AT+C001\r\n";
+	//Sensor variables
 	sensorLevel_t moistureLevel = LEVEL_UNDEFINED;
 	sensorLevel_t humidityLevel = LEVEL_UNDEFINED;
 	sensorLevel_t temperatureLevel = LEVEL_UNDEFINED;
 	irrigMethod_t irrigationMethod = IRRIG_METHOD_UNDEFINED;
-
-	node_t node = {.id = BASE_NODE_ID, 
-								 .atCmd = "AT+C001\r\n", 
-								 .atCmdLen = BASE_NODE_AT_CMD_LEN};
 
 	//Initializations
 	System_Init();
@@ -39,16 +40,15 @@ int main(void)
 	//EEPROM_GetData(nodeRx.data,NODE_RX_DATA_SIZE,PAGE1);
 	CMS_Init();
 	Solenoid_Init();
-	HC12_Init();
+	HC12_Init();	 
+	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE);
 	//Channel setting
 	HC12_SetPinControl(false);
 	System_TimerDelayMs(40);
-	HC12_TransmitBytes(node.atCmd, BASE_NODE_AT_CMD_LEN);
+	HC12_TransmitBytes(nodeATcommand, nodeATcmdLength);
 	HC12_SetPinControl(true);
 	System_TimerDelayMs(80);
-								 
-	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE);
-
+	
 	DS3231_Init();
 	DS3231_24HourFormat(); 		
 	DS3231_SetMinutes(0);	//Set minutes to 0 by default							 
@@ -67,7 +67,7 @@ int main(void)
 		{			
 			Node_StoreRxData(&nodeRx);
 			DS3231_SetMinutes(nodeRx.rtcMinute);
-			if(nodeRx.nodeID == BASE_NODE_ID)
+			if(nodeRx.nodeID == nodeID)
 			{
 				soilMoisture = CMS_GetMoisture();
 				HC12_TransmitByte(soilMoisture);
@@ -85,13 +85,13 @@ int main(void)
 					Solenoid_Control(SOLENOID_OFF);
 					break;
 				case LIGHT_IRRIGATION:
-					//convert minimum irrigation time to milliseconds
-					System_TimerInit(&irrigTimer,(nodeRx.minIrrigTime*1000));
+					//convert minimum irrigation time(minutes) to milliseconds
+					System_TimerInit(&irrigTimer,(nodeRx.minIrrigTime*60*1000));
 					Solenoid_Control(SOLENOID_ON);
 					break;
 				case HEAVY_IRRIGATION:
-					//convert maximum irrigation time to milliseconds
-					System_TimerInit(&irrigTimer,(nodeRx.maxIrrigTime*1000));
+					//convert maximum irrigation time(minutes) to milliseconds
+					System_TimerInit(&irrigTimer,(nodeRx.maxIrrigTime*60*1000));
 					Solenoid_Control(SOLENOID_ON);
 					break;
 			}

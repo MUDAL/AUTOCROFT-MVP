@@ -89,20 +89,11 @@ void Display_NodeData(char* firstRowHeading,
 			Conv_IntegerToString(row1Data,strData1);
 			LCD_WriteString(strData1);
 			//bottom
-			if(row1Data > (NO_OF_NODES - 1))
-			{
-				LCD_SetCursor(1,2);
-				LCD_WriteString(secondRowHeading);
-				LCD_WriteString("NA");
-			}
-			else
-			{
-				LCD_SetCursor(1,2);
-				LCD_WriteString(secondRowHeading);
-				Conv_IntegerToString(row2Data,strData2);
-				LCD_WriteString(strData2);
-				LCD_WriteByte('%');
-			}
+			LCD_SetCursor(1,2);
+			LCD_WriteString(secondRowHeading);
+			Conv_IntegerToString(row2Data,strData2);
+			LCD_WriteString(strData2);
+			LCD_WriteByte('%');
 			break;
 		
 		case SUBSTATE_SET_NODE_ID:
@@ -119,20 +110,11 @@ void Display_NodeData(char* firstRowHeading,
 			Conv_IntegerToString(row1Data,strData1);
 			LCD_WriteString(strData1);
 			//bottom
-			if(row1Data > (NO_OF_NODES - 1))
-			{
-				LCD_SetCursor(1,2);
-				LCD_WriteString(secondRowHeading);
-				LCD_WriteString("NA");
-			}
-			else
-			{
-				LCD_SetCursor(1,2);
-				LCD_WriteString(secondRowHeading);
-				Conv_IntegerToString(row2Data,strData2);
-				LCD_WriteString(strData2);
-				LCD_WriteByte('%');
-			}
+			LCD_SetCursor(1,2);
+			LCD_WriteString(secondRowHeading);
+			Conv_IntegerToString(row2Data,strData2);
+			LCD_WriteString(strData2);
+			LCD_WriteByte('%');
 			break;
 	}
 }

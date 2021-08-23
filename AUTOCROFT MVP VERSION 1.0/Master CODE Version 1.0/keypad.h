@@ -16,7 +16,6 @@
 
 extern void Keypad_Init(void);
 extern char Keypad_GetChar(void);
-extern void Keypad_StrTo8bitInt(uint8_t* pInteger, char* pBuffer, uint8_t len);
-extern void Keypad_StrTo16bitInt(uint16_t* pInteger, char* pBuffer, uint8_t len);
+extern void Keypad_StrToInt(uint8_t* pInteger, char* pBuffer, uint8_t len);
 
 #endif //KEYPAD_H

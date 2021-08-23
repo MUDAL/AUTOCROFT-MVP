@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+#include "system.h"
 #include "keypad.h"
 #include "lcd.h"
 #include "display.h"
@@ -25,8 +26,7 @@ static uint8_t currentSubstate = SUBSTATE_NIL;
 
 //Function definitions
 /**
-@brief Resets master-to-node data which is stored using the  
-'uint8_t' specifier. e.g. node ID, minimum moisture, maximum humidity etc.  
+@brief Resets master-to-node data e.g. node ID, minimum moisture, maximum humidity etc.  
 @param pData: pointer to data to be reset.  
 @param pKeypadBuffer: A keypad buffer contains the string equivalent of a  
 particular master-to-node data. It is also cleared by this function.  
@@ -34,33 +34,10 @@ particular master-to-node data. It is also cleared by this function.
 @param currSubstate: current substate of the FSM.  
 @return None
 */
-static void Reset_MasterToNode8bitData(uint8_t* pData,
-																			 char* pKeypadBuffer,
-																			 uint8_t keypadBufferLen,
-																			 uint8_t currSubstate)
-{
-	if(currentSubstate == currSubstate)
-	{
-		memset(pKeypadBuffer,'0',keypadBufferLen);
-		*pData = 0;
-	}
-}
-
-/**
-@brief Resets master-to-node data which is stored using the  
-'uint16_t' specifier. This applies only to the minimum and maximum  
-irrigation time settings.  
-@param pData: pointer to data to be reset.  
-@param pKeypadBuffer: A keypad buffer contains the string equivalent of a  
-particular master-to-node data. It is also cleared by this function.  
-@param keypadBufferLen: length of the keypad buffer.  
-@param currSubstate: current substate of the FSM.  
-@return None
-*/
-static void Reset_MasterToNode16bitData(uint16_t* pData,
-																				char* pKeypadBuffer,
-																				uint8_t keypadBufferLen,
-																				uint8_t currSubstate)
+static void Reset_MasterToNodeData(uint8_t* pData,
+																	 char* pKeypadBuffer,
+																	 uint8_t keypadBufferLen,
+																	 uint8_t currSubstate)
 {
 	if(currentSubstate == currSubstate)
 	{
@@ -118,20 +95,30 @@ static void FSM_Node(uint8_t substate)
 									 substate,
 									 nodeID,
 									 nodeMoisture);
-
+	
+	if(nodeID > (NO_OF_NODES - 1))
+	{
+		LCD_Clear();
+		LCD_SetCursor(0,0);
+		LCD_WriteString("Invalid input");
+		System_TimerDelayMs(1000);
+		LCD_Clear();
+		nodeID = 0;
+		currentSubstate = SUBSTATE_HIGHLIGHT_NODE_ID;
+	}	
+	
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_NODE_ID:
 			FSM_StateTransition('B',STATE_DISPLAY_READINGS, SUBSTATE_NIL);	
 			FSM_StateTransition('A',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_NODE, SUBSTATE_SET_NODE_ID);
-			Reset_MasterToNode8bitData(&nodeID,keyBuffer,keyBufferLen,SUBSTATE_SET_NODE_ID);
+			Reset_MasterToNodeData(&nodeID,keyBuffer,keyBufferLen,SUBSTATE_SET_NODE_ID);
 			break;
 			
 		case SUBSTATE_SET_NODE_ID:
-			Keypad_StrTo8bitInt(&nodeID,keyBuffer,keyBufferLen);
-		  FSM_StateTransition('#',STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);
-			Master_EncodeTxData(ptrMasterToNode, nodeID, NODE_ID);
+			Keypad_StrToInt(&nodeID,keyBuffer,keyBufferLen);
+			FSM_StateTransition('#',STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);
 			break;
 	}	
 }
@@ -149,6 +136,7 @@ static void FSM_Moisture(uint8_t substate)
 									  "MoistMin:",
 									  "MoistMax:",
 									  '%');
+	
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
@@ -156,7 +144,7 @@ static void FSM_Moisture(uint8_t substate)
 			FSM_StateTransition('D',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MAX);
 			FSM_StateTransition('A',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_MOISTURE, SUBSTATE_SET_MIN);
-			Reset_MasterToNode8bitData(&minMoist,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
+			Reset_MasterToNodeData(&minMoist,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
 			break;
 		
 		case SUBSTATE_HIGHLIGHT_MAX:
@@ -164,17 +152,17 @@ static void FSM_Moisture(uint8_t substate)
 			FSM_StateTransition('C',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('A',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_MOISTURE, SUBSTATE_SET_MAX);
-			Reset_MasterToNode8bitData(&maxMoist,keyBuffer,keyBufferLen,SUBSTATE_SET_MAX);
+			Reset_MasterToNodeData(&maxMoist,keyBuffer,keyBufferLen,SUBSTATE_SET_MAX);
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			Keypad_StrTo8bitInt(&minMoist,keyBuffer,keyBufferLen);
+			Keypad_StrToInt(&minMoist,keyBuffer,keyBufferLen);
 			FSM_StateTransition('#',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
 			Master_EncodeTxData(ptrMasterToNode, minMoist, MIN_MOISTURE);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			Keypad_StrTo8bitInt(&maxMoist,keyBuffer,keyBufferLen);
+			Keypad_StrToInt(&maxMoist,keyBuffer,keyBufferLen);
 			FSM_StateTransition('#',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MAX);
 			Master_EncodeTxData(ptrMasterToNode, maxMoist, MAX_MOISTURE);
 			break;
@@ -194,6 +182,7 @@ static void FSM_Humidity(uint8_t substate)
 									  "HumMin:",
 									  "HumMax:",
 									  '%');
+	
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
@@ -201,7 +190,7 @@ static void FSM_Humidity(uint8_t substate)
 			FSM_StateTransition('A',STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_HUMIDITY, SUBSTATE_SET_MIN);
 			FSM_StateTransition('B',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
-			Reset_MasterToNode8bitData(&minHum,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
+			Reset_MasterToNodeData(&minHum,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
 			break;
 		
 		case SUBSTATE_HIGHLIGHT_MAX:
@@ -209,17 +198,17 @@ static void FSM_Humidity(uint8_t substate)
 			FSM_StateTransition('A',STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_HUMIDITY, SUBSTATE_SET_MAX);
 			FSM_StateTransition('B',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
-			Reset_MasterToNode8bitData(&maxHum,keyBuffer,keyBufferLen,SUBSTATE_SET_MAX);
+			Reset_MasterToNodeData(&maxHum,keyBuffer,keyBufferLen,SUBSTATE_SET_MAX);
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			Keypad_StrTo8bitInt(&minHum,keyBuffer,keyBufferLen);
+			Keypad_StrToInt(&minHum,keyBuffer,keyBufferLen);
 			FSM_StateTransition('#',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
 			Master_EncodeTxData(ptrMasterToNode, minHum, MIN_HUMIDITY);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			Keypad_StrTo8bitInt(&maxHum,keyBuffer,keyBufferLen);
+			Keypad_StrToInt(&maxHum,keyBuffer,keyBufferLen);
 			FSM_StateTransition('#',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MAX);
 			Master_EncodeTxData(ptrMasterToNode, maxHum, MAX_HUMIDITY);
 			break;
@@ -240,6 +229,7 @@ static void FSM_Temperature(uint8_t substate)
 									  "TempMin:",
 									  "TempMax:",
 									  'C');
+	
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
@@ -247,7 +237,7 @@ static void FSM_Temperature(uint8_t substate)
 			FSM_StateTransition('A',STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_TEMPERATURE, SUBSTATE_SET_MIN);
 			FSM_StateTransition('B',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
-			Reset_MasterToNode8bitData(&minTemp,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
+			Reset_MasterToNodeData(&minTemp,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
 			break;
 		
 		case SUBSTATE_HIGHLIGHT_MAX:
@@ -255,17 +245,17 @@ static void FSM_Temperature(uint8_t substate)
 			FSM_StateTransition('A',STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_TEMPERATURE, SUBSTATE_SET_MAX);
 			FSM_StateTransition('B',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
-			Reset_MasterToNode8bitData(&maxTemp,keyBuffer,keyBufferLen,SUBSTATE_SET_MAX);
+			Reset_MasterToNodeData(&maxTemp,keyBuffer,keyBufferLen,SUBSTATE_SET_MAX);
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			Keypad_StrTo8bitInt(&minTemp,keyBuffer,keyBufferLen);
+			Keypad_StrToInt(&minTemp,keyBuffer,keyBufferLen);
 			FSM_StateTransition('#',STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
 			Master_EncodeTxData(ptrMasterToNode, minTemp, MIN_TEMPERATURE);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			Keypad_StrTo8bitInt(&maxTemp,keyBuffer,keyBufferLen);
+			Keypad_StrToInt(&maxTemp,keyBuffer,keyBufferLen);
 			FSM_StateTransition('#', STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MAX);	
 			Master_EncodeTxData(ptrMasterToNode, maxTemp, MAX_TEMPERATURE);
 			break;
@@ -274,41 +264,42 @@ static void FSM_Temperature(uint8_t substate)
 	
 static void FSM_IrrigTime(uint8_t substate)
 {
-	static uint16_t minIrrigTime;
-	static uint16_t maxIrrigTime;
-	static char keyBuffer[5] = "0000";
-	const uint8_t keyBufferLen = 4;
+	static uint8_t minIrrigTime;
+	static uint8_t maxIrrigTime;
+	static char keyBuffer[3] = "00";
+	const uint8_t keyBufferLen = 2;
 	
 	Display_Threshold(minIrrigTime,
 									  maxIrrigTime,
 									  substate,
 									  "TimeMin:",
 									  "TimeMax:",
-									  's');	
+									  'm');
+	
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
 			FSM_StateTransition('D', STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MAX);
 	    FSM_StateTransition('#', STATE_IRRIGATION_TIME, SUBSTATE_SET_MIN);
 	    FSM_StateTransition('B', STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
-			Reset_MasterToNode16bitData(&minIrrigTime,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
+			Reset_MasterToNodeData(&minIrrigTime,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
 			break;
 		
 		case SUBSTATE_HIGHLIGHT_MAX:
 			FSM_StateTransition('C', STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#', STATE_IRRIGATION_TIME, SUBSTATE_SET_MAX);
 			FSM_StateTransition('B', STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
-			Reset_MasterToNode16bitData(&maxIrrigTime,keyBuffer,keyBufferLen,SUBSTATE_SET_MAX);
+			Reset_MasterToNodeData(&maxIrrigTime,keyBuffer,keyBufferLen,SUBSTATE_SET_MAX);
 			break;
 		
 		case SUBSTATE_SET_MIN:
-			Keypad_StrTo16bitInt(&minIrrigTime,keyBuffer,keyBufferLen);
+			Keypad_StrToInt(&minIrrigTime,keyBuffer,keyBufferLen);
 			FSM_StateTransition('#', STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MIN);	
 			Master_EncodeTxData(ptrMasterToNode, minIrrigTime, MIN_IRRIG_TIME);
 			break;
 		
 		case SUBSTATE_SET_MAX:
-			Keypad_StrTo16bitInt(&maxIrrigTime,keyBuffer,keyBufferLen);
+			Keypad_StrToInt(&maxIrrigTime,keyBuffer,keyBufferLen);
 			FSM_StateTransition('#', STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MAX);	
 			Master_EncodeTxData(ptrMasterToNode, maxIrrigTime, MAX_IRRIG_TIME);
 			break;

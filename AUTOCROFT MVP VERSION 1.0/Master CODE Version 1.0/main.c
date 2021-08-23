@@ -38,7 +38,7 @@ int main(void)
 	static sysTimer_t rtcTimer;
 	static ds3231_t rtc;
 	static bluetooth_t bluetooth;
-	
+
 	//Initializations
 	System_Init();
 	//EEPROM_Init();

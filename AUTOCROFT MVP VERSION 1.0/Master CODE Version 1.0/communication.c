@@ -24,14 +24,9 @@ void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataInde
 	{//Invalid input
 		return;
 	}
-	if(dataIndex != MIN_IRRIG_TIME && dataIndex != MAX_IRRIG_TIME)
-	{
-		pMasterTx[dataIndex] = data;
-	}
 	else
 	{
-		pMasterTx[dataIndex] = (data&0xFF00)>>8; //high byte
-		pMasterTx[dataIndex + 1] = (data&0xFF); //low byte
+		pMasterTx[dataIndex] = data;
 	}
 }
 

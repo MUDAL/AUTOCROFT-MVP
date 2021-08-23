@@ -120,7 +120,7 @@ char Keypad_GetChar(void)
 	return keypadChar;
 }
 
-void Keypad_StrTo8bitInt(uint8_t* pInteger, char* pBuffer, uint8_t len)
+void Keypad_StrToInt(uint8_t* pInteger, char* pBuffer, uint8_t len)
 {
 	char numericKey = Keypad_GetChar();
 	
@@ -129,16 +129,5 @@ void Keypad_StrTo8bitInt(uint8_t* pInteger, char* pBuffer, uint8_t len)
 		Keypad_StoreKeyPress(numericKey,pBuffer,len);
 		*pInteger = Conv_StringToInteger(pBuffer);
 	}	
-}
-
-void Keypad_StrTo16bitInt(uint16_t* pInteger, char* pBuffer, uint8_t len)
-{
-	char numericKey = Keypad_GetChar();
-	
-	if(IsDigit(numericKey))
-	{
-		Keypad_StoreKeyPress(numericKey,pBuffer,len);
-		*pInteger = Conv_StringToInteger(pBuffer);
-	}
 }
 
