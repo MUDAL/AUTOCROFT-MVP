@@ -26,8 +26,8 @@ typedef struct
 	uint8_t temperature;
 	uint8_t nodeID;
 	uint8_t rtcMinute;
-	uint16_t minIrrigTime;
-	uint16_t maxIrrigTime;
+	uint8_t minIrrigTime;
+	uint8_t maxIrrigTime;
 }NodeRxDataStructure;
 
 extern void Node_StoreRxData(NodeRxDataStructure* pNodeRx);
