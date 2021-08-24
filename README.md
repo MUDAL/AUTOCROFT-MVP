@@ -10,7 +10,7 @@ Some **keypad** functionalities:
 - A: Forward  
 - B: Backward  
 - C: Up/Down  
-- D: Clear memory  
+- D: Clear memory/reset system
 - #: Enter  
 - *: Send  
 
