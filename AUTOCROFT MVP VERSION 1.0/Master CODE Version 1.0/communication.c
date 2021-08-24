@@ -20,7 +20,7 @@ static uint8_t AT_Cmd[NO_OF_NODES][AT_CMD_LEN] = {
 
 void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex)
 {
-	if(dataIndex > CLR_MEMORY)
+	if(dataIndex > (MASTER_TX_DATA_SIZE - 1))
 	{//Invalid input
 		return;
 	}
