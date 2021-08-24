@@ -9,8 +9,8 @@ The master processes data from multiple base nodes and sends to the cloud.
 Some **keypad** functionalities:  
 - A: Forward  
 - B: Backward  
-- C: Up  
-- D: Down  
+- C: Up/Down  
+- D: Clear memory  
 - #: Enter  
 - *: Send  
 
