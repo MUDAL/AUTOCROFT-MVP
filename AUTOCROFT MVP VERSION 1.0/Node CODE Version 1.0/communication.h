@@ -28,7 +28,7 @@ typedef struct
 	uint8_t rtcMinute;
 	uint8_t minIrrigTime;
 	uint8_t maxIrrigTime;
-	uint8_t clrMemory;
+	uint8_t sysMemControl;
 }NodeRxDataStructure;
 
 extern void Node_StoreRxData(NodeRxDataStructure* pNodeRx);

@@ -35,7 +35,7 @@ typedef enum
 	RTC_TIME_MINUTE = 9,
 	MIN_IRRIG_TIME = 10, 
 	MAX_IRRIG_TIME = 11,
-	CLR_MEMORY = 12
+	SYS_AND_MEM = 12 /** system and memory control*/
 }dataIndex_t;
 
 extern void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex);

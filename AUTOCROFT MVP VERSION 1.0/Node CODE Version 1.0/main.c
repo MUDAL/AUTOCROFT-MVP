@@ -85,10 +85,6 @@ int main(void)
 		if(HC12_RxBufferFull())
 		{	
 			Node_StoreRxData(&nodeRx);
-			if(nodeRx.clrMemory)
-			{//if signal to clear memory is received, clear the memory
-				EEPROM_StoreData(emptyEEPROM,eepromBytes,PAGE1);
-			}
 			DS3231_SetMinutes(nodeRx.rtcMinute);
 			if(nodeRx.nodeID == nodeID)
 			{
@@ -96,6 +92,18 @@ int main(void)
 				HC12_TransmitByte(soilMoisture);
 			}	
 
+			switch(nodeRx.sysMemControl)
+			{
+				case 1:
+					//if signal to clear memory is received, clear the memory
+					EEPROM_StoreData(emptyEEPROM,eepromBytes,PAGE1);
+					break;
+				case 2:
+					//if signal to reset the node is received, reset the node
+					System_Reset();
+					break;
+			}
+			
 			moistureLevel = Sensor_GetLevel(soilMoisture, nodeRx.minMoist, nodeRx.maxMoist);			
 			humidityLevel = Sensor_GetLevel(nodeRx.humidity, nodeRx.minHum, nodeRx.maxHum);
 			temperatureLevel = Sensor_GetLevel(nodeRx.temperature, nodeRx.minTemp, nodeRx.maxTemp);

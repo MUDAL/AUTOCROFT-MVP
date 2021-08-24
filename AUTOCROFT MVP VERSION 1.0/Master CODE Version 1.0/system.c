@@ -8,31 +8,18 @@
 
 void System_Init(void)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
-	
 	Clocks_Init();
 	SysTick_Init();
 	GPIO_Reset();
 }
 
+void System_Reset(void)
+{
+	NVIC_SystemReset();
+}
+
 void System_TimerDelayMs(uint32_t delayTime)
 {
-	/*
-	Description:
-	
-	Parameters:
-	
-	Return:
-	
-	*/
-	
 	SysTick_DelayMs(delayTime);
 }
 

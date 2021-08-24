@@ -356,6 +356,8 @@ void HMI_Execute(void)
 		BME280_GetData(&bme280Data);
 		Master_EncodeTxData(ptrMasterToNode,bme280Data.humidity,HUMIDITY);
 		Master_EncodeTxData(ptrMasterToNode,bme280Data.temperature,TEMPERATURE);
+		//Encoding with 0 leaves the node memory unchanged
+		Master_EncodeTxData(ptrMasterToNode,0,SYS_AND_MEM);
 		LCD_Clear();
 		LCD_WriteString("Collecting data");
 		LCD_SetCursor(1,0);
@@ -374,15 +376,15 @@ void HMI_Execute(void)
 		char getOption;
 		
 		LCD_Clear();
-		LCD_WriteString("Reset all memory");
+		LCD_WriteString("1:Clear memory");
 		LCD_SetCursor(1,0);
-		LCD_WriteString("1-9:No  0:Yes");
+		LCD_WriteString("2:Reset system");
 		while(1)
 		{
 			getOption = Keypad_GetChar();
 			if(Keypad_IsDigit(getOption))
 			{
-				if(getOption == '0')
+				if(getOption == '1')
 				{
 					LCD_Clear();
 					LCD_WriteString("Clearing: ");
@@ -394,15 +396,26 @@ void HMI_Execute(void)
 					LCD_SetCursor(1,0);
 					LCD_WriteString("Node memory");
 					//Encoding with 1 clears node memory
-					Master_EncodeTxData(ptrMasterToNode,1,CLR_MEMORY); 
+					Master_EncodeTxData(ptrMasterToNode,1,SYS_AND_MEM); 
 					Master_TransmitReceive(ptrMasterToNode,
 																 MASTER_TX_DATA_SIZE,
 																 ptrNodeToMaster,
 																 ptrNodeToMasterArray,
 																 NO_OF_NODES);
-					//Encoding with 0 leaves the node memory unchanged
-					Master_EncodeTxData(ptrMasterToNode,0,CLR_MEMORY);
 					break;
+				}
+				else if(getOption == '2')
+				{
+					LCD_Clear();
+					LCD_WriteString("Resetting system");
+					//Encoding with 2 resets the node
+					Master_EncodeTxData(ptrMasterToNode,2,SYS_AND_MEM); 
+					Master_TransmitReceive(ptrMasterToNode,
+																 MASTER_TX_DATA_SIZE,
+																 ptrNodeToMaster,
+																 ptrNodeToMasterArray,
+																 NO_OF_NODES);
+					System_Reset(); //for master
 				}
 				else
 				{
