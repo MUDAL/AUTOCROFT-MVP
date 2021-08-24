@@ -52,7 +52,7 @@ void EEPROM_ReadPage(uint8_t pageAddr, uint8_t* pReceiveBuffer, uint8_t len)
 	I2C_ReadMultiByte(I2C1,deviceAddr, wordAddr, pReceiveBuffer, len);
 }
 
-void EEPROM_StoreData(uint8_t* pData, uint8_t len, uint8_t initialPage)
+void EEPROM_StoreData(uint8_t* pData, uint32_t len, uint8_t initialPage)
 {	
 	uint8_t i = 0;
 	uint8_t page = initialPage;
@@ -73,7 +73,7 @@ void EEPROM_StoreData(uint8_t* pData, uint8_t len, uint8_t initialPage)
 	EEPROM_WritePage(page+i,&pData[PAGE_SIZE*i],numberOfBytesLeft);	
 }
 
-void EEPROM_GetData(uint8_t* pData, uint8_t len, uint8_t initialPage)
+void EEPROM_GetData(uint8_t* pData, uint32_t len, uint8_t initialPage)
 {
 	uint8_t i = 0;
 	uint8_t page = initialPage;

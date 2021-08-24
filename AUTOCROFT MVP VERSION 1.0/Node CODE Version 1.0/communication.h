@@ -11,7 +11,7 @@ transmitter is initialized for the first time. This 8-bit data
 is unwanted and must be eliminated/ignored once received.  
 */
 #define IDLE_CHARACTER							255
-#define NODE_RX_DATA_SIZE						12
+#define NODE_RX_DATA_SIZE						13
 
 typedef struct
 {
@@ -28,6 +28,7 @@ typedef struct
 	uint8_t rtcMinute;
 	uint8_t minIrrigTime;
 	uint8_t maxIrrigTime;
+	uint8_t clrMemory;
 }NodeRxDataStructure;
 
 extern void Node_StoreRxData(NodeRxDataStructure* pNodeRx);

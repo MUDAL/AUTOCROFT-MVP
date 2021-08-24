@@ -25,7 +25,8 @@ enum
 	NODE_ID = 8,
 	RTC_TIME_MINUTE = 9,
 	MIN_IRRIG_TIME = 10, 
-	MAX_IRRIG_TIME = 11 
+	MAX_IRRIG_TIME = 11,
+	CLR_MEMORY = 12
 };
 
 void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
@@ -42,4 +43,5 @@ void Node_StoreRxData(NodeRxDataStructure* pNodeRx)
 	pNodeRx->rtcMinute = pNodeRx->data[RTC_TIME_MINUTE];
 	pNodeRx->minIrrigTime = pNodeRx->data[MIN_IRRIG_TIME];
 	pNodeRx->maxIrrigTime = pNodeRx->data[MAX_IRRIG_TIME];
+	pNodeRx->clrMemory = pNodeRx->data[CLR_MEMORY];
 }

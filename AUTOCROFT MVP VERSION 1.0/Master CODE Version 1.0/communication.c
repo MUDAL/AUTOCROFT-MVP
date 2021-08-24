@@ -20,7 +20,7 @@ static uint8_t AT_Cmd[NO_OF_NODES][AT_CMD_LEN] = {
 
 void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex)
 {
-	if(dataIndex > MAX_IRRIG_TIME)
+	if(dataIndex > CLR_MEMORY)
 	{//Invalid input
 		return;
 	}
@@ -55,6 +55,12 @@ void Master_TransmitReceive(uint8_t* pMasterTx,
 		HC12_TransmitBytes(AT_Cmd[nodeID], AT_CMD_LEN);
 		HC12_SetPinControl(true);
 		System_TimerDelayMs(80);
+		if(*pMasterRx != 0)
+		{//Remnants of AT commands can corrupt rx data
+			//if corrupted data is detected, reinitialize Rx buffer
+			*pMasterRx = 0;
+			HC12_RxBufferInit(pMasterRx,MASTER_RX_DATA_SIZE);
+		}
 		
 		DS3231_GetTime(&rtc);
 		Master_EncodeTxData(pMasterTx,rtc.minutes,RTC_TIME_MINUTE);

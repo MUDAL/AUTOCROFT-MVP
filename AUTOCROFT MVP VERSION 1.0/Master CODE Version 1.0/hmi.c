@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "system.h"
+#include "eeprom24c16.h"
 #include "keypad.h"
 #include "lcd.h"
 #include "display.h"
@@ -141,7 +142,7 @@ static void FSM_Moisture(uint8_t substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
 			FSM_StateTransition('B',STATE_NODE, SUBSTATE_HIGHLIGHT_NODE_ID);
-			FSM_StateTransition('D',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MAX);
+			FSM_StateTransition('C',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MAX);
 			FSM_StateTransition('A',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_MOISTURE, SUBSTATE_SET_MIN);
 			Reset_MasterToNodeData(&minMoist,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
@@ -186,7 +187,7 @@ static void FSM_Humidity(uint8_t substate)
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
-			FSM_StateTransition('D',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MAX);
+			FSM_StateTransition('C',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MAX);
 			FSM_StateTransition('A',STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_HUMIDITY, SUBSTATE_SET_MIN);
 			FSM_StateTransition('B',STATE_MOISTURE, SUBSTATE_HIGHLIGHT_MIN);
@@ -233,7 +234,7 @@ static void FSM_Temperature(uint8_t substate)
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
-			FSM_StateTransition('D',STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MAX);
+			FSM_StateTransition('C',STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MAX);
 			FSM_StateTransition('A',STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MIN);
 			FSM_StateTransition('#',STATE_TEMPERATURE, SUBSTATE_SET_MIN);
 			FSM_StateTransition('B',STATE_HUMIDITY, SUBSTATE_HIGHLIGHT_MIN);
@@ -279,7 +280,7 @@ static void FSM_IrrigTime(uint8_t substate)
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
-			FSM_StateTransition('D', STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MAX);
+			FSM_StateTransition('C', STATE_IRRIGATION_TIME, SUBSTATE_HIGHLIGHT_MAX);
 	    FSM_StateTransition('#', STATE_IRRIGATION_TIME, SUBSTATE_SET_MIN);
 	    FSM_StateTransition('B', STATE_TEMPERATURE, SUBSTATE_HIGHLIGHT_MIN);
 			Reset_MasterToNodeData(&minIrrigTime,keyBuffer,keyBufferLen,SUBSTATE_SET_MIN);
@@ -331,6 +332,9 @@ void HMI_Init(uint8_t* pMasterToNode,
 */
 void HMI_Execute(void)
 {
+	const uint8_t eepromPages = 128;
+	const uint32_t eepromBytes = eepromPages * PAGE_SIZE;
+	static uint8_t emptyEEPROM[eepromBytes];
 	static bme280_t bme280Data;
 	//Array of FSM function pointers
 	static void (*pStateFunction[NUMBER_OF_STATES])(uint8_t substate) = 
@@ -362,6 +366,50 @@ void HMI_Execute(void)
 													 ptrNodeToMaster,
 													 ptrNodeToMasterArray,
 													 NO_OF_NODES);
+		LCD_Clear();
+	}
+	
+	else if(keyPadChar == 'D')
+	{//Pressing D key to clear eeprom of master and nodes
+		char getOption;
+		
+		LCD_Clear();
+		LCD_WriteString("Reset all memory");
+		LCD_SetCursor(1,0);
+		LCD_WriteString("1-9:No  0:Yes");
+		while(1)
+		{
+			getOption = Keypad_GetChar();
+			if(Keypad_IsDigit(getOption))
+			{
+				if(getOption == '0')
+				{
+					LCD_Clear();
+					LCD_WriteString("Clearing: ");
+					LCD_SetCursor(1,0);
+					LCD_WriteString("Master memory");
+					EEPROM_StoreData(emptyEEPROM,eepromBytes,PAGE1);
+					LCD_Clear();
+					LCD_WriteString("Clearing: ");
+					LCD_SetCursor(1,0);
+					LCD_WriteString("Node memory");
+					//Encoding with 1 clears node memory
+					Master_EncodeTxData(ptrMasterToNode,1,CLR_MEMORY); 
+					Master_TransmitReceive(ptrMasterToNode,
+																 MASTER_TX_DATA_SIZE,
+																 ptrNodeToMaster,
+																 ptrNodeToMasterArray,
+																 NO_OF_NODES);
+					//Encoding with 0 leaves the node memory unchanged
+					Master_EncodeTxData(ptrMasterToNode,0,CLR_MEMORY);
+					break;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
 		LCD_Clear();
 	}
 }

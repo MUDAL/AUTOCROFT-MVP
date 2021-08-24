@@ -31,15 +31,6 @@ const char keypad[4][4] = {{'1','4','7','*'},
 														{'3','6','9','#'},
 														{'A','B','C','D'}};
 
-static bool IsDigit(char ch)
-{
-	if(ch >= '0' && ch <= '9')
-	{
-		return true;
-	}
-	return false;
-}
-
 static void ActivateColumn(uint8_t column)
 {
 	switch(column)
@@ -120,11 +111,20 @@ char Keypad_GetChar(void)
 	return keypadChar;
 }
 
+bool Keypad_IsDigit(char ch)
+{
+	if(ch >= '0' && ch <= '9')
+	{
+		return true;
+	}
+	return false;
+}
+
 void Keypad_StrToInt(uint8_t* pInteger, char* pBuffer, uint8_t len)
 {
 	char numericKey = Keypad_GetChar();
 	
-	if(IsDigit(numericKey))
+	if(Keypad_IsDigit(numericKey))
 	{
 		Keypad_StoreKeyPress(numericKey,pBuffer,len);
 		*pInteger = Conv_StringToInteger(pBuffer);

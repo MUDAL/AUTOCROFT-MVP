@@ -16,6 +16,7 @@
 
 extern void Keypad_Init(void);
 extern char Keypad_GetChar(void);
+extern bool Keypad_IsDigit(char ch);
 extern void Keypad_StrToInt(uint8_t* pInteger, char* pBuffer, uint8_t len);
 
 #endif //KEYPAD_H

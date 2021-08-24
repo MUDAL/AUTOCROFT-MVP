@@ -138,7 +138,7 @@ enum EEPROMPageAddress
 extern void EEPROM_Init(void);
 extern void EEPROM_WritePage(uint8_t pageAddr, uint8_t* pData, uint8_t len);
 extern void EEPROM_ReadPage(uint8_t pageAddr, uint8_t* pReceiveBuffer, uint8_t len);
-extern void EEPROM_StoreData(uint8_t* pData, uint8_t len, uint8_t initialPage);
-extern void EEPROM_GetData(uint8_t* pData, uint8_t len, uint8_t initialPage);
+extern void EEPROM_StoreData(uint8_t* pData, uint32_t len, uint8_t initialPage);
+extern void EEPROM_GetData(uint8_t* pData, uint32_t len, uint8_t initialPage);
 
 #endif //_EEPROM_H

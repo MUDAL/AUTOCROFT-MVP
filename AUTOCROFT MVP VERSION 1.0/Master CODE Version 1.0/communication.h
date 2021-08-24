@@ -11,7 +11,7 @@ transmitter is initialized for the first time. This 8-bit data
 is unwanted and must be eliminated/ignored once received.  
 */
 #define IDLE_CHARACTER				255
-#define MASTER_TX_DATA_SIZE		12
+#define MASTER_TX_DATA_SIZE		13
 #define MASTER_RX_DATA_SIZE		1
 #define NO_OF_NODES						5
 
@@ -34,7 +34,8 @@ typedef enum
 	NODE_ID = 8,
 	RTC_TIME_MINUTE = 9,
 	MIN_IRRIG_TIME = 10, 
-	MAX_IRRIG_TIME = 11 
+	MAX_IRRIG_TIME = 11,
+	CLR_MEMORY = 12
 }dataIndex_t;
 
 extern void Master_EncodeTxData(uint8_t* pMasterTx, uint16_t data, dataIndex_t dataIndex);

@@ -68,11 +68,6 @@ void HC12_SetPinControl(bool pinState)
 	GPIO_OutputWrite(GPIOB,GPIO_PIN0,pinState);
 }
 
-uint8_t HC12_NumberOfBytes(void)
-{
-	return DMA_Rx_CNDTR(DMA1_Channel5);
-}
-
 bool HC12_IncompleteRxData(void)
 {
 	if(USART_RxIdleLineDetected(USART1))
