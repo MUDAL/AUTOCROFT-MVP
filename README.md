@@ -7,12 +7,12 @@ The base nodes collect data and forward them to the master.
 The master processes data from multiple base nodes and sends to the cloud.  
 
 Some **keypad** functionalities:  
-- A:Forward  
-- B:Backward  
-- C:Up/Down  
-- D:Clear memory/Reset system  
-- #:Enter  
-- *:Send data from master to the nodes
+- A:  Forward  
+- B:  Backward  
+- C:  Up/Down  
+- D:  Clear memory/Reset system  
+- #:  Enter  
+- *:  Send data from master to the nodes
 
 # Current version  
 Version 1.0  
