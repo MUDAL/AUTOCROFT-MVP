@@ -1,6 +1,8 @@
 #ifndef _SYSTEM_H
 #define _SYSTEM_H
 
+#define SYSTEM_RUNTIME_MINUTES			26
+
 /**
 @brief System timer structure. Contains attributes for  
 providing timing services to the application.  

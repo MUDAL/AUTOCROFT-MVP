@@ -100,7 +100,6 @@ static void FSM_Node(uint8_t substate)
 	if(nodeID > (NO_OF_NODES - 1))
 	{
 		LCD_Clear();
-		LCD_SetCursor(0,0);
 		LCD_WriteString("Invalid input");
 		System_TimerDelayMs(1000);
 		LCD_Clear();
@@ -277,6 +276,30 @@ static void FSM_IrrigTime(uint8_t substate)
 									  "TimeMax:",
 									  'm');
 	
+	if(minIrrigTime > 10)
+	{
+		LCD_Clear();
+		LCD_WriteString("min time limit:");
+		LCD_SetCursor(1,0);
+		LCD_WriteString("10 minutes");
+		System_TimerDelayMs(1000);
+		LCD_Clear();
+		minIrrigTime = 10;
+		currentSubstate = SUBSTATE_HIGHLIGHT_MIN;
+	}
+	
+	if(maxIrrigTime > 25)
+	{
+		LCD_Clear();
+		LCD_WriteString("max time limit:");
+		LCD_SetCursor(1,0);
+		LCD_WriteString("25 minutes");
+		System_TimerDelayMs(1000);
+		LCD_Clear();
+		maxIrrigTime = 25;
+		currentSubstate = SUBSTATE_HIGHLIGHT_MAX;
+	}
+	
 	switch(substate)
 	{
 		case SUBSTATE_HIGHLIGHT_MIN:
@@ -390,7 +413,7 @@ void HMI_Execute(void)
 					LCD_WriteString("Clearing: ");
 					LCD_SetCursor(1,0);
 					LCD_WriteString("Master memory");
-					EEPROM_StoreData(emptyEEPROM,eepromBytes,PAGE1);
+					EEPROM_StoreData(emptyEEPROM,eepromBytes,PAGE1); //clear master's memory (EEPROM)
 					LCD_Clear();
 					LCD_WriteString("Clearing: ");
 					LCD_SetCursor(1,0);

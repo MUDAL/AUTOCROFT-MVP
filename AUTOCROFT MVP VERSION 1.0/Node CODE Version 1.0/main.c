@@ -12,6 +12,10 @@
 #include "communication.h"
 
 /**
+@brief Source code for Autocroft Node (ID = 0)  
+*/
+
+/**
 EEPROM MEMORY ALLOCATION
 * PAGE 1: Configuration data from master controller
 */
@@ -147,7 +151,7 @@ int main(void)
 		if(System_TimerDoneCounting(&rtcTimer))
 		{
 			DS3231_GetTime(&rtc);
-			if(rtc.minutes >= 25)
+			if(rtc.minutes >= SYSTEM_RUNTIME_MINUTES)
 			{
 				//1.)store configuration data from master in EEPROM
 				//2.)put system to sleep

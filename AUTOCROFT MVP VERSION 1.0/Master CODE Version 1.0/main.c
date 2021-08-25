@@ -14,6 +14,10 @@
 #include "hmi.h"
 
 /**
+@brief Source code for Autocroft Master  
+*/
+
+/**
 EEPROM MEMORY ALLOCATION
 * PAGE 1 to PAGE 6: Bluetooth data
 * PAGE 10: Number of bytes received from bluetooth module
@@ -111,7 +115,7 @@ int main(void)
 		if(System_TimerDoneCounting(&rtcTimer))
 		{
 			DS3231_GetTime(&rtc);
-			if(rtc.minutes >= 25)
+			if(rtc.minutes >= SYSTEM_RUNTIME_MINUTES)
 			{
 				//1.)store configuration data in EEPROM
 				//2.)store data from nodes in EEPROM
