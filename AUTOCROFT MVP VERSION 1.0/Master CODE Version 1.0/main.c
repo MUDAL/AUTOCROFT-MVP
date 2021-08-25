@@ -91,23 +91,27 @@ int main(void)
 		BLUETOOTH AND WIFI
 		*/
 		bluetooth.rxStatus = Bluetooth_RxStatus();
-		switch(bluetooth.rxStatus)
+		if(bluetooth.rxStatus != NO_DATA_RECEIVED)
 		{
-			case NO_DATA_RECEIVED:
-				break;
-			case COMPLETE_RX_DATA:
-				bluetooth.noOfRxBytes = BLUETOOTH_RX_MAX_LEN;
-				WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
-				EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
-				EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
-				break;
-			case INCOMPLETE_RX_DATA:
-				bluetooth.noOfRxBytes = Bluetooth_NumberOfBytesReceived();
-			  WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
-			  EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
-			  EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
-			  Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
-				break;
+			LCD_Clear();
+			LCD_WriteString("Credentials");
+			LCD_SetCursor(1,0);
+			LCD_WriteString("Received");
+			System_TimerDelayMs(1000);
+			LCD_Clear();
+			switch(bluetooth.rxStatus)
+			{
+				case COMPLETE_RX_DATA:
+					bluetooth.noOfRxBytes = BLUETOOTH_RX_MAX_LEN;
+					break;
+				case INCOMPLETE_RX_DATA:
+					bluetooth.noOfRxBytes = Bluetooth_NumberOfBytesReceived();
+					break;
+			}
+			WiFi_TransmitBytes(bluetooth.rxBuffer,bluetooth.noOfRxBytes);
+		  EEPROM_StoreData(bluetooth.rxBuffer,bluetooth.noOfRxBytes,PAGE1);
+			EEPROM_StoreData(&bluetooth.noOfRxBytes,1,PAGE10);
+			Bluetooth_RxBufferInit(bluetooth.rxBuffer,BLUETOOTH_RX_MAX_LEN);
 		}
 		/*
 		RTC AND SLEEP

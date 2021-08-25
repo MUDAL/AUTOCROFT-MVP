@@ -96,9 +96,11 @@ for the desired USART peripheral.
 */
 bool USART_RxIdleLineDetected(USART_TypeDef* uartPort)
 {
+	bool idleLineDetected = false;
 	if((uartPort->SR & USART_SR_IDLE) == USART_SR_IDLE)
 	{
-		return true;
+		idleLineDetected = true;
+		volatile uint8_t readDR = uartPort->DR;
 	}
-	return false;
+	return idleLineDetected;
 }
