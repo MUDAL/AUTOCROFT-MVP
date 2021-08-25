@@ -120,8 +120,8 @@ int main(void)
 				//1.)store configuration data in EEPROM
 				//2.)store data from nodes in EEPROM
 				//3.)put system to sleep
-				EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128);
-				System_GoToStandbyMode();
+				EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128); //1
+				System_GoToStandbyMode(); //3
 			}
 		}
 	}
