@@ -28,6 +28,7 @@ once every hour (under automatic control). The master and nodes have a runtime o
 # Design Plans for next version (Version 1.1)  
 1. MOSFET driver using LM358N: The MOSFET will be used to power external hardware down in order to improve power consumption.  
 2. Replace voltage regulators with buck converters where necessary.  
+3. RTC should set hours and seconds too
 
   
 
