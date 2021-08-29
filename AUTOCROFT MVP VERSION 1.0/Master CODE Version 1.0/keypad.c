@@ -37,23 +37,23 @@ static void ActivateColumn(uint8_t column)
 	{
 		case COLUMN1:
 			//clear PB1 and set PB5,8,9
-			GPIO_OutputClearReg(GPIOB,(1<<GPIO_PIN1));
-			GPIO_OutputRegWrite(GPIOB,((1<<GPIO_PIN5)|(1<<GPIO_PIN8)|(1<<GPIO_PIN9)));
+			GPIO_OutputClearMultiple(GPIOB,(1<<GPIO_PIN1));
+			GPIO_OutputWriteMultiple(GPIOB,((1<<GPIO_PIN5)|(1<<GPIO_PIN8)|(1<<GPIO_PIN9)));
 			break;
 		case COLUMN2:
 			//clear PB5 and set PB1,8,9
-			GPIO_OutputClearReg(GPIOB,(1<<GPIO_PIN5));
-			GPIO_OutputRegWrite(GPIOB,((1<<GPIO_PIN1)|(1<<GPIO_PIN8)|(1<<GPIO_PIN9)));
+			GPIO_OutputClearMultiple(GPIOB,(1<<GPIO_PIN5));
+			GPIO_OutputWriteMultiple(GPIOB,((1<<GPIO_PIN1)|(1<<GPIO_PIN8)|(1<<GPIO_PIN9)));
 			break;
 		case COLUMN3:
 			//clear PB8 and set PB1,5,9
-			GPIO_OutputClearReg(GPIOB,(1<<GPIO_PIN8));
-			GPIO_OutputRegWrite(GPIOB,((1<<GPIO_PIN1)|(1<<GPIO_PIN5)|(1<<GPIO_PIN9)));
+			GPIO_OutputClearMultiple(GPIOB,(1<<GPIO_PIN8));
+			GPIO_OutputWriteMultiple(GPIOB,((1<<GPIO_PIN1)|(1<<GPIO_PIN5)|(1<<GPIO_PIN9)));
 			break;
 		case COLUMN4:
 			//clear PB9 and set PB1,5,8
-			GPIO_OutputClearReg(GPIOB,(1<<GPIO_PIN9));
-			GPIO_OutputRegWrite(GPIOB,((1<<GPIO_PIN1)|(1<<GPIO_PIN5)|(1<<GPIO_PIN8)));
+			GPIO_OutputClearMultiple(GPIOB,(1<<GPIO_PIN9));
+			GPIO_OutputWriteMultiple(GPIOB,((1<<GPIO_PIN1)|(1<<GPIO_PIN5)|(1<<GPIO_PIN8)));
 			break;
 	}
 }
@@ -80,7 +80,7 @@ void Keypad_Init(void)
 									GPIO_GEN_PUR_OUTPUT_PUSH_PULL);
 	
 	//Configure PA1,4,5,6 as input with pull-up	
-	GPIO_InputInitReg(GPIOA,
+	GPIO_MultipleInputInit(GPIOA,
 										GPIO_PORT_REG_LOW, 
 									 ((1<<GPIO_PIN1)|(1<<GPIO_PIN4)|(1<<GPIO_PIN5)|(1<<GPIO_PIN6)),
 									 (GPIO_PIN1_INPUT_PULLUP_OR_PULLDOWN | GPIO_PIN4_INPUT_PULLUP_OR_PULLDOWN | 

@@ -67,14 +67,14 @@ void GPIO_InputInit(GPIO_TypeDef* gpioPort,
 	*/
 	volatile uint32_t* pGpioConfigReg = &gpioPort->CRL;
 	
-	if (portLevel == GPIO_PORT_REG_HIGH)
+	if(portLevel == GPIO_PORT_REG_HIGH)
 	{
 		pGpioConfigReg = &gpioPort->CRH;
 	}
 	
 	*pGpioConfigReg |= config;
 	
-	if (pullupEn)
+	if(pullupEn)
 	{
 		gpioPort->ODR |= (1<<gpioPin);
 	}
@@ -83,22 +83,22 @@ void GPIO_InputInit(GPIO_TypeDef* gpioPort,
 /**
 @brief Configures multiple GPIO pins to input mode.  
 */
-void GPIO_InputInitReg(GPIO_TypeDef* gpioPort, 
-										   uint8_t portLevel, 
-											 uint8_t gpioPins,
-											 uint32_t config,  
-											 bool pullupEn)						 
+void GPIO_MultipleInputInit(GPIO_TypeDef* gpioPort, 
+													  uint8_t portLevel, 
+													  uint16_t gpioPins,
+													  uint32_t config,  
+													  bool pullupEn)						 
 {
 	volatile uint32_t* pGpioConfigReg = &gpioPort->CRL;
 	
-	if (portLevel == GPIO_PORT_REG_HIGH)
+	if(portLevel == GPIO_PORT_REG_HIGH)
 	{
 		pGpioConfigReg = &gpioPort->CRH;
 	}
 	
 	*pGpioConfigReg |= config;
 	
-	if (pullupEn)
+	if(pullupEn)
 	{
 		gpioPort->ODR |= (gpioPins);
 	}
@@ -142,7 +142,7 @@ void GPIO_OutputInit(GPIO_TypeDef* gpioPort,
 	*/
 	volatile uint32_t* pGpioConfigReg = &gpioPort->CRL;
 	
-	if (portLevel == GPIO_PORT_REG_HIGH)
+	if(portLevel == GPIO_PORT_REG_HIGH)
 	{
 		pGpioConfigReg = &gpioPort->CRH;
 	}
@@ -189,12 +189,12 @@ void GPIO_OutputWrite(GPIO_TypeDef* gpioPort,
 	
 }
 
-void GPIO_OutputClearReg(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
+void GPIO_OutputClearMultiple(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
 {
 	gpioPort->ODR &= ~gpioPins;
 }
 
-void GPIO_OutputRegWrite(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
+void GPIO_OutputWriteMultiple(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
 {
 	gpioPort->ODR |= gpioPins;
 }
@@ -221,7 +221,7 @@ bool GPIO_InputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
 	
 	*/
 	
-	if ( (gpioPort->IDR & (1<<gpioPin)) == (1<<gpioPin) )
+	if ((gpioPort->IDR & (1<<gpioPin)) == (1<<gpioPin))
 	{
 		return true;
 	}
@@ -231,7 +231,7 @@ bool GPIO_InputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
 
 bool GPIO_OutputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin)
 {
-	if ( (gpioPort->ODR & (1<<gpioPin)) == (1<<gpioPin) )
+	if ((gpioPort->ODR & (1<<gpioPin)) == (1<<gpioPin))
 	{
 		return true;
 	}

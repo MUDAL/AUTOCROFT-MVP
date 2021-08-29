@@ -46,17 +46,17 @@ static void LCD_Write(bool regSelect, char byte)
 	//Select instruction register or data register 
 	GPIO_OutputWrite(GPIOA, LCD_RS, regSelect);
 	//Send high nibble to DB4-DB7
-	GPIO_OutputClearReg(GPIOB,
-										 (1<<LCD_D4)|
-										 (1<<LCD_D5)|
-										 (1<<LCD_D6)|
-										 (1<<LCD_D7));
+	GPIO_OutputClearMultiple(GPIOB,
+													(1<<LCD_D4)|
+													(1<<LCD_D5)|
+													(1<<LCD_D6)|
+													(1<<LCD_D7));
 	
-	GPIO_OutputRegWrite(GPIOB,
-										 (((byte & (1<<4)) >> 4) << LCD_D4)|
-										 (((byte & (1<<5)) >> 5) << LCD_D5)|
-										 (((byte & (1<<6)) >> 6) << LCD_D6)|
-										 (((byte & (1<<7)) >> 7) << LCD_D7) );
+	GPIO_OutputWriteMultiple(GPIOB,
+													(((byte & (1<<4)) >> 4) << LCD_D4)|
+													(((byte & (1<<5)) >> 5) << LCD_D5)|
+													(((byte & (1<<6)) >> 6) << LCD_D6)|
+													(((byte & (1<<7)) >> 7) << LCD_D7) );
 	
 	//High to Low pulse
 	GPIO_OutputWrite(GPIOA,LCD_EN,true);
@@ -65,17 +65,17 @@ static void LCD_Write(bool regSelect, char byte)
 	SysTick_DelayMs(1);
 	
 	//Send low nibble to DB4-DB7
-	GPIO_OutputClearReg(GPIOB,
-										 (1<<LCD_D4)|
-										 (1<<LCD_D5)|
-										 (1<<LCD_D6)|
-										 (1<<LCD_D7));
+	GPIO_OutputClearMultiple(GPIOB,
+													(1<<LCD_D4)|
+													(1<<LCD_D5)|
+													(1<<LCD_D6)|
+													(1<<LCD_D7));
 	
-	GPIO_OutputRegWrite(GPIOB,
-										 (((lowNibble & (1<<4)) >> 4) << LCD_D4)|
-										 (((lowNibble & (1<<5)) >> 5) << LCD_D5)|
-										 (((lowNibble & (1<<6)) >> 6) << LCD_D6)|
-										 (((lowNibble & (1<<7)) >> 7) << LCD_D7) );
+	GPIO_OutputWriteMultiple(GPIOB,
+													(((lowNibble & (1<<4)) >> 4) << LCD_D4)|
+													(((lowNibble & (1<<5)) >> 5) << LCD_D5)|
+													(((lowNibble & (1<<6)) >> 6) << LCD_D6)|
+													(((lowNibble & (1<<7)) >> 7) << LCD_D7));
 	
 	//High to Low Pulse
 	GPIO_OutputWrite(GPIOA,LCD_EN,true);

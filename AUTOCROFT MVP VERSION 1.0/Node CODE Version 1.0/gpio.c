@@ -164,12 +164,12 @@ void GPIO_OutputWrite(GPIO_TypeDef* gpioPort,
 	}
 }
 
-void GPIO_OutputClearReg(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
+void GPIO_OutputClearMultiple(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
 {
 	gpioPort->ODR &= ~gpioPins;
 }
 
-void GPIO_OutputRegWrite(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
+void GPIO_OutputWriteMultiple(GPIO_TypeDef* gpioPort, uint32_t gpioPins)
 {
 	gpioPort->ODR |= gpioPins;
 }

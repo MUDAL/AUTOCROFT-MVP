@@ -93,11 +93,8 @@ extern void GPIO_OutputWrite(GPIO_TypeDef* gpioPort,
 														 uint8_t gpioPin,
 														 bool gpioPinLogic);
 
-extern void GPIO_OutputClearReg(GPIO_TypeDef* gpioPort,
-																uint32_t gpioPins);
-
-extern void GPIO_OutputRegWrite(GPIO_TypeDef* gpioPort,
-																uint32_t gpioPins);
+extern void GPIO_OutputClearMultiple(GPIO_TypeDef* gpioPort,uint32_t gpioPins);
+extern void GPIO_OutputWriteMultiple(GPIO_TypeDef* gpioPort,uint32_t gpioPins);
 
 //Returns the logic level ( high(true) or low(false) ) of a GPIO input pin
 extern bool GPIO_InputRead(GPIO_TypeDef* gpioPort, uint8_t gpioPin);
