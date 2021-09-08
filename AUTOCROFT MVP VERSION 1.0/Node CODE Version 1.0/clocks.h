@@ -1,7 +1,7 @@
 #ifndef CLOCKS_H
 #define CLOCKS_H
 
-//Activates clocks for all peripherals used.
-extern void Clocks_Init(void);
+//Configures HSI as system clock (8MHz)
+extern void Clock_HSI_8MHz_Init(void);
 
 #endif //CLOCKS_H

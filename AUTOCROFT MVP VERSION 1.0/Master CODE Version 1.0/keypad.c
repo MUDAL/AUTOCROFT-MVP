@@ -87,7 +87,6 @@ void Keypad_Init(void)
 										GPIO_PIN5_INPUT_PULLUP_OR_PULLDOWN | GPIO_PIN6_INPUT_PULLUP_OR_PULLDOWN),
 										GPIO_PULLUP_ENABLE);
 
-	
 }
 
 char Keypad_GetChar(void)

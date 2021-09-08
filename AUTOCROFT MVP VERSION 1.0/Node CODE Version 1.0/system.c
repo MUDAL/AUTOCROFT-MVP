@@ -8,7 +8,7 @@
 
 void System_Init(void)
 {
-	Clocks_Init();
+	Clock_HSI_8MHz_Init();
 	SysTick_Init();
 	GPIO_Reset();
 }
