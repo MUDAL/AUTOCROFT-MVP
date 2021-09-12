@@ -151,7 +151,7 @@ void LCD_Clear(void)
 
 void LCD_SetCursor(uint8_t row, uint8_t column)
 {
-	if ((row > 1) || (column > 16))
+	if ((row > 1) || (column > 15))
 	{
 		//Invalid
 		return;
