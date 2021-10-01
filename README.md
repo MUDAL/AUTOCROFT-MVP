@@ -11,7 +11,7 @@ Some **keypad** functionalities:
 - B:  Backward  
 - C:  Up/Down  
 - D:  Clear memory/Reset system  
-- #:  Enter  
+- #:  Select 
 - *:  Send data from master to the nodes
 
 # Current version  
