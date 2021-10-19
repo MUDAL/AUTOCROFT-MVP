@@ -34,6 +34,7 @@ once every hour (under automatic control). The master and nodes have a runtime o
 6. The ESP8266 isn't necessarily the only option for WiFi, ESP32 can be used in its place but provisions will be made to adapt it to PCB ver 1.0.  
 7. A small veroboard adapter to link I2C connections on the PCB ver 1.0 of the master to the LCD I2C adapter.  
 8. Firmware to be developed for the ESP8266/ESP32 for sending data to the cloud.  
+9. A common API to configure all I2C devices(I2CBusConfig) instead of repeating the same function calls in their Init functions (e.g. EEPROM_Init,BME280_Init).   
 
   
 
