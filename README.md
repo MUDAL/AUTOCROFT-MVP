@@ -28,7 +28,7 @@ once every hour (under automatic control). The master and nodes have a runtime o
 # Design Plans for next version (Version 1.1)  
 1. MOSFET driver using LM358N: The MOSFET will be used to power external hardware down in order to improve power consumption.  
 2. Replace voltage regulators with buck converters where necessary.  
-3. Use an I2C adapter for the LCD to save GPIO pins.  
+3. Use an I2C adapter for the LCD to save GPIO pins and modify the LCD library without altering the interface.  
 4. Small change to the DS3231 library to allow 'SetTime' function to set hours, minutes and seconds.  
 5. Small change to the DS3231 library to remove 'SetMinutes' and use 'SetTime' instead.  
 6. The ESP8266 isn't necessarily the only option for WiFi, ESP32 can be used in its place but provisions will be made to adapt it to PCB ver 1.0.  
