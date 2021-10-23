@@ -35,6 +35,12 @@ once every hour (under automatic control). The master and nodes have a runtime o
 7. A small veroboard adapter to link I2C connections on the PCB ver 1.0 of the master to the LCD I2C adapter.  
 8. Firmware to be developed for the ESP8266/ESP32 for sending data to the cloud.  
 9. A common API to configure all I2C devices(I2CBusConfig) instead of repeating the same function calls in their Init functions (e.g. EEPROM_Init,BME280_Init).   
+  
+# Design Plans for version 2.0  
+1. Master controller redesign  
+2. LCD and keypad user interface should be removed  
+3. Shifting user interface functionality to a mobile app  
+4. The app and master controller would communicate via bluetooth  
 
   
 
