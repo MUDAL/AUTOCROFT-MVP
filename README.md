@@ -37,7 +37,7 @@ once every hour (under automatic control). The master and nodes have a runtime o
 9. A common API to configure all I2C devices(I2CBusConfig) instead of repeating the same function calls in their Init functions (e.g. EEPROM_Init,BME280_Init).  
 10. Use of any keypad key to turn the LCD on. (LCD is powered down 2 minutes after turning on in order to save power).   
 11. AT command multidimensional array (Increase the number of columns by 1 i.e. the number of characters in the AT command for choosing a channel). Make the array a const.  
-12. Set maximum number of nodes to 40.  
+12. Set maximum number of nodes to 30.  
   
 # Design Plans for version 2.0  
 1. Master controller redesign  
