@@ -1,0 +1,13 @@
+.\objects\hmi.o: hmi.c
+.\objects\hmi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\hmi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\hmi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\hmi.o: system.h
+.\objects\hmi.o: eeprom24c16.h
+.\objects\hmi.o: keypad.h
+.\objects\hmi.o: lcd.h
+.\objects\hmi.o: display.h
+.\objects\hmi.o: bme280.h
+.\objects\hmi.o: hc12.h
+.\objects\hmi.o: communication.h
+.\objects\hmi.o: hmi.h
