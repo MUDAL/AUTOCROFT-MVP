@@ -36,8 +36,7 @@ once every hour (under automatic control). The master and nodes have a runtime o
 8. Firmware to be developed for the ESP8266/ESP32 for sending data to the cloud.  
 9. A common API to configure all I2C devices(I2CBusConfig) instead of repeating the same function calls in their Init functions (e.g. EEPROM_Init,BME280_Init).  
 10. Use of any keypad key to turn the LCD on. (LCD is powered down 2 minutes after turning on in order to save power).    
-11. Set maximum number of nodes to 30.  
-12. Clear EEPROM memory + System Reset should be a single functionality.  
+11. Clear EEPROM memory + System Reset should be a single functionality.  
   
 # Design Plans for version 2.0  
 1. Master controller redesign  
