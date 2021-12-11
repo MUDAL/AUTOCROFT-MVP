@@ -870,28 +870,28 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       114          0          0          0          0       1530   adc.o
-        76          8          0          0          0        458   clocks.o
-        80         12          0          0          0        977   cms.o
-        54          0          0          0          0     203155   communication.o
-        70          0          0          0          0       1776   dma.o
-       348         20          0          0          0       3935   ds3231.o
-       206         22          0          0          0       3421   gpio.o
-       216         46          0          0          0       4070   hc12.o
-       902          4          0          0          0       4924   i2c.o
-        44          6         27          0          0       1317   irrigation.o
-       460         32          0          5         52       8639   main.o
-       100         14          0          0          0        889   pwr.o
-        30          0          0          0          0        630   sensor.o
-        68         12          0          0          0       1463   solenoid.o
-        64         26        236          0       1536        860   startup_stm32f10x_md.o
-       182         16          0          0          0      28887   system.o
-       328         28          0          0          0       2169   system_stm32f10x.o
-        78         16          0          4          0       2417   systick.o
-       182          0          0          0          0       2839   uart.o
+       114          0          0          0          0       1506   adc.o
+        76          8          0          0          0        450   clocks.o
+        80         12          0          0          0        961   cms.o
+        54          0          0          0          0     203139   communication.o
+        70          0          0          0          0       1752   dma.o
+       348         20          0          0          0       3879   ds3231.o
+       206         22          0          0          0       3373   gpio.o
+       216         46          0          0          0       4006   hc12.o
+       902          4          0          0          0       4868   i2c.o
+        44          6         27          0          0       1293   irrigation.o
+       460         32          0          5         52       8575   main.o
+       100         14          0          0          0        873   pwr.o
+        30          0          0          0          0        622   sensor.o
+        68         12          0          0          0       1439   solenoid.o
+        64         26        236          0       1536        852   startup_stm32f10x_md.o
+       182         16          0          0          0      28823   system.o
+       328         28          0          0          0       2137   system_stm32f10x.o
+        78         16          0          4          0       2369   systick.o
+       182          0          0          0          0       2799   uart.o
 
     ----------------------------------------------------------------------
-      3614        262        296         12       1588     274356   Object Totals
+      3614        262        296         12       1588     273716   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         12          0          1          3          0          0   (incl. Padding)
 
@@ -940,8 +940,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      3892        278        296         12       1684     271920   Grand Totals
-      3892        278        296         12       1684     271920   ELF Image Totals
+      3892        278        296         12       1684     271280   Grand Totals
+      3892        278        296         12       1684     271280   ELF Image Totals
       3892        278        296         12          0          0   ROM Totals
 
 ==============================================================================

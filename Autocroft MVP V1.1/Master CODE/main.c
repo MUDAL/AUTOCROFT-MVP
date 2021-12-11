@@ -22,16 +22,6 @@ EEPROM MEMORY ALLOCATION
 
 int main(void)
 {
-	//STEPS
-	//0.)Power external modules 
-	//1.)Initializations
-	//2.)Clear standby flag (after system wakeup)
-	//3.)Read configuration data from EEPROM memory....
-	//i.e. settings(min moisture, humidity etc)
-	//4.)Request for all node data and wait for data to be received from... 
-	//all nodes.
-	
-	//Local variables
 	static uint8_t nodeToMasterData;
 	static uint8_t masterToNodeData[MASTER_TX_DATA_SIZE];
 	static uint8_t nodeToMasterDataArray[NO_OF_NODES];
@@ -77,7 +67,6 @@ int main(void)
 			DS3231_GetTime(&rtc);
 			if(rtc.minutes >= SYSTEM_RUNTIME_MINUTES)
 			{
-				//1.)store configuration data in EEPROM and put system to sleep
 				EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128); 
 				System_GoToStandbyMode(); 
 			}

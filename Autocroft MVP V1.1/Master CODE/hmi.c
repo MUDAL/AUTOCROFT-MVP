@@ -399,12 +399,11 @@ void HMI_Execute(void)
 		while(1)
 		{
 			getOption = Keypad_GetChar();
-
 			switch(getOption)
 			{
-				case 'D':
-					break;
 				case '1':
+					LCD_Clear();
+					LCD_PrintString("Resetting....");
 					//Encoding with 1 resets master and node
 					Master_EncodeTxData(ptrMasterToNode,1,SYS_RESET); 
 					Master_TransmitReceive(ptrMasterToNode,
@@ -412,7 +411,11 @@ void HMI_Execute(void)
 															   ptrNodeToMaster,
 															   ptrNodeToMasterArray,
 															   NO_OF_NODES);
-					System_Reset();
+					System_Reset();	
+					break;
+				case 'D':
+				case '\0':
+					break;
 				default:
 					LCD_Clear();
 					return;

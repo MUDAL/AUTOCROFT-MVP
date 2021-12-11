@@ -1,6 +1,6 @@
 Dependencies for Project 'Master_Version_1_1', Target 'stm32f103c8': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (.\main.c)(0x61B3D0EF)(--c99 -c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\Device\STM32F103C8-I.\RTE\_stm32f103c8-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="533" -D_RTE_ -DSTM32F10X_MD -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\main.c)(0x61B4FA3C)(--c99 -c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\Device\STM32F103C8-I.\RTE\_stm32f103c8-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="533" -D_RTE_ -DSTM32F10X_MD -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E9122)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E8E9122)
 I (conversions.h)(0x60A7C906)
@@ -13,7 +13,7 @@ I (lcd.h)(0x61B3AD50)
 I (ds3231.h)(0x61B3B234)
 I (communication.h)(0x61B3D02B)
 I (hmi.h)(0x60FA9322)
-F (.\hmi.c)(0x61B3D1FD)(--c99 -c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\Device\STM32F103C8-I.\RTE\_stm32f103c8-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="533" -D_RTE_ -DSTM32F10X_MD -D_RTE_-o .\objects\hmi.o --omf_browse .\objects\hmi.crf --depend .\objects\hmi.d)
+F (.\hmi.c)(0x61B50748)(--c99 -c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\Device\STM32F103C8-I.\RTE\_stm32f103c8-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="533" -D_RTE_ -DSTM32F10X_MD -D_RTE_-o .\objects\hmi.o --omf_browse .\objects\hmi.crf --depend .\objects\hmi.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E9122)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5E8E9122)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E9122)
@@ -115,7 +115,7 @@ I (systick.h)(0x60C49A68)
 I (gpio.h)(0x612BE817)
 I (keypad.h)(0x612525AE)
 F (.\keypad.h)(0x612525AE)()
-F (.\lcd.c)(0x61B3D336)(--c99 -c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\Device\STM32F103C8-I.\RTE\_stm32f103c8-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="533" -D_RTE_ -DSTM32F10X_MD -D_RTE_-o .\objects\lcd.o --omf_browse .\objects\lcd.crf --depend .\objects\lcd.d)
+F (.\lcd.c)(0x61B3D358)(--c99 -c --cpu Cortex-M3 -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\Device\STM32F103C8-I.\RTE\_stm32f103c8-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-IC:\Users\OLAOLUWA\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-D__UVISION_VERSION="533" -D_RTE_ -DSTM32F10X_MD -D_RTE_-o .\objects\lcd.o --omf_browse .\objects\lcd.crf --depend .\objects\lcd.d)
 I (C:\Users\OLAOLUWA\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include\stm32f10x.h)(0x58259ADC)
 I (.\RTE\_stm32f103c8\RTE_Components.h)(0x61B3A352)
 I (C:\Users\OLAOLUWA\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm3.h)(0x5E8F3392)

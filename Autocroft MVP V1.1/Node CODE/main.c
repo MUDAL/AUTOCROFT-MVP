@@ -31,7 +31,6 @@ static void ClearBuffer(uint8_t* pBuffer, uint8_t len)
 
 int main(void)
 {
-	//Local variables
 	static NodeRxDataStructure nodeRx;
 	static sysTimer_t irrigTimer;
 	static sysTimer_t rtcTimer;
