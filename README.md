@@ -29,5 +29,6 @@ once every hour (under automatic control). The master and nodes have a runtime o
 Has similar features with version 1.0 but with the following changes:  
 1. No bluetooth and WiFi in the master controller.  
 2. No EEPROM in the Nodes.  
+3. Use of LCD with I2C GPIO expander for the master controller.  
 
   
