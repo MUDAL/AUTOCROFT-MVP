@@ -38,7 +38,8 @@ int main(void)
 	DS3231_ResetAlarm2();
 	DS3231_24HourFormat(); 
 	DS3231_SetTime(0,0); 
-	DS3231_SetAlarm2(0); //Alarm to wake the system up every time the system is at 0 minutes
+	System_TimerDelayMs(300); //delay to ensure all nodes are ready
+	DS3231_SetAlarm2(0);  
 	
 	BME280_Init();
 	HMI_Init(masterToNodeData,&nodeToMasterData,nodeToMasterDataArray);
