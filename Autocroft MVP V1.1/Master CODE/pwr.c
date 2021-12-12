@@ -29,3 +29,12 @@ void PWR_GoToStandbyMode(void)
 	PWR->CSR |= PWR_CSR_EWUP; //enable wakeup pin
 	__WFI();
 }
+
+void PWR_GoToStopMode(void)
+{
+	EXTI->PR |= EXTI_PR_PR0; //Clear PA0 interrupt pending bit
+	SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk; 
+	PWR->CR &= ~PWR_CR_PDDS; //enter stop mode when CPU enters deep sleep
+	PWR->CR |= PWR_CR_LPDS; //voltage regulator in low-power mode during stop mode
+	__WFI();
+}

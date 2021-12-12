@@ -3,6 +3,8 @@
 #include "clocks.h"
 #include "gpio.h"
 #include "i2c.h"
+#include "afio.h"
+#include "exti.h"
 #include "pwr.h"
 #include "systick.h"
 #include "system.h"
@@ -12,6 +14,7 @@ void System_Init(void)
 	Clock_HSI_8MHz_Init();
 	SysTick_Init();
 	GPIO_Reset();
+	//Common I2C configuration
 	GPIO_OutputInit(GPIOB,
 									GPIO_PORT_REG_LOW,
 								 (GPIO_PIN6_OUTPUT_MODE_2MHZ | GPIO_PIN7_OUTPUT_MODE_2MHZ),
@@ -21,6 +24,15 @@ void System_Init(void)
 					 I2C_PERIPH_FREQ_8MHZ,
 					 I2C_STANDARD_MODE_8MHZ_CCR, 
 					 I2C_STANDARD_MODE_8MHZ_TRISE);		
+	//GPIOA EXTI configuration for exiting stop mode
+	GPIO_InputInit(GPIOA,
+								 GPIO_PORT_REG_LOW,
+								 GPIO_PIN0,
+								 GPIO_PIN0_INPUT_PULLUP_OR_PULLDOWN,
+								 true);
+	AFIO_Init(EXTI_LINE0,AFIO_EXTI_SELECT_PA0);
+	EXTI_Init(EXTI_LINE0,EXTI_FALLING_EDGE);
+	NVIC_EnableIRQ(EXTI0_IRQn);
 }
 
 void System_Reset(void)
@@ -70,4 +82,9 @@ void System_ClearStandbyFlag(void)
 void System_GoToStandbyMode(void)
 {
 	PWR_GoToStandbyMode();
+}
+
+void System_GoToStopMode(void)
+{
+	PWR_GoToStopMode();
 }

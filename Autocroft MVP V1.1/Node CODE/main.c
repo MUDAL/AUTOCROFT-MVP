@@ -33,7 +33,6 @@ int main(void)
 {
 	static NodeRxDataStructure nodeRx;
 	static sysTimer_t irrigTimer;
-	static sysTimer_t rtcTimer;
 	static ds3231_t rtc;
 	static uint8_t soilMoisture;
 	//Node parameters
@@ -62,14 +61,12 @@ int main(void)
 	ClearBuffer(nodeRx.data,NODE_RX_DATA_SIZE); 
 	//Reinitialize node's Rx buffer
 	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE); 
+	DS3231_ResetAlarm2();
 	DS3231_24HourFormat(); 	
 	//Set minutes to 0 by default	
 	DS3231_SetTime(0,0);	
 	//Alarm to wake the system up every time the system is at 0 minutes. e.g. 9:00, 11:00
 	DS3231_SetAlarm2(0);
-	//60 seconds periodic software timer.
-	System_TimerInit(&rtcTimer,60000); 
-	System_ClearStandbyFlag();
 	
 	while(1)
 	{
@@ -129,14 +126,11 @@ int main(void)
 			}
 		}
 
-		if(System_TimerDoneCounting(&rtcTimer))
+		DS3231_GetTime(&rtc);
+		if(rtc.minutes >= SYSTEM_RUNTIME_MINUTES)
 		{
-			DS3231_GetTime(&rtc);
-			if(rtc.minutes >= SYSTEM_RUNTIME_MINUTES)
-			{
-				System_GoToStandbyMode();
-			}
-		}
+			System_GoToStopMode();
+			System_Reset();
+		}		
 	}
 }
-

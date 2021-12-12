@@ -125,8 +125,8 @@ static void FSM_Node(uint8_t substate)
 
 static void FSM_Moisture(uint8_t substate)
 {
-	static uint8_t minMoist;
-	static uint8_t maxMoist;
+	uint8_t minMoist = ptrMasterToNode[MIN_MOISTURE];
+	uint8_t maxMoist = ptrMasterToNode[MAX_MOISTURE];
 	static char keyBuffer[3] = "00";
 	const uint8_t keyBufferLen = 2;
 	
@@ -171,8 +171,8 @@ static void FSM_Moisture(uint8_t substate)
 	
 static void FSM_Humidity(uint8_t substate)
 {
-	static uint8_t minHum;
-	static uint8_t maxHum;
+	uint8_t minHum = ptrMasterToNode[MIN_HUMIDITY];
+  uint8_t maxHum = ptrMasterToNode[MAX_HUMIDITY];
 	static char keyBuffer[3] = "00";
 	const uint8_t keyBufferLen = 2;
 	
@@ -218,8 +218,8 @@ static void FSM_Humidity(uint8_t substate)
 
 static void FSM_Temperature(uint8_t substate)
 {	
-	static uint8_t minTemp;
-	static uint8_t maxTemp;
+	uint8_t minTemp = ptrMasterToNode[MIN_TEMPERATURE];
+	uint8_t maxTemp = ptrMasterToNode[MAX_TEMPERATURE];
 	static char keyBuffer[3] = "00";
 	const uint8_t keyBufferLen = 2;
 	
@@ -264,8 +264,8 @@ static void FSM_Temperature(uint8_t substate)
 	
 static void FSM_IrrigTime(uint8_t substate)
 {
-	static uint8_t minIrrigTime;
-	static uint8_t maxIrrigTime;
+	uint8_t minIrrigTime = ptrMasterToNode[MIN_IRRIG_TIME];
+	uint8_t maxIrrigTime = ptrMasterToNode[MAX_IRRIG_TIME];
 	static char keyBuffer[3] = "00";
 	const uint8_t keyBufferLen = 2;
 	

@@ -17,6 +17,8 @@
 ".\objects\pwr.o"
 ".\objects\systick.o"
 ".\objects\uart.o"
+".\objects\afio.o"
+".\objects\exti.o"
 ".\objects\conversions.o"
 ".\objects\startup_stm32f10x_md.o"
 ".\objects\system_stm32f10x.o"

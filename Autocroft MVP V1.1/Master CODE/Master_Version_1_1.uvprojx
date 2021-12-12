@@ -583,6 +583,26 @@
               <FileType>5</FileType>
               <FilePath>.\uart.h</FilePath>
             </File>
+            <File>
+              <FileName>afio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\afio.c</FilePath>
+            </File>
+            <File>
+              <FileName>afio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\afio.h</FilePath>
+            </File>
+            <File>
+              <FileName>exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>exti.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\exti.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

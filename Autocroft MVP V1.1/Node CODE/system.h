@@ -25,5 +25,6 @@ extern void System_TimerInit(sysTimer_t* pSysTimer, uint32_t timerRepTime);
 extern bool System_TimerDoneCounting(sysTimer_t* pSysTimer);
 extern void System_ClearStandbyFlag(void);
 extern void System_GoToStandbyMode(void);
+extern void System_GoToStopMode(void);
 
 #endif //_SYSTEM_H

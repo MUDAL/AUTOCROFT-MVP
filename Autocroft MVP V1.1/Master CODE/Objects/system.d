@@ -11,6 +11,8 @@
 .\objects\system.o: clocks.h
 .\objects\system.o: gpio.h
 .\objects\system.o: i2c.h
+.\objects\system.o: afio.h
+.\objects\system.o: exti.h
 .\objects\system.o: pwr.h
 .\objects\system.o: systick.h
 .\objects\system.o: system.h

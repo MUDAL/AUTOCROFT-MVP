@@ -118,7 +118,7 @@ void DS3231_SetTime(uint8_t hour, uint8_t min)
 	so that a write to the register doesn't clear the hour configurations.
 	*/
 	timeBCD[2] = (timeBCD[2] | (prevHoursBCD & 0xE0));
-	I2C_WriteMultiByte(I2C1,DS3231_ADDR,MIN_REG_ADDR,timeBCD,3);
+	I2C_WriteMultiByte(I2C1,DS3231_ADDR,SEC_REG_ADDR,timeBCD,3);
 }
 
 void DS3231_12HourFormat(uint8_t periodOfDay)
