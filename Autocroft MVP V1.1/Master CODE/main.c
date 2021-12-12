@@ -34,14 +34,14 @@ int main(void)
 	LCD_Init();
 	HC12_Init();
 	HC12_RxBufferInit(&nodeToMasterData,MASTER_RX_DATA_SIZE);
+	
 	DS3231_ResetAlarm2();
 	DS3231_24HourFormat(); 
 	DS3231_SetTime(0,0); 
-	//Alarm to wake the system up every time the system is at 0 minutes. e.g. 9:00, 11:00
-	DS3231_SetAlarm2(0); 
+	DS3231_SetAlarm2(0); //Alarm to wake the system up every time the system is at 0 minutes
+	
 	BME280_Init();
 	HMI_Init(masterToNodeData,&nodeToMasterData,nodeToMasterDataArray);
-	LCD_Clear();
 	LCD_PrintString("AUTOCROFT");
 	LCD_SetCursor(1,0);
 	LCD_PrintString("FW: VER 1.1");
@@ -65,6 +65,8 @@ int main(void)
 			EEPROM_StoreData(masterToNodeData,MASTER_TX_DATA_SIZE,PAGE128); 
 			LCD_Clear();
 			LCD_PrintString("Status: Sleep");
+			System_TimerDelayMs(2000);
+			LCD_BackLightOff();
 			System_GoToStopMode(); 
 			System_Reset();
 		}

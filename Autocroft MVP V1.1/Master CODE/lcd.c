@@ -129,3 +129,9 @@ void LCD_SetCursor(uint8_t row, uint8_t column)
 	//Select instruction register then set cursor position
 	LCD_WriteByte(CMD_MODE, ((1<<7)|ddramAddr[row][column]));
 }
+
+void LCD_BackLightOff(void)
+{
+	i2cData &= ~(1<<BL);
+	LCD_Clear();
+}

@@ -49,6 +49,7 @@ int main(void)
 	System_Init();
 	CMS_Init();
 	Solenoid_Init();
+	
 	HC12_Init();	 
 	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE);
 	//Channel setting (AT command)
@@ -57,15 +58,12 @@ int main(void)
 	HC12_TransmitBytes(nodeATcommand, nodeATcmdLength);
 	HC12_SetPinControl(true);
 	System_TimerDelayMs(80);
-	//Node Rx buffer would have been corrupted with AT commands
-	ClearBuffer(nodeRx.data,NODE_RX_DATA_SIZE); 
-	//Reinitialize node's Rx buffer
-	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE); 
+	//==================================
+	ClearBuffer(nodeRx.data,NODE_RX_DATA_SIZE); //Remove AT command responses
+	HC12_RxBufferInit(nodeRx.data, NODE_RX_DATA_SIZE); //Reinitialize node's Rx buffer
+	
 	DS3231_ResetAlarm2();
-	DS3231_24HourFormat(); 	
-	//Set minutes to 0 by default	
-	DS3231_SetTime(0,0);	
-	//Alarm to wake the system up every time the system is at 0 minutes. e.g. 9:00, 11:00
+	DS3231_24HourFormat();
 	DS3231_SetAlarm2(0);
 	
 	while(1)
@@ -77,18 +75,17 @@ int main(void)
 		if(HC12_RxBufferFull())
 		{	
 			Node_StoreRxData(&nodeRx);
-			DS3231_SetTime(0,nodeRx.rtcMinute);
+			
 			if(nodeRx.nodeID == nodeID)
 			{
 				soilMoisture = CMS_GetMoisture();
 				HC12_TransmitByte(soilMoisture);
 			}	
-			
 			if(nodeRx.sysReset)
 			{
+				DS3231_SetTime(0,nodeRx.rtcMinute);	
 				System_Reset();
 			}
-
 			moistureLevel = Sensor_GetLevel(soilMoisture, nodeRx.minMoist, nodeRx.maxMoist);			
 			humidityLevel = Sensor_GetLevel(nodeRx.humidity, nodeRx.minHum, nodeRx.maxHum);
 			temperatureLevel = Sensor_GetLevel(nodeRx.temperature, nodeRx.minTemp, nodeRx.maxTemp);

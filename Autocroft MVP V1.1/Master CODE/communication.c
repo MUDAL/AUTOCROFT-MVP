@@ -69,8 +69,8 @@ void Master_TransmitReceive(uint8_t* pMasterTx,
 		
 		DS3231_GetTime(&rtc);
 		Master_EncodeTxData(pMasterTx,rtc.minutes,RTC_TIME_MINUTE);
-		Master_EncodeTxData(pMasterTx, nodeID, NODE_ID);
-		HC12_TransmitBytes(pMasterTx, txLen);//send data to node
+		Master_EncodeTxData(pMasterTx,nodeID,NODE_ID);
+		HC12_TransmitBytes(pMasterTx,txLen);//send data to node
 		System_TimerDelayMs(100); //wait for feedback from node
 		if(*pMasterRx != IDLE_CHARACTER)
 		{
