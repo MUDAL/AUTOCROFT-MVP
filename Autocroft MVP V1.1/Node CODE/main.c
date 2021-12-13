@@ -64,6 +64,7 @@ int main(void)
 	
 	DS3231_ResetAlarm2();
 	DS3231_24HourFormat();
+	DS3231_SetTime(0,0); 
 	DS3231_SetAlarm2(0);
 	
 	while(1)
