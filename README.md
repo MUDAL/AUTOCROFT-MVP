@@ -31,4 +31,8 @@ Has similar features with version 1.0 but with the following changes:
 2. No EEPROM in the Nodes.  
 3. Use of LCD with I2C GPIO expander for the master controller.  
 
+# Link to documentation  
+https://www.researchgate.net/publication/359510238_DESIGN_OF_A_LOW_POWER_AUTOMATIC_IRRIGATION_SYSTEM  
+
+
   
