@@ -27,7 +27,7 @@ once every hour (under automatic control). The master and nodes have a runtime o
 
 # Version 1.1  
 Has similar features with version 1.0 but with the following changes:  
-1. No bluetooth and WiFi in the master controller.  
+1. No Bluetooth and WiFi in the master controller.  
 2. No EEPROM in the Nodes.  
 3. Use of LCD with I2C GPIO expander for the master controller.  
 
@@ -37,6 +37,10 @@ https://www.researchgate.net/publication/359510238_DESIGN_OF_A_LOW_POWER_AUTOMAT
 # Prototype  
 ![master_controller](https://user-images.githubusercontent.com/46250887/192158418-07bae23d-95b9-4a5f-b960-efba648698b8.jpg)
 ![node](https://user-images.githubusercontent.com/46250887/192158438-4ecc0b63-ca7b-4488-a67e-22b89585a235.jpg)
+
+# 3D models of prototype PCB  
+![Screenshot (229)](https://user-images.githubusercontent.com/46250887/192159274-96f814f6-ca0c-4d74-9928-ac080ac255e3.png)
+![Screenshot (232)](https://user-images.githubusercontent.com/46250887/192159281-3b18d93f-7986-400c-9d23-10f9b267f04b.png)
 
 
   
