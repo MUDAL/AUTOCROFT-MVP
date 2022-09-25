@@ -34,5 +34,9 @@ Has similar features with version 1.0 but with the following changes:
 # Link to documentation  
 https://www.researchgate.net/publication/359510238_DESIGN_OF_A_LOW_POWER_AUTOMATIC_IRRIGATION_SYSTEM  
 
+# Prototype  
+![master_controller](https://user-images.githubusercontent.com/46250887/192158418-07bae23d-95b9-4a5f-b960-efba648698b8.jpg)
+![node](https://user-images.githubusercontent.com/46250887/192158438-4ecc0b63-ca7b-4488-a67e-22b89585a235.jpg)
+
 
   
